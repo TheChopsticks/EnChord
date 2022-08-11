@@ -1,0 +1,31 @@
+{
+  "name": "music-app",
+  "version": "1.0.0",
+  "description": "The chopsticks are the best female developer duo.",
+  "main": "index.js",
+  "scripts": {
+    "build": "esbuild src/index.js --outdir=dist --bundle --minify",
+    "start": "esbuild src/index.js --outdir=dist --bundle --watch",
+    "prettier": "npx prettier --write ./src",
+    "lint": "npx eslint ./src",
+    "format": "npm run prettier && npm run lint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TheChopsticks/music-app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TheChopsticks/music-app/issues"
+  },
+  "homepage": "https://github.com/TheChopsticks/music-app#readme",
+  "dependencies": {
+    "esbuild": "^0.15.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.21.0",
+    "eslint-config-prettier": "^8.5.0",
+    "prettier": "2.7.1"
+  }
+}
