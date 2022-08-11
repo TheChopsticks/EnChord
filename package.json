@@ -4,7 +4,10 @@
   "description": "The chopsticks are the best female developer duo.",
   "main": "index.js",
   "scripts": {
-    "build": "esbuild src/index.js --outdir=dist --bundle --minify"
+    "build": "esbuild src/index.js --outdir=dist --bundle --minify",
+    "prettier": "npx prettier --write ./src",
+    "lint": "npx eslint ./src",
+    "format": "npm run prettier && npm run lint"
   },
   "repository": {
     "type": "git",
@@ -18,5 +21,10 @@
   "homepage": "https://github.com/TheChopsticks/music-app#readme",
   "dependencies": {
     "esbuild": "^0.15.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.21.0",
+    "eslint-config-prettier": "^8.5.0",
+    "prettier": "2.7.1"
   }
 }
