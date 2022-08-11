@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "esbuild src/index.js --outdir=dist --bundle --minify",
+    "start": "esbuild src/index.js --outdir=dist --bundle --watch",
     "prettier": "npx prettier --write ./src",
     "lint": "npx eslint ./src",
     "format": "npm run prettier && npm run lint"
