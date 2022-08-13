@@ -8,4 +8,14 @@ class Game {
         this.correct = [];
         this.userAnswer = [];
     }
+
+    _getRandomNotes() {
+        // get two random notes from the notes array.
+        this._addOctave();
+    }
+
+    _addOctave() {
+        // Add octave to chosen notes.
+    }
+
 }
