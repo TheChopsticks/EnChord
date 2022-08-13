@@ -23,4 +23,8 @@ class Game {
         // We can use it for the question and user answer both.
     }
 
+    _compareAnswers() {
+        // compare user answers and correct answers then update score.
+    }
+
 }
