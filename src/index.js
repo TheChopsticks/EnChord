@@ -5,6 +5,7 @@ class Game {
         this.score = 0;
         this.level = 'Easy';
         this.numOfQues = 10;
+        this.correct = [];
+        this.userAnswer = [];
     }
-
 }
