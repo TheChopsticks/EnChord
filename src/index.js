@@ -18,4 +18,9 @@ class Game {
         // Add octave to chosen notes.
     }
 
+    _calculateInterval() {
+        // Compare two notes and calculate the interval.
+        // We can use it for the question and user answer both.
+    }
+
 }
