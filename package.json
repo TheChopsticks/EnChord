@@ -21,7 +21,8 @@
   },
   "homepage": "https://github.com/TheChopsticks/music-app#readme",
   "dependencies": {
-    "esbuild": "^0.15.1"
+    "esbuild": "^0.15.1",
+    "tone": "^14.7.77"
   },
   "devDependencies": {
     "eslint": "^8.21.0",
