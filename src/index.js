@@ -24,6 +24,8 @@ class Game {
         const note2 = notes[index2];
         const interval = this.calculateInterval(index1, index2);
         const octave = this.getOctave();
+
+        this.correct.push(`{note1: ${note1}, note2: ${note2}, interval: ${interval}, octave: ${octave}}`);
     }
 
     getOctave() {
