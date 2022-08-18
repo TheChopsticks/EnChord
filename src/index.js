@@ -1,4 +1,4 @@
-// An array of note and octaves.
+
 const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 class Game {
     constructor() {
@@ -10,7 +10,6 @@ class Game {
     }
 
     getRandomIndex(notes) {
-        // get a random index.
         return Math.floor(Math.random() * notes.length);
     }
 
@@ -39,7 +38,7 @@ class Game {
     }
 
     compareAnswers() {
-        // compare user answers and correct answers then update score.
+        // compare user answers and correct ones then update score.
         for (let i = 0; i < this.numOfQues; i++) {
             if (this.correct[i][interval] === this.userAnswer[i]) {
                 this.score += 1;
