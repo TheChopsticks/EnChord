@@ -9,21 +9,26 @@ class Game {
         this.userAnswer = [];
     }
 
-    _getRandomNotes() {
+    getRandomIndex(notes) {
+        // get a random index.
+        return Math.floor(Math.random() * notes.length);
+    }
+
+    getTwoNotes() {
         // get two random notes from the notes array.
         this._addOctave();
     }
 
-    _addOctave() {
+    addOctave() {
         // Add octave to chosen notes.
     }
 
-    _calculateInterval() {
+    calculateInterval() {
         // Compare two notes and calculate the interval.
         // We can use it for the question and user answer both.
     }
 
-    _compareAnswers() {
+    compareAnswers() {
         // compare user answers and correct answers then update score.
     }
 
