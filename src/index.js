@@ -16,16 +16,22 @@ class Game {
 
     getTwoNotes() {
         // get two random notes from the notes array.
-        this._addOctave();
+        let index1 = this.getRandomIndex(notes);
+        let index2 = this.getRandomIndex(notes);
+        while (index1 == index2) { index2 = this.getRandomIndex(notes) };
+
+        const note1 = notes[index1];
+        const note2 = notes[index2];
+        const interval = this.calculateInterval(index1, index2);
+        const octave = this._addOctave();
     }
 
     addOctave() {
         // Add octave to chosen notes.
     }
 
-    calculateInterval() {
+    calculateInterval(index1, index2) {
         // Compare two notes and calculate the interval.
-        // We can use it for the question and user answer both.
     }
 
     compareAnswers() {
@@ -33,3 +39,4 @@ class Game {
     }
 
 }
+
