@@ -23,11 +23,12 @@ class Game {
         const note1 = notes[index1];
         const note2 = notes[index2];
         const interval = this.calculateInterval(index1, index2);
-        const octave = this._addOctave();
+        const octave = this.getOctave();
     }
 
-    addOctave() {
+    getOctave() {
         // Add octave to chosen notes.
+        return Math.floor((Math.random() * 7) + 1);
     }
 
     calculateInterval(index1, index2) {
