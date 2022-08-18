@@ -32,6 +32,7 @@ class Game {
 
     calculateInterval(index1, index2) {
         // Compare two notes and calculate the interval.
+        return Math.abs(index1 - index2) + 1;
     }
 
     compareAnswers() {
