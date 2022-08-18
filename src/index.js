@@ -40,6 +40,11 @@ class Game {
 
     compareAnswers() {
         // compare user answers and correct answers then update score.
+        for (let i = 0; i < this.numOfQues; i++) {
+            if (this.correct[i][interval] === this.userAnswer[i]) {
+                this.score += 1;
+            }
+        }
     }
 
 }
