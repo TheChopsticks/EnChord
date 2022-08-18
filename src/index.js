@@ -14,8 +14,8 @@ class Game {
         return Math.floor(Math.random() * notes.length);
     }
 
-    getTwoNotes() {
-        // get two random notes from the notes array.
+    getNewQuiz() {
+        // Create a new quiz and add the answer to the correct answer array.
         let index1 = this.getRandomIndex(notes);
         let index2 = this.getRandomIndex(notes);
         while (index1 == index2) { index2 = this.getRandomIndex(notes) };
@@ -32,7 +32,7 @@ class Game {
     }
 
     calculateInterval(index1, index2) {
-        // Compare two notes and calculate the interval.
+        // Compare two notes' index and calculate the interval.
         return Math.abs(index1 - index2) + 1;
     }
 
