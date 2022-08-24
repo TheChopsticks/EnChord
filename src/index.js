@@ -24,7 +24,14 @@ export class Game {
         const interval = this.calculateInterval(index1, index2);
         const octave = this.getOctave();
 
-        this.correctAnswers.push(`{note1: ${note1}, note2: ${note2}, interval: ${interval}, octave: ${octave}}`);
+        const quizObject = {
+            note1: note1,
+            note2: note2,
+            interval: interval,
+            octave: octave
+        }
+
+        this.correctAnswers.push(quizObject);
     }
 
     getOctave() {
@@ -47,4 +54,3 @@ export class Game {
     }
 
 }
-
