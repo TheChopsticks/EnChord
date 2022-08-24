@@ -4,7 +4,7 @@ export class Game {
     constructor() {
         this.score = 0;
         this.level = 'Easy';
-        this.numOfQues = 10;
+        this.numberOfQuestions = 10;
         this.correctAnswers = [];
         this.userAnswers = [];
     }
@@ -46,7 +46,7 @@ export class Game {
 
     compareAnswers() {
         // compare user answers and correct ones then update score.
-        for (let i = 0; i < this.numOfQues; i++) {
+        for (let i = 0; i < this.numberOfQuestions; i++) {
             if (this.correctAnswers[i].interval === this.userAnswers[i]) {
                 this.score += 1;
             }
