@@ -6,7 +6,7 @@ export class Game {
         this.level = 'Easy';
         this.numOfQues = 10;
         this.correctAnswers = [];
-        this.userAnswer = [];
+        this.userAnswers = [];
     }
 
     getRandomIndex(notes) {
@@ -40,7 +40,7 @@ export class Game {
     compareAnswers() {
         // compare user answers and correct ones then update score.
         for (let i = 0; i < this.numOfQues; i++) {
-            if (this.correctAnswers[i].interval === this.userAnswer[i]) {
+            if (this.correctAnswers[i].interval === this.userAnswers[i]) {
                 this.score += 1;
             }
         }
