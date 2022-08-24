@@ -1,11 +1,11 @@
 
 const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-class Game {
+export class Game {
     constructor() {
         this.score = 0;
         this.level = 'Easy';
         this.numOfQues = 10;
-        this.correct = [];
+        this.correctAnswers = [];
         this.userAnswer = [];
     }
 
@@ -24,7 +24,7 @@ class Game {
         const interval = this.calculateInterval(index1, index2);
         const octave = this.getOctave();
 
-        this.correct.push(`{note1: ${note1}, note2: ${note2}, interval: ${interval}, octave: ${octave}}`);
+        this.correctAnswers.push(`{note1: ${note1}, note2: ${note2}, interval: ${interval}, octave: ${octave}}`);
     }
 
     getOctave() {
@@ -40,7 +40,7 @@ class Game {
     compareAnswers() {
         // compare user answers and correct ones then update score.
         for (let i = 0; i < this.numOfQues; i++) {
-            if (this.correct[i][interval] === this.userAnswer[i]) {
+            if (this.correctAnswers[i].interval === this.userAnswer[i]) {
                 this.score += 1;
             }
         }
