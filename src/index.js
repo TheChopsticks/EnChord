@@ -7,6 +7,7 @@ export class Game {
         this.numberOfQuestions = 10;
         this.correctAnswers = [];
         this.userAnswers = [];
+        this.questionsToReview = [];
     }
 
     getRandomIndex(notes) {
@@ -49,6 +50,9 @@ export class Game {
         for (let i = 0; i < this.numberOfQuestions; i++) {
             if (this.correctAnswers[i].interval === this.userAnswers[i]) {
                 this.score += 1;
+            } else if ((this.correctAnswers[i].interval !== this.userAnswers[i]) || this.userAnswers[i] === '') {
+                let wronglyAnsweredQuestionNumber = i + 1;
+                this.questionsToReview.push(wronglyAnsweredQuestionNumber);
             }
         }
     }
