@@ -53,4 +53,8 @@ export class Game {
         }
     }
 
+    getUserAnswers(userInput) {
+        this.userAnswers.push(userInput);
+    }
+
 }
