@@ -9,22 +9,22 @@ export class Game {
     this.questionsToReview = [];
   }
 
-  _getRandomIndex(notes) {
+  #getRandomIndex(notes) {
     return Math.floor(Math.random() * notes.length);
   }
 
   getNewQuiz() {
     // Create a new quiz and add the answer to the correct answer array.
-    let index1 = this.getRandomIndex(notes);
-    let index2 = this.getRandomIndex(notes);
+    let index1 = this.#getRandomIndex(notes);
+    let index2 = this.#getRandomIndex(notes);
     while (index1 == index2) {
-      index2 = this.getRandomIndex(notes);
+      index2 = this.#getRandomIndex(notes);
     }
 
     const note1 = notes[index1];
     const note2 = notes[index2];
-    const interval = this.calculateInterval(index1, index2);
-    const octave = this.getOctave();
+    const interval = this.#calculateInterval(index1, index2);
+    const octave = this.#getOctave();
 
     const quizObject = {
       note1,
@@ -36,17 +36,17 @@ export class Game {
     this.correctAnswers.push(quizObject);
   }
 
-  _getOctave() {
+  #getOctave() {
     // Add octave to chosen notes.
     return Math.floor(Math.random() * 7 + 1);
   }
 
-  _calculateInterval(index1, index2) {
+  #calculateInterval(index1, index2) {
     // Compare two notes' index and calculate the interval.
     return Math.abs(index1 - index2) + 1;
   }
 
-  _compareAnswers() {
+  #compareAnswers() {
     // compare user answers and correct ones then update score.
     for (let i = 0; i < this.numberOfQuestions; i++) {
       if (this.correctAnswers[i].interval === this.userAnswers[i]) {
