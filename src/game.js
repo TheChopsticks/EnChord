@@ -1,12 +1,19 @@
 const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 export class Game {
+  #score;
+  #level;
+  #numberOfQuestions;
+  #correctAnswers;
+  #userAnswers;
+  #questionsToReview;
+
   constructor() {
-    this.score = 0;
-    this.level = 'Easy';
-    this.numberOfQuestions = 10;
-    this.correctAnswers = [];
-    this.userAnswers = [];
-    this.questionsToReview = [];
+    this.#score = 0;
+    this.#level = 'Easy';
+    this.#numberOfQuestions = 10;
+    this.#correctAnswers = [];
+    this.#userAnswers = [];
+    this.#questionsToReview = [];
   }
 
   #getRandomIndex(notes) {
@@ -33,7 +40,7 @@ export class Game {
       octave,
     };
 
-    this.correctAnswers.push(quizObject);
+    this.#correctAnswers.push(quizObject);
   }
 
   #getOctave() {
@@ -48,20 +55,20 @@ export class Game {
 
   #compareAnswers() {
     // compare user answers and correct ones then update score.
-    for (let i = 0; i < this.numberOfQuestions; i++) {
-      if (this.correctAnswers[i].interval === this.userAnswers[i]) {
-        this.score += 1;
+    for (let i = 0; i < this.#numberOfQuestions; i++) {
+      if (this.#correctAnswers[i].interval === this.#userAnswers[i]) {
+        this.#score += 1;
       } else if (
-        this.correctAnswers[i].interval !== this.userAnswers[i] ||
-        this.userAnswers[i] === 0
+        this.#correctAnswers[i].interval !== this.#userAnswers[i] ||
+        this.#userAnswers[i] === 0
       ) {
         let wronglyAnsweredQuestionNumber = i + 1;
-        this.questionsToReview.push(wronglyAnsweredQuestionNumber);
+        this.#questionsToReview.push(wronglyAnsweredQuestionNumber);
       }
     }
   }
 
   saveUserAnswer(userInput) {
-    this.userAnswers.push(userInput);
+    this.#userAnswers.push(userInput);
   }
 }
