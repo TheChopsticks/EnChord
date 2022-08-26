@@ -25,6 +25,8 @@ export class View {
     const gameRuleParagraph = document.createElement('p');
     const buttonsGridContainer = document.createElement('div');
     const skipButton = document.createElement('button');
+    const scoreDisplay = document.createElement('div');
+    const currentScore = document.createElement('span');
 
     // Create answer buttons and append them to buttonsGridContainer
     const minor2nd = document.createElement('button');
@@ -53,12 +55,15 @@ export class View {
       major7th
     );
 
+    scoreDisplay.append(currentScore);
+
     this.appContainer.append(
       questionNumber,
       playButton,
       gameRuleParagraph,
       buttonsGridContainer,
-      skipButton
+      skipButton,
+      scoreDisplay
     );
 
     // Texts
@@ -76,6 +81,7 @@ export class View {
     minor7th.textContent = 'Minor 7th';
     major7th.textContent = 'Major 7th';
     skipButton.textContent = 'Skip';
+    scoreDisplay.textContent = 'Score: ';
   }
 
   // updateScore()
