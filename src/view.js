@@ -1,6 +1,7 @@
 export class View {
   constructor(musicApp) {
     this.appContainer = musicApp;
+    this.playTonesButtonClickCount = 0;
   }
 
   renderStartPage() {
@@ -21,7 +22,7 @@ export class View {
   renderQuestionPage() {
     // Create elements
     const currentQuestionNumber = document.createElement('div');
-    const notesPlayButton = document.createElement('button');
+    const playTonesButton = document.createElement('button');
     const gameRuleParagraph = document.createElement('p');
     const buttonsGridContainer = document.createElement('div');
     const skipButton = document.createElement('button');
@@ -59,7 +60,7 @@ export class View {
 
     this.appContainer.append(
       currentQuestionNumber,
-      notesPlayButton,
+      playTonesButton,
       gameRuleParagraph,
       buttonsGridContainer,
       skipButton,
@@ -68,6 +69,7 @@ export class View {
 
     // Texts
     currentQuestionNumber.textContent = 'Question: ';
+    playTonesButton.textContent = 'Play tones';
     gameRuleParagraph.textContent = 'Guess the interval between the 2 tones.';
     minor2nd.textContent = 'Minor 2nd';
     major2nd.textContent = 'Major 2nd';
@@ -82,10 +84,20 @@ export class View {
     major7th.textContent = 'Major 7th';
     skipButton.textContent = 'Skip';
     currentScoreDisplayPanel.textContent = 'Score: ';
+
+    playTonesButton.addEventListener(
+      'click',
+      this.increasePlayTonesButtonClickCount
+    );
   }
 
   updateCurrentScore() {
     this.currentScore.textContent = Number(this.currentScore.textContent) + 1;
+  }
+
+  increasePlayTonesButtonClickCount() {
+    this.playTonesButtonClickCount += 1;
+    this.playTonesButton.textContent = 'Replay tones';
   }
 
   // renderResults() {
