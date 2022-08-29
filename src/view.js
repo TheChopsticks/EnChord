@@ -84,9 +84,9 @@ export class View {
     currentScoreDisplayPanel.textContent = 'Score: ';
   }
 
-  // updateScore() {
-  //   this.currentScore.textContent += 1;
-  // }
+  updateCurrentScore() {
+    this.currentScore.textContent = Number(this.currentScore.textContent) + 1;
+  }
 
   // renderResults() {
   //   const finalScoreDisplay = document.createElement('');
