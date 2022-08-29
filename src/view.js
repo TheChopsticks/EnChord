@@ -7,25 +7,25 @@ export class View {
     // Create elements
     const gameTitle = document.createElement('h1');
     const gameRuleParagraph = document.createElement('p');
-    const startButton = document.createElement('button');
+    const gameStartButton = document.createElement('button');
 
     // Append Elements to the main app container.
-    this.appContainer.append(gameTitle, gameRuleParagraph, startButton);
+    this.appContainer.append(gameTitle, gameRuleParagraph, gameStartButton);
 
     // Texts
     gameTitle.textContent = 'Cool name for music app';
     gameRuleParagraph.textContent = 'Guess the interval between the 2 tones.';
-    startButton.textContent = 'Start';
+    gameStartButton.textContent = 'Start';
   }
 
   renderQuestionPage() {
     // Create elements
-    const questionNumber = document.createElement('div');
-    const playButton = document.createElement('button');
+    const currentQuestionNumber = document.createElement('div');
+    const notesPlayButton = document.createElement('button');
     const gameRuleParagraph = document.createElement('p');
     const buttonsGridContainer = document.createElement('div');
     const skipButton = document.createElement('button');
-    const scoreDisplay = document.createElement('div');
+    const currentScoreDisplayPanel = document.createElement('div');
     const currentScore = document.createElement('span');
 
     // Create answer buttons and append them to buttonsGridContainer
@@ -55,19 +55,19 @@ export class View {
       major7th
     );
 
-    scoreDisplay.append(currentScore);
+    currentScoreDisplayPanel.append(currentScore);
 
     this.appContainer.append(
-      questionNumber,
-      playButton,
+      currentQuestionNumber,
+      notesPlayButton,
       gameRuleParagraph,
       buttonsGridContainer,
       skipButton,
-      scoreDisplay
+      currentScoreDisplayPanel
     );
 
     // Texts
-    questionNumber.textContent = 'Question: ';
+    currentQuestionNumber.textContent = 'Question: ';
     gameRuleParagraph.textContent = 'Guess the interval between the 2 tones.';
     minor2nd.textContent = 'Minor 2nd';
     major2nd.textContent = 'Major 2nd';
@@ -81,10 +81,14 @@ export class View {
     minor7th.textContent = 'Minor 7th';
     major7th.textContent = 'Major 7th';
     skipButton.textContent = 'Skip';
-    scoreDisplay.textContent = 'Score: ';
+    currentScoreDisplayPanel.textContent = 'Score: ';
   }
 
-  // updateScore()
+  // updateScore() {
+  //   this.currentScore.textContent += 1;
+  // }
 
-  // renderResults()
+  // renderResults() {
+  //   const finalScoreDisplay = document.createElement('');
+  // }
 }
