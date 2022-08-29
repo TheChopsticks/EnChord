@@ -25,6 +25,7 @@ export class View {
     const playTonesButton = document.createElement('button');
     const gameRuleParagraph = document.createElement('p');
     const buttonsGridContainer = document.createElement('div');
+    const nextQuestionButton = document.createElement('button');
     const skipButton = document.createElement('button');
     const currentScoreDisplayPanel = document.createElement('div');
     const currentScore = document.createElement('span');
@@ -64,6 +65,7 @@ export class View {
       gameRuleParagraph,
       buttonsGridContainer,
       skipButton,
+      nextQuestionButton,
       currentScoreDisplayPanel
     );
 
@@ -83,12 +85,15 @@ export class View {
     minor7th.textContent = 'Minor 7th';
     major7th.textContent = 'Major 7th';
     skipButton.textContent = 'Skip';
+    nextQuestionButton.textContent = 'Move to next';
     currentScoreDisplayPanel.textContent = 'Score: ';
 
     playTonesButton.addEventListener(
       'click',
       this.increasePlayTonesButtonClickCount
     );
+
+    nextQuestionButton.addEventListener('click', this.saveUserAnswer);
   }
 
   updateCurrentScore() {
@@ -99,6 +104,21 @@ export class View {
     this.playTonesButtonClickCount += 1;
     this.playTonesButton.textContent = 'Replay tones';
   }
+
+  // -------------------------------------------------------
+
+  resetPlayTonesButtonClickCountForNewQuestion() {
+    this.playTonesButtonClickCount = 0;
+  }
+
+  saveUserAnswer() {
+    this.loadNextQuestion();
+  }
+
+  loadNextQuestion() {
+    this.resetPlayTonesButtonClickCountForNewQuestion();
+  }
+  // -------------------------------------------------------
 
   // renderResults() {
   //   const finalScoreDisplay = document.createElement('');
