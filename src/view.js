@@ -6,6 +6,8 @@ export class View {
   }
 
   renderStartPage() {
+    this.resetPreviousGameData();
+
     // Create elements
     const gameTitle = document.createElement('h1');
     const gameRuleParagraph = document.createElement('p');
@@ -112,10 +114,6 @@ export class View {
 
   // -------------------------------------------------------
 
-  resetPlayTonesButtonClickCountForNewQuestion() {
-    this.playTonesButtonClickCount = 0;
-  }
-
   saveUserAnswer() {
     // this.updateCurrentScore()
     this.loadNextQuestion();
@@ -123,6 +121,10 @@ export class View {
 
   loadNextQuestion() {
     this.resetPlayTonesButtonClickCountForNewQuestion();
+  }
+
+  resetPlayTonesButtonClickCountForNewQuestion() {
+    this.playTonesButtonClickCount = 0;
   }
   // -------------------------------------------------------
 
@@ -138,9 +140,8 @@ export class View {
     // playGameAgainButton.addEventListener('click', this.renderStartPage);
   }
 
-  // resetGameData() {
-  //   this.userScore = 0;
-  //   this.playTonesButtonClickCount = 0;
-  // }
-  //  To be called in renderStartPage?
+  resetPreviousGameData() {
+    this.userScore = 0;
+    this.playTonesButtonClickCount = 0;
+  }
 }
