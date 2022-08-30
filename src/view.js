@@ -1,7 +1,7 @@
 export class View {
   constructor(musicApp) {
     this.appContainer = musicApp;
-    this.playTonesButtonClickCount = 0;
+    this.playTonesButtonClickCounter = 0;
     this.userScoreCounter = 0;
     this.questionNumberCounter = 1;
   }
@@ -97,11 +97,11 @@ export class View {
       this.increasePlayTonesButtonClickCount
     );
 
-    skipQuestionButton.addEventListener('click', this.saveUserAnswer);
+    skipQuestionButton.addEventListener('click', this.checkUserAnswer);
 
     submitAndMoveToNextQuestionButton.addEventListener(
       'click',
-      this.saveUserAnswer
+      this.checkUserAnswer
     );
   }
 
@@ -114,16 +114,18 @@ export class View {
   }
 
   increasePlayTonesButtonClickCount() {
-    this.playTonesButtonClickCount += 1;
+    this.playTonesButtonClickCounter += 1;
     this.playTonesButton.textContent = 'Replay tones';
   }
 
   // -------------------------------------------------------
 
-  saveUserAnswer() {
-    // If the user clicks 'Skip' button, pass the user answer as undefined or an empty string.
+  checkUserAnswer() {
+    // If the user clicks 'Skip' button,
+    //       => pass the user answer as undefined or an empty string.
 
-    // If the user answer is not undefined or an empty string => this.updateCurrentUserScoreCounter()
+    // If the user answer is not undefined or an empty string but correct,
+    //       => this.updateCurrentUserScoreCounter()
     this.updateQuestionNumberCounter();
     this.loadNextQuestion();
   }
@@ -133,7 +135,7 @@ export class View {
   }
 
   resetPlayTonesButtonClickCountForNewQuestion() {
-    this.playTonesButtonClickCount = 0;
+    this.playTonesButtonClickCounter = 0;
   }
   // -------------------------------------------------------
 
@@ -151,7 +153,8 @@ export class View {
 
   resetPreviousGameData() {
     this.userScoreCounter = 0;
-    this.playTonesButtonClickCount = 0;
+    this.playTonesButtonClickCounter = 0;
     this.questionNumberCounter = 1;
   }
 }
+``;
