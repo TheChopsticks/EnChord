@@ -24,14 +24,14 @@ export class View {
 
   renderQuestionPage() {
     const currentQuestionNumberDisplay = document.createElement('div');
-    const currentQuestionNumber = document.createElement('span');
+    const currentQuestionNumberSpan = document.createElement('span');
     const playTonesButton = document.createElement('button');
     const gameRuleParagraph = document.createElement('p');
     const buttonsGridContainer = document.createElement('div');
     const submitAndMoveToNextQuestionButton = document.createElement('button');
     const skipQuestionButton = document.createElement('button');
     const currentScoreDisplay = document.createElement('div');
-    const currentScore = document.createElement('span');
+    const currentScoreSpan = document.createElement('span');
 
     const minor2nd = document.createElement('button');
     const major2nd = document.createElement('button');
@@ -59,8 +59,8 @@ export class View {
       major7th
     );
 
-    currentQuestionNumberDisplay.append(currentQuestionNumber);
-    currentScoreDisplay.append(currentScore);
+    currentQuestionNumberDisplay.append(currentQuestionNumberSpan);
+    currentScoreDisplay.append(currentScoreSpan);
 
     this.appContainer.append(
       currentQuestionNumberDisplay,
@@ -73,7 +73,7 @@ export class View {
     );
 
     currentQuestionNumberDisplay.textContent = 'Question: ';
-    currentQuestionNumber.textContent = this.questionNumber;
+    currentQuestionNumberSpan.textContent = this.questionNumber;
     playTonesButton.textContent = 'Play tones';
     gameRuleParagraph.textContent = 'Guess the interval between the 2 tones.';
     minor2nd.textContent = 'Minor 2nd';
@@ -90,7 +90,7 @@ export class View {
     skipQuestionButton.textContent = 'Skip';
     submitAndMoveToNextQuestionButton.textContent = 'Move to next';
     currentScoreDisplay.textContent = 'Score: ';
-    currentScore.textContent = this.userScore;
+    currentScoreSpan.textContent = this.userScore;
 
     playTonesButton.addEventListener(
       'click',
