@@ -2,6 +2,7 @@ export class View {
   constructor(musicApp) {
     this.appContainer = musicApp;
     this.playTonesButtonClickCount = 0;
+    this.userScore = 0;
   }
 
   renderStartPage() {
@@ -21,7 +22,8 @@ export class View {
 
   renderQuestionPage() {
     // Create elements
-    const currentQuestionNumber = document.createElement('div');
+    const currentQuestionNumberDisplay = document.createElement('div');
+    const currentQuestionNumber = document.createElement('span');
     const playTonesButton = document.createElement('button');
     const gameRuleParagraph = document.createElement('p');
     const buttonsGridContainer = document.createElement('div');
@@ -57,10 +59,11 @@ export class View {
       major7th
     );
 
+    currentQuestionNumberDisplay.append(currentQuestionNumber);
     currentScoreDisplayPanel.append(currentScore);
 
     this.appContainer.append(
-      currentQuestionNumber,
+      currentQuestionNumberDisplay,
       playTonesButton,
       gameRuleParagraph,
       buttonsGridContainer,
@@ -70,7 +73,7 @@ export class View {
     );
 
     // Texts
-    currentQuestionNumber.textContent = 'Question: ';
+    currentQuestionNumberDisplay.textContent = 'Question: ';
     playTonesButton.textContent = 'Play tones';
     gameRuleParagraph.textContent = 'Guess the interval between the 2 tones.';
     minor2nd.textContent = 'Minor 2nd';
@@ -97,7 +100,9 @@ export class View {
   }
 
   updateCurrentScore() {
-    this.currentScore.textContent = Number(this.currentScore.textContent) + 1;
+    // If the answer is correct,
+    this.userScore += 1;
+    this.currentScore.textContent = this.userScore;
   }
 
   increasePlayTonesButtonClickCount() {
@@ -112,6 +117,7 @@ export class View {
   }
 
   saveUserAnswer() {
+    // this.updateCurrentScore()
     this.loadNextQuestion();
   }
 
@@ -120,7 +126,21 @@ export class View {
   }
   // -------------------------------------------------------
 
-  // renderResults() {
-  //   const finalScoreDisplay = document.createElement('');
+  renderResults() {
+    const finalScoreDisplay = document.createElement('div');
+    const finalUserScore = document.createElement('span');
+    const playGameAgainButton = document.createElement('button');
+
+    finalScoreDisplay.append(finalUserScore);
+
+    this.appContainer.append(finalScoreDisplay, playGameAgainButton);
+
+    // playGameAgainButton.addEventListener('click', this.renderStartPage);
+  }
+
+  // resetGameData() {
+  //   this.userScore = 0;
+  //   this.playTonesButtonClickCount = 0;
   // }
+  //  To be called in renderStartPage?
 }
