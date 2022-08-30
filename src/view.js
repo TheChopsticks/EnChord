@@ -9,15 +9,12 @@ export class View {
   renderStartPage() {
     this.resetPreviousGameData();
 
-    // Create elements
     const gameTitle = document.createElement('h1');
     const gameRuleParagraph = document.createElement('p');
     const gameStartButton = document.createElement('button');
 
-    // Append Elements to the main app container.
     this.appContainer.append(gameTitle, gameRuleParagraph, gameStartButton);
 
-    // Texts
     gameTitle.textContent = 'Cool name for music app';
     gameRuleParagraph.textContent = 'Guess the interval between the 2 tones.';
     gameStartButton.textContent = 'Start';
@@ -26,7 +23,6 @@ export class View {
   }
 
   renderQuestionPage() {
-    // Create elements
     const currentQuestionNumberDisplay = document.createElement('div');
     const currentQuestionNumber = document.createElement('span');
     const playTonesButton = document.createElement('button');
@@ -37,7 +33,6 @@ export class View {
     const currentScoreDisplay = document.createElement('div');
     const currentScore = document.createElement('span');
 
-    // Create answer buttons and append them to buttonsGridContainer
     const minor2nd = document.createElement('button');
     const major2nd = document.createElement('button');
     const minor3rd = document.createElement('button');
@@ -77,7 +72,6 @@ export class View {
       currentScoreDisplay
     );
 
-    // Texts
     currentQuestionNumberDisplay.textContent = 'Question: ';
     currentQuestionNumber.textContent = this.questionNumber;
     playTonesButton.textContent = 'Play tones';
@@ -116,7 +110,6 @@ export class View {
   }
 
   updateCurrentUserScore() {
-    // If the answer is correct,
     this.userScore += 1;
   }
 
@@ -153,7 +146,7 @@ export class View {
 
     this.appContainer.append(finalUserScoreDisplay, playGameAgainButton);
 
-    // playGameAgainButton.addEventListener('click', this.renderStartPage);
+    playGameAgainButton.addEventListener('click', this.renderStartPage);
   }
 
   resetPreviousGameData() {
