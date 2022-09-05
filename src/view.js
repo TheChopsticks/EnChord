@@ -16,28 +16,51 @@ export class View {
     this.resetPreviousGameData();
 
     const gameTitle = document.createElement('h1');
+    gameTitle.textContent = 'Cool name for music app';
+
     const gameRuleParagraph = document.createElement('p');
-    const gameStartButton = document.createElement('button');
+    gameRuleParagraph.textContent = 'Guess the interval between the 2 tones.';
+
+    const gameStartButton = this.#createButton('Start');
 
     this.appContainer.append(gameTitle, gameRuleParagraph, gameStartButton);
-
-    gameTitle.textContent = 'Cool name for music app';
-    gameRuleParagraph.textContent = 'Guess the interval between the 2 tones.';
-    gameStartButton.textContent = 'Start';
-
     gameStartButton.addEventListener('click', this.renderQuestionPage);
   }
 
   renderQuestionPage() {
     const currentQuestionNumberDisplay = document.createElement('div');
+    currentQuestionNumberDisplay.textContent = 'Question: ';
+
     const currentQuestionNumberSpan = document.createElement('span');
-    const playTonesButton = document.createElement('button');
+    currentQuestionNumberSpan.textContent = this.questionNumberCounter;
+    currentQuestionNumberDisplay.append(currentQuestionNumberSpan);
+
+    const playTonesButton = this.#createButton('Play tones');
+
     const gameRuleParagraph = document.createElement('p');
+    gameRuleParagraph.textContent = 'Guess the interval between the 2 tones.';
+
     const buttonsGridContainer = document.createElement('div');
-    const submitAndMoveToNextQuestionButton = document.createElement('button');
-    const skipQuestionButton = document.createElement('button');
+
+    const submitAndMoveToNextQuestionButton =
+      this.#createButton('Move to next');
+    const skipQuestionButton = this.#createButton('Skip');
+
     const currentScoreDisplay = document.createElement('div');
+    currentScoreDisplay.textContent = 'Score: ';
     const currentScoreSpan = document.createElement('span');
+    currentScoreSpan.textContent = this.userScoreCounter;
+    currentScoreDisplay.append(currentScoreSpan);
+
+    this.appContainer.append(
+      currentQuestionNumberDisplay,
+      playTonesButton,
+      gameRuleParagraph,
+      buttonsGridContainer,
+      skipQuestionButton,
+      submitAndMoveToNextQuestionButton,
+      currentScoreDisplay
+    );
 
     const minor2nd = this.#createButton('Minor 2nd');
     const major2nd = this.#createButton('Major 2nd');
@@ -64,29 +87,6 @@ export class View {
       minor7th,
       major7th
     );
-
-    currentQuestionNumberDisplay.append(currentQuestionNumberSpan);
-    currentScoreDisplay.append(currentScoreSpan);
-
-    this.appContainer.append(
-      currentQuestionNumberDisplay,
-      playTonesButton,
-      gameRuleParagraph,
-      buttonsGridContainer,
-      skipQuestionButton,
-      submitAndMoveToNextQuestionButton,
-      currentScoreDisplay
-    );
-
-    currentQuestionNumberDisplay.textContent = 'Question: ';
-    currentQuestionNumberSpan.textContent = this.questionNumberCounter;
-    playTonesButton.textContent = 'Play tones';
-    gameRuleParagraph.textContent = 'Guess the interval between the 2 tones.';
-
-    skipQuestionButton.textContent = 'Skip';
-    submitAndMoveToNextQuestionButton.textContent = 'Move to next';
-    currentScoreDisplay.textContent = 'Score: ';
-    currentScoreSpan.textContent = this.userScoreCounter;
 
     playTonesButton.addEventListener(
       'click',
@@ -138,9 +138,9 @@ export class View {
   renderResults() {
     const finalUserScoreDisplay = document.createElement('div');
     const finalUserScore = document.createElement('span');
-    const playGameAgainButton = document.createElement('button');
-
     finalUserScoreDisplay.append(finalUserScore);
+
+    const playGameAgainButton = this.#createButton('Play again!');
 
     this.appContainer.append(finalUserScoreDisplay, playGameAgainButton);
 
