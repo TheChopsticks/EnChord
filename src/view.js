@@ -1,7 +1,7 @@
 export class View {
   constructor(musicApp) {
     this.appContainer = musicApp;
-    // this.isPlayTonesButtonClicked = false;
+    this.isPlayTonesButtonClicked = false;
   }
 
   #createButton(buttonText) {
@@ -88,10 +88,11 @@ export class View {
       major7th
     );
 
-    playTonesButton.addEventListener(
-      'click'
-      // this.changePlayTonesButtonText
-    );
+    playTonesButton.addEventListener('click', () => {
+      // playTonesButton clicked event
+      this.isPlayTonesButtonClicked = true;
+      this.#changePlayTonesButtonText();
+    });
 
     skipQuestionButton.addEventListener(
       'click'
@@ -108,10 +109,11 @@ export class View {
   // !this.isPlayTonesButtonClicked;
   // }
 
-  // #changePlayTonesButtonText() {
-  // if(isPlayTonesButtonClicked)
-  // this.playTonesButton.textContent = 'Replay tones';
-  // }
+  #changePlayTonesButtonText() {
+    if (this.isPlayTonesButtonClicked) {
+      this.playTonesButton.textContent = 'Replay tones';
+    }
+  }
 
   renderResults() {
     const finalUserScoreDisplay = this.#createElement('div');
