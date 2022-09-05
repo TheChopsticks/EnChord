@@ -6,6 +6,11 @@ export class View {
     this.questionNumberCounter = 1;
   }
 
+  #createButton(buttonText) {
+    const button = document.createElement('button');
+    button.textContent = buttonText;
+    return button;
+  }
   renderStartPage() {
     this.resetPreviousGameData();
 
