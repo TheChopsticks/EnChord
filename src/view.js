@@ -45,7 +45,7 @@ export class View {
     const minor7th = document.createElement('button');
     const major7th = document.createElement('button');
 
-    buttonsGridContainer.appned(
+    buttonsGridContainer.append(
       minor2nd,
       major2nd,
       minor3rd,
@@ -157,4 +157,3 @@ export class View {
     this.questionNumberCounter = 1;
   }
 }
-``;
