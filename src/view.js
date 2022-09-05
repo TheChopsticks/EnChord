@@ -11,6 +11,7 @@ export class View {
     button.textContent = buttonText;
     return button;
   }
+
   renderStartPage() {
     this.resetPreviousGameData();
 
@@ -38,17 +39,17 @@ export class View {
     const currentScoreDisplay = document.createElement('div');
     const currentScoreSpan = document.createElement('span');
 
-    const minor2nd = document.createElement('button');
-    const major2nd = document.createElement('button');
-    const minor3rd = document.createElement('button');
-    const major3rd = document.createElement('button');
-    const perfect4th = document.createElement('button');
-    const tritone = document.createElement('button');
-    const perfect5th = document.createElement('button');
-    const minor6th = document.createElement('button');
-    const major6th = document.createElement('button');
-    const minor7th = document.createElement('button');
-    const major7th = document.createElement('button');
+    const minor2nd = this.#createButton('Minor 2nd');
+    const major2nd = this.#createButton('Major 2nd');
+    const minor3rd = this.#createButton('Minor 3rd');
+    const major3rd = this.#createButton('Major 3rd');
+    const perfect4th = this.#createButton('Perfect 4th');
+    const tritone = this.#createButton('Tritone');
+    const perfect5th = this.#createButton('Perfect 5th');
+    const minor6th = this.#createButton('Minor 6th');
+    const major6th = this.#createButton('Major 6th');
+    const minor7th = this.#createButton('Minor 7thd');
+    const major7th = this.#createButton('Major 7th');
 
     buttonsGridContainer.append(
       minor2nd,
@@ -81,17 +82,7 @@ export class View {
     currentQuestionNumberSpan.textContent = this.questionNumberCounter;
     playTonesButton.textContent = 'Play tones';
     gameRuleParagraph.textContent = 'Guess the interval between the 2 tones.';
-    minor2nd.textContent = 'Minor 2nd';
-    major2nd.textContent = 'Major 2nd';
-    minor3rd.textContent = 'Minor 3rd';
-    major3rd.textContent = 'Major 3rd';
-    perfect4th.textContent = 'Perfect 4th';
-    tritone.textContent = 'Tritone';
-    perfect5th.textContent = 'Perfect 5th';
-    minor6th.textContent = 'Minor 6th';
-    major6th.textContent = 'Major 6th';
-    minor7th.textContent = 'Minor 7th';
-    major7th.textContent = 'Major 7th';
+
     skipQuestionButton.textContent = 'Skip';
     submitAndMoveToNextQuestionButton.textContent = 'Move to next';
     currentScoreDisplay.textContent = 'Score: ';
