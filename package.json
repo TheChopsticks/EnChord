@@ -8,7 +8,8 @@
     "start": "esbuild src/index.js --outdir=dist --bundle --watch",
     "prettier": "npx prettier --write ./src",
     "lint": "npx eslint ./src",
-    "format": "npm run prettier && npm run lint"
+    "format": "npm run prettier && npm run lint",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -30,5 +31,8 @@
     "husky": "^8.0.1",
     "lint-staged": "^13.0.3",
     "prettier": "2.7.1"
+  },
+  "lint-staged": {
+    "./src/*.js": "npm run format"
   }
 }
