@@ -1,10 +1,7 @@
 export class View {
   constructor(musicApp) {
     this.appContainer = musicApp;
-    this.playTonesButtonClickCounter = 0;
     // this.isPlayTonesButtonClicked = false;
-    this.userScoreCounter = 0;
-    this.questionNumberCounter = 1;
   }
 
   #createButton(buttonText) {
@@ -18,8 +15,6 @@ export class View {
   }
 
   renderStartPage() {
-    this.resetPreviousGameData();
-
     const gameTitle = this.#createElement('h1', 'Cool name for music app');
     const gameRuleParagraph = this.#createElement(
       'p',
@@ -28,7 +23,10 @@ export class View {
     const gameStartButton = this.#createButton('Start');
 
     this.appContainer.append(gameTitle, gameRuleParagraph, gameStartButton);
-    gameStartButton.addEventListener('click', this.renderQuestionPage);
+    gameStartButton.addEventListener(
+      'click'
+      // gameStartButton clicked event
+    );
   }
 
   renderQuestionPage() {
@@ -36,10 +34,7 @@ export class View {
       'div',
       'Question: '
     );
-    const currentQuestionNumberSpan = this.#createElement(
-      'span',
-      this.questionNumberCounter
-    );
+    const currentQuestionNumberSpan = this.#createElement('span');
     currentQuestionNumberDisplay.append(currentQuestionNumberSpan);
     const playTonesButton = this.#createButton('Play tones');
     const gameRuleParagraph = this.#createElement(
@@ -54,7 +49,7 @@ export class View {
     const skipQuestionButton = this.#createButton('Skip');
 
     const currentScoreDisplay = this.#createElement('div', 'Score: ');
-    const currentScoreSpan = this.#createElement('span', this.userScoreCounter);
+    const currentScoreSpan = this.#createElement('span');
     currentScoreDisplay.append(currentScoreSpan);
 
     this.appContainer.append(
@@ -94,56 +89,29 @@ export class View {
     );
 
     playTonesButton.addEventListener(
-      'click',
+      'click'
       // this.changePlayTonesButtonText
-      this.increasePlayTonesButtonClickCount
     );
 
-    skipQuestionButton.addEventListener('click', this.checkUserAnswer);
+    skipQuestionButton.addEventListener(
+      'click'
+      // answerPublished event
+    );
 
     submitAndMoveToNextQuestionButton.addEventListener(
-      'click',
-      this.checkUserAnswer
+      'click'
+      // answerPublished event
     );
   }
 
-  // #changePlayTonesButtonText() {
-  // this.playTonesButton.textContent = 'Replay tones';
+  // updateQuestionPage(questionNumber, currentUserScore) {
+  // !this.isPlayTonesButtonClicked;
   // }
 
-  updateQuestionNumberCounter() {
-    this.questionNumberCounter += 1;
-  }
-
-  updateCurrentUserScoreCounter() {
-    this.userScoreCounter += 1;
-  }
-
-  increasePlayTonesButtonClickCount() {
-    this.playTonesButtonClickCounter += 1;
-    this.playTonesButton.textContent = 'Replay tones';
-  }
-
-  // -------------------------------------------------------
-
-  checkUserAnswer() {
-    // If the user clicks 'Skip' button,
-    //       => pass the user answer as undefined or an empty string.
-
-    // If the user answer is not undefined or an empty string but correct,
-    //       => this.updateCurrentUserScoreCounter()
-    this.updateQuestionNumberCounter();
-    this.loadNextQuestion();
-  }
-
-  loadNextQuestion() {
-    this.resetPlayTonesButtonClickCountForNewQuestion();
-  }
-
-  resetPlayTonesButtonClickCountForNewQuestion() {
-    this.playTonesButtonClickCounter = 0;
-  }
-  // -------------------------------------------------------
+  // #changePlayTonesButtonText() {
+  // if(isPlayTonesButtonClicked)
+  // this.playTonesButton.textContent = 'Replay tones';
+  // }
 
   renderResults() {
     const finalUserScoreDisplay = this.#createElement('div');
@@ -154,12 +122,9 @@ export class View {
 
     this.appContainer.append(finalUserScoreDisplay, playGameAgainButton);
 
-    playGameAgainButton.addEventListener('click', this.renderStartPage);
-  }
-
-  resetPreviousGameData() {
-    this.userScoreCounter = 0;
-    this.playTonesButtonClickCounter = 0;
-    this.questionNumberCounter = 1;
+    playGameAgainButton.addEventListener(
+      'click'
+      // playGameAgainButton clicked event.
+    );
   }
 }
