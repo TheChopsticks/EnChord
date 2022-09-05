@@ -2,11 +2,16 @@
 
 The chopsticks are the best female developer duo.
 
-Yay
+## Scripts
+
+### Development
+
+1. Run `npm install` to install project dependencies.
+2. Run `npm start` to start the development server. The project files will be served at port `8080`, and can be viewed by navigating to `localhost:8080` in your web browser.
+
+A pre-commit hook will automatically lint and format staged `.js` files in the `/src` directory.
+
+### Production
 
 To build the project, run:
 `npm run build`
-
-To start the project for local development, run:
-`npm run start`
-This would start esbuild in watch mode and continuously build changes.
