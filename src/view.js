@@ -12,6 +12,12 @@ export class View {
     return button;
   }
 
+  #createElement(elementType, elementText = '') {
+    const element = document.createElement(elementType);
+    element.textContent = elementText;
+    return element;
+  }
+
   renderStartPage() {
     this.resetPreviousGameData();
 
