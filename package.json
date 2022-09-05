@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "description": "The chopsticks are the best female developer duo.",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "build": "esbuild src/index.js --outdir=dist --bundle --minify",
-    "start": "esbuild src/index.js --outdir=dist --bundle --watch",
+    "build": "node esbuild.config.js --minify",
+    "start": "node esbuild.config.js -w",
     "prettier": "npx prettier --write ./src",
     "lint": "npx eslint ./src",
     "format": "npm run prettier && npm run lint",
@@ -26,6 +27,7 @@
     "tone": "^14.7.77"
   },
   "devDependencies": {
+    "esbuild-serve": "^1.0.1",
     "eslint": "^8.21.0",
     "eslint-config-prettier": "^8.5.0",
     "husky": "^8.0.1",
