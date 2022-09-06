@@ -35,7 +35,9 @@ export class View {
       'Question: '
     );
     const currentQuestionNumberSpan = this.#createElement('span');
+    currentQuestionNumberSpan.id = 'questionNumber';
     currentQuestionNumberDisplay.append(currentQuestionNumberSpan);
+
     const playTonesButton = this.#createButton('Play tones');
     const gameRuleParagraph = this.#createElement(
       'p',
@@ -50,6 +52,7 @@ export class View {
 
     const currentScoreDisplay = this.#createElement('div', 'Score: ');
     const currentScoreSpan = this.#createElement('span');
+    currentScoreSpan.id = 'currentScore';
     currentScoreDisplay.append(currentScoreSpan);
 
     this.appContainer.append(
@@ -105,9 +108,13 @@ export class View {
     );
   }
 
-  // updateQuestionPage(questionNumber, currentUserScore) {
-  // !this.isPlayTonesButtonClicked;
-  // }
+  updateQuestionPage(currentQuestionNumber, currentUserScore) {
+    this.isPlayTonesButtonClicked = false;
+    const currentQuestionNumberSpan = document.getElementById('questionNumber');
+    currentQuestionNumberSpan.textContent = currentQuestionNumber;
+    const currentScoreSpan = document.getElementById('currentScore');
+    currentScoreSpan.textContent = currentUserScore;
+  }
 
   #changePlayTonesButtonText() {
     if (this.isPlayTonesButtonClicked) {
