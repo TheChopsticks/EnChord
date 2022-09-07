@@ -108,7 +108,11 @@ export class View {
     );
   }
 
-  updateQuestionPage(currentQuestionNumber, currentUserScore) {
+  updateQuestionPage(
+    // receivedGameData,
+    currentQuestionNumber,
+    currentUserScore
+  ) {
     this.isPlayTonesButtonClicked = false;
     const currentQuestionNumberSpan = document.getElementById('questionNumber');
     currentQuestionNumberSpan.textContent = currentQuestionNumber;
