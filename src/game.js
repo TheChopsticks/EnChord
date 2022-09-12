@@ -6,14 +6,18 @@ export class Game {
   #correctAnswers;
   #userAnswers;
   #questionsToReview;
+  #publishNewQuestionEvent;
+  #publishGameEndEvent;
 
-  constructor() {
+  constructor(publishNewQuestionEvent, publishGameEndEvent) {
     this.#score = 0;
     this.#level = 'Easy';
     this.#numberOfQuestions = 10;
     this.#correctAnswers = [];
     this.#userAnswers = [];
     this.#questionsToReview = [];
+    this.#publishNewQuestionEvent = publishNewQuestionEvent;
+    this.#publishGameEndEvent = publishGameEndEvent;
   }
 
   #getRandomIndex(notes) {
@@ -21,6 +25,10 @@ export class Game {
   }
 
   getNewQuiz() {
+    if (this.#userAnswers.length === this.#numberOfQuestions) {
+      this.#publishGameEndEvent(this.#score);
+    }
+
     // Create a new quiz and add the answer to the correct answer array.
     let index1 = this.#getRandomIndex(notes);
     let index2 = this.#getRandomIndex(notes);
@@ -41,6 +49,13 @@ export class Game {
     };
 
     this.#correctAnswers.push(quizObject);
+    this.#publishNewQuestionEvent({
+      note1: quizObject.note1,
+      note2: quizObject.note2,
+      octave: quizObject.octave,
+      score: this.#score,
+      questionNumber: this.#userAnswers.length + 1,
+    });
   }
 
   #getOctave() {
