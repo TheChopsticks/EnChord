@@ -1,6 +1,6 @@
-import { View } from './view';
+import { Controller } from './controller';
 
 const musicApp = document.getElementById('musicApp');
 
-// eslint-disable-next-line no-unused-vars
-const view = new View(musicApp);
+const controller = new Controller(musicApp);
+controller.init();

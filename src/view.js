@@ -1,7 +1,12 @@
 export class View {
-  constructor(musicApp) {
+  #publishGameStartEvent;
+  #publishNewAnswerEvent;
+
+  constructor(musicApp, publishGameStartEvent, publishNewAnswerEvent) {
     this.appContainer = musicApp;
     this.isPlayTonesButtonClicked = false;
+    this.#publishGameStartEvent = publishGameStartEvent;
+    this.#publishNewAnswerEvent = publishNewAnswerEvent;
   }
 
   #createButton(buttonText) {
@@ -23,10 +28,7 @@ export class View {
     const gameStartButton = this.#createButton('Start');
 
     this.appContainer.append(gameTitle, gameRuleParagraph, gameStartButton);
-    gameStartButton.addEventListener(
-      'click'
-      // gameStartButton clicked event
-    );
+    gameStartButton.addEventListener('click', this.#publishGameStartEvent);
   }
 
   renderQuestionPage() {
@@ -97,27 +99,21 @@ export class View {
       this.#changePlayTonesButtonText();
     });
 
-    skipQuestionButton.addEventListener(
-      'click'
-      // answerPublished event
-    );
+    skipQuestionButton.addEventListener('click', () => {
+      this.#publishNewAnswerEvent(undefined);
+    });
 
-    submitAndMoveToNextQuestionButton.addEventListener(
-      'click'
-      // answerPublished event
-    );
+    submitAndMoveToNextQuestionButton.addEventListener('click', (data) => {
+      this.#publishNewAnswerEvent(data);
+    });
   }
 
-  updateQuestionPage(
-    // receivedGameData,
-    currentQuestionNumber,
-    currentUserScore
-  ) {
+  updateQuestionPage(questionData) {
     this.isPlayTonesButtonClicked = false;
     const currentQuestionNumberSpan = document.getElementById('questionNumber');
-    currentQuestionNumberSpan.textContent = currentQuestionNumber;
+    currentQuestionNumberSpan.textContent = questionData.questionNumber;
     const currentScoreSpan = document.getElementById('currentScore');
-    currentScoreSpan.textContent = currentUserScore;
+    currentScoreSpan.textContent = questionData.score;
   }
 
   #changePlayTonesButtonText() {
@@ -126,9 +122,10 @@ export class View {
     }
   }
 
-  renderResults() {
+  renderResults(userScore) {
     const finalUserScoreDisplay = this.#createElement('div');
     const finalUserScore = this.#createElement('span');
+    finalUserScore.textContent = userScore;
     finalUserScoreDisplay.append(finalUserScore);
 
     const playGameAgainButton = this.#createButton('Play again!');
