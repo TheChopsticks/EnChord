@@ -1,3 +1,19 @@
+import { toSentenceCase } from './utils';
+
+const intervals = {
+  'minor 2nd': 1,
+  'major 2nd': 2,
+  'minor 3rd': 3,
+  'major 3rd': 4,
+  'perfect 4th': 5,
+  tritone: 6,
+  'perfect 5th': 7,
+  'minor 6th': 8,
+  'major 6th': 9,
+  'minor 7th': 10,
+  'major 7th': 11,
+};
+
 export class View {
   #publishGameStartEvent;
   #publishNewAnswerEvent;
@@ -10,7 +26,7 @@ export class View {
   }
 
   #createButton(buttonText) {
-    return this.#createElement('button', buttonText);
+    return this.#createElement('button', toSentenceCase(buttonText));
   }
 
   #createElement(elementType, elementText = '') {
@@ -67,31 +83,14 @@ export class View {
       currentScoreDisplay
     );
 
-    const minor2nd = this.#createButton('Minor 2nd');
-    const major2nd = this.#createButton('Major 2nd');
-    const minor3rd = this.#createButton('Minor 3rd');
-    const major3rd = this.#createButton('Major 3rd');
-    const perfect4th = this.#createButton('Perfect 4th');
-    const tritone = this.#createButton('Tritone');
-    const perfect5th = this.#createButton('Perfect 5th');
-    const minor6th = this.#createButton('Minor 6th');
-    const major6th = this.#createButton('Major 6th');
-    const minor7th = this.#createButton('Minor 7thd');
-    const major7th = this.#createButton('Major 7th');
-
-    buttonsGridContainer.append(
-      minor2nd,
-      major2nd,
-      minor3rd,
-      major3rd,
-      perfect4th,
-      tritone,
-      perfect5th,
-      minor6th,
-      major6th,
-      minor7th,
-      major7th
+    const intervalButtons = Object.entries(intervals).map(
+      // eslint-disable-next-line no-unused-vars
+      ([intervalName, semitones]) => {
+        return this.#createButton(intervalName);
+      }
     );
+
+    buttonsGridContainer.append(...intervalButtons);
 
     playTonesButton.addEventListener('click', () => {
       // playTonesButton clicked event
