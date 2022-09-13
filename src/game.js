@@ -72,7 +72,7 @@ export class Game {
     const lastCorrectAnswerIndex = this.#correctAnswers.length - 1;
     const lastUserAnswerIndex = this.#userAnswers.length - 1;
     if (
-      this.#correctAnswers[lastCorrectAnswerIndex] ===
+      this.#correctAnswers[lastCorrectAnswerIndex].interval ===
       this.#userAnswers[lastUserAnswerIndex]
     ) {
       this.#score++;
