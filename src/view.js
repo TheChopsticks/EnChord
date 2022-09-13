@@ -67,6 +67,7 @@ export class View {
 
     const submitAndMoveToNextQuestionButton =
       this.#createButton('Move to next');
+    submitAndMoveToNextQuestionButton.disabled = true;
     const skipQuestionButton = this.#createButton('Skip');
 
     const currentScoreDisplay = this.#createElement('div', 'Score: ');
@@ -89,6 +90,7 @@ export class View {
         const button = this.#createButton(intervalName);
         button.addEventListener('click', () => {
           this.#currentSelectedIntervalSemitones = semitones;
+          submitAndMoveToNextQuestionButton.disabled = false;
         });
         return button;
       }
@@ -108,6 +110,7 @@ export class View {
 
     submitAndMoveToNextQuestionButton.addEventListener('click', () => {
       this.#publishNewAnswerEvent(this.#currentSelectedIntervalSemitones);
+      submitAndMoveToNextQuestionButton.disabled = true;
     });
   }
 
