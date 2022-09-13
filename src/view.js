@@ -113,6 +113,7 @@ export class View {
 
   updateQuestionPage(questionData) {
     this.isPlayTonesButtonClicked = false;
+    this.#currentSelectedIntervalSemitones = undefined;
     const currentQuestionNumberSpan = document.getElementById('questionNumber');
     currentQuestionNumberSpan.textContent = questionData.questionNumber;
     const currentScoreSpan = document.getElementById('currentScore');
