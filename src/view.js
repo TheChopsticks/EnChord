@@ -106,8 +106,8 @@ export class View {
       this.#publishNewAnswerEvent(undefined);
     });
 
-    submitAndMoveToNextQuestionButton.addEventListener('click', (data) => {
-      this.#publishNewAnswerEvent(data);
+    submitAndMoveToNextQuestionButton.addEventListener('click', () => {
+      this.#publishNewAnswerEvent(this.#currentSelectedIntervalSemitones);
     });
   }
 
