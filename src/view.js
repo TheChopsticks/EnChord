@@ -17,6 +17,7 @@ const intervals = {
 export class View {
   #publishGameStartEvent;
   #publishNewAnswerEvent;
+  #currentSelectedIntervalSemitones;
 
   constructor(musicApp, publishGameStartEvent, publishNewAnswerEvent) {
     this.appContainer = musicApp;
@@ -84,9 +85,12 @@ export class View {
     );
 
     const intervalButtons = Object.entries(intervals).map(
-      // eslint-disable-next-line no-unused-vars
       ([intervalName, semitones]) => {
-        return this.#createButton(intervalName);
+        const button = this.#createButton(intervalName);
+        button.addEventListener('click', () => {
+          this.#currentSelectedIntervalSemitones = semitones;
+        });
+        return button;
       }
     );
 
