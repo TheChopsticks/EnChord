@@ -20,6 +20,8 @@ export class View {
   }
 
   renderStartPage() {
+    if (this.appContainer.childNodes) this.appContainer.replaceChildren();
+
     const gameTitle = this.#createElement('h1', 'Cool name for music app');
     const gameRuleParagraph = this.#createElement(
       'p',
@@ -32,6 +34,8 @@ export class View {
   }
 
   renderQuestionPage() {
+    this.appContainer.replaceChildren();
+
     const currentQuestionNumberDisplay = this.#createElement(
       'div',
       'Question: '
@@ -123,6 +127,8 @@ export class View {
   }
 
   renderResults(userScore) {
+    this.appContainer.replaceChildren();
+
     const finalUserScoreDisplay = this.#createElement('div');
     const finalUserScore = this.#createElement('span');
     finalUserScore.textContent = userScore;
