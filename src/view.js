@@ -20,7 +20,7 @@ export class View {
   }
 
   renderStartPage() {
-    if (this.appContainer.childNodes) this.appContainer.replaceChildren();
+    if (this.appContainer.hasChildNodes()) this.appContainer.replaceChildren();
 
     const gameTitle = this.#createElement('h1', 'Cool name for music app');
     const gameRuleParagraph = this.#createElement(
