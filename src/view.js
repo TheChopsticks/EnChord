@@ -15,6 +15,17 @@ const intervals = {
   'major 7th': 11,
 };
 
+const classNames = {
+  flow: 'flow',
+  flowSpaceLarge: 'flow-space--large',
+  centerVertically: 'center-vertically',
+  primaryButton: 'button--primary',
+  secondaryButton: 'button--secondary',
+  tertiaryButton: 'button--tertiary',
+  header: 'header',
+  buttonsContainer: 'buttons-container',
+};
+
 export class View {
   #publishGameStartEvent;
   #publishNewAnswerEvent;
@@ -60,20 +71,30 @@ export class View {
   }
 
   renderStartPage() {
+    this.appContainer.classList.add(
+      classNames.centerVertically,
+      classNames.flow
+    );
     if (this.appContainer.hasChildNodes()) this.appContainer.replaceChildren();
 
     const gameTitle = this.#createElement('h1', 'Cool name for music app');
-    const gameDescription = this.#createElement(
-      'h3',
-      'Guess the interval between the 2 tones.'
+    const gameDescription = this.#createElement('h3');
+
+    gameDescription.append(
+      'Guess the interval ',
+      this.#createElement('wbr'),
+      'between the two tones.'
     );
     const gameStartButton = this.#createButton('Start');
+    gameStartButton.classList.add(classNames.primaryButton);
 
     this.appContainer.append(gameTitle, gameDescription, gameStartButton);
     gameStartButton.addEventListener('click', this.#publishGameStartEvent);
   }
 
   renderQuestionPage() {
+    this.appContainer.classList.remove(classNames.centerVertically);
+    this.appContainer.classList.add(classNames.flowSpaceLarge);
     this.appContainer.replaceChildren();
 
     // Header: current question number, score
@@ -91,11 +112,13 @@ export class View {
     currentScoreDisplay.append(currentScoreSpan);
 
     const headerContainer = this.#createElement('div');
+    headerContainer.classList.add(classNames.header);
     headerContainer.append(currentQuestionNumberDisplay, currentScoreDisplay);
 
     // Question: button to (re)play tones, game instruction
     const playTonesButton = this.#createButton('Play tones');
     playTonesButton.id = 'playTonesBtn';
+    playTonesButton.classList.add(classNames.primaryButton);
     const gameRuleParagraph = this.#createElement(
       'p',
       'Guess the interval between the 2 tones.'
@@ -105,6 +128,7 @@ export class View {
     const intervalButtons = Object.entries(intervals).map(
       ([intervalName, semitones]) => {
         const button = this.#createButton(intervalName);
+        button.classList.add(classNames.secondaryButton);
         button.addEventListener('click', () => {
           this.#currentSelectedIntervalSemitones = semitones;
           submitAndMoveToNextQuestionButton.disabled = false;
@@ -114,20 +138,22 @@ export class View {
     );
 
     const submitAndMoveToNextQuestionButton = this.#createButton('Guess');
+    submitAndMoveToNextQuestionButton.classList.add(classNames.primaryButton);
     submitAndMoveToNextQuestionButton.disabled = true;
+    const skipQuestionButton = this.#createButton('Skip');
+    skipQuestionButton.classList.add(classNames.tertiaryButton);
     const buttonsGridContainer = this.#createElement('div');
+    buttonsGridContainer.classList.add(classNames.buttonsContainer);
     buttonsGridContainer.append(...intervalButtons);
     buttonsGridContainer.append(submitAndMoveToNextQuestionButton);
-
-    const skipQuestionButton = this.#createButton('Skip');
+    buttonsGridContainer.append(skipQuestionButton);
 
     // Update app
     this.appContainer.append(
       headerContainer,
       playTonesButton,
       gameRuleParagraph,
-      buttonsGridContainer,
-      skipQuestionButton
+      buttonsGridContainer
     );
 
     // Event listeners
@@ -170,6 +196,8 @@ export class View {
   }
 
   renderResults(userScore) {
+    this.appContainer.classList.add(classNames.centerVertically);
+    this.appContainer.classList.remove(classNames.flowSpaceLarge);
     this.appContainer.replaceChildren();
 
     const finalUserScoreDisplay = this.#createElement('h3', 'Score: ');
@@ -178,6 +206,7 @@ export class View {
     finalUserScoreDisplay.append(finalUserScore);
 
     const playGameAgainButton = this.#createButton('Play again!');
+    playGameAgainButton.classList.add(classNames.primaryButton);
 
     this.appContainer.append(finalUserScoreDisplay, playGameAgainButton);
 
