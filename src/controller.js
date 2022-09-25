@@ -43,6 +43,10 @@ export class Controller {
   }
 
   init() {
+    this.#model = new Game(
+      (data) => this.#eventsManager.publish('newQuestion', data),
+      (data) => this.#eventsManager.publish('gameEnd', data)
+    );
     this.#view.renderStartPage();
   }
 }
