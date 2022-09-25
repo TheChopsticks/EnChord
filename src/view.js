@@ -9,6 +9,17 @@ export class View {
     this.isPlayTonesButtonClicked = false;
     this.#publishGameStartEvent = publishGameStartEvent;
     this.#publishNewAnswerEvent = publishNewAnswerEvent;
+    this.now = Tone.now();
+    this.sampler = new Tone.Sampler({
+      urls: {
+        C4: 'C4.mp3',
+        'D#4': 'Ds4.mp3',
+        'F#4': 'Fs4.mp3',
+        A4: 'A4.mp3',
+      },
+      release: 2,
+      baseUrl: 'https://tonejs.github.io/audio/salamander/',
+    }).toDestination();
   }
 
   #createButton(buttonText) {
@@ -108,22 +119,11 @@ export class View {
   updateQuestionPage(questionData) {
     this.isPlayTonesButtonClicked = false;
     const playTonesButton = document.getElementById('play-tone-btn');
-    const now = Tone.now();
-    const sampler = new Tone.Sampler({
-      urls: {
-        C4: 'C4.mp3',
-        'D#4': 'Ds4.mp3',
-        'F#4': 'Fs4.mp3',
-        A4: 'A4.mp3',
-      },
-      release: 2,
-      baseUrl: 'https://tonejs.github.io/audio/salamander/',
-    }).toDestination();
 
     playTonesButton.addEventListener('click', () => {
-      sampler.triggerAttackRelease(
+      this.sampler.triggerAttackRelease(
         [questionData.note1, questionData.note2],
-        now + 0.5
+        this.now + 0.5
       );
       this.isPlayTonesButtonClicked = true;
       this.#changePlayTonesButtonText(playTonesButton);
