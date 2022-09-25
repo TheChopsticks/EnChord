@@ -1,3 +1,5 @@
+import * as Tone from 'tone';
+
 export class View {
   #publishGameStartEvent;
   #publishNewAnswerEvent;
@@ -41,6 +43,7 @@ export class View {
     currentQuestionNumberDisplay.append(currentQuestionNumberSpan);
 
     const playTonesButton = this.#createButton('Play tones');
+    playTonesButton.id = 'play-tone-btn';
     const gameRuleParagraph = this.#createElement(
       'p',
       'Guess the interval between the 2 tones.'
@@ -93,12 +96,6 @@ export class View {
       major7th
     );
 
-    playTonesButton.addEventListener('click', () => {
-      // playTonesButton clicked event
-      this.isPlayTonesButtonClicked = true;
-      this.#changePlayTonesButtonText();
-    });
-
     skipQuestionButton.addEventListener('click', () => {
       this.#publishNewAnswerEvent(undefined);
     });
@@ -110,15 +107,40 @@ export class View {
 
   updateQuestionPage(questionData) {
     this.isPlayTonesButtonClicked = false;
+    const playTonesButton = document.getElementById('play-tone-btn');
+    const now = Tone.now();
+    const sampler = new Tone.Sampler({
+      urls: {
+        C4: 'C4.mp3',
+        'D#4': 'Ds4.mp3',
+        'F#4': 'Fs4.mp3',
+        A4: 'A4.mp3',
+      },
+      release: 2,
+      baseUrl: 'https://tonejs.github.io/audio/salamander/',
+    }).toDestination();
+
+    playTonesButton.addEventListener('click', () => {
+      sampler.triggerAttackRelease(
+        [
+          questionData.note1 + questionData.octave,
+          questionData.note2 + questionData.octave,
+        ],
+        now + 0.5
+      );
+      this.isPlayTonesButtonClicked = true;
+      this.#changePlayTonesButtonText(playTonesButton);
+    });
+
     const currentQuestionNumberSpan = document.getElementById('questionNumber');
     currentQuestionNumberSpan.textContent = questionData.questionNumber;
     const currentScoreSpan = document.getElementById('currentScore');
     currentScoreSpan.textContent = questionData.score;
   }
 
-  #changePlayTonesButtonText() {
+  #changePlayTonesButtonText(playTonesButton) {
     if (this.isPlayTonesButtonClicked) {
-      this.playTonesButton.textContent = 'Replay tones';
+      playTonesButton.textContent = 'Replay tones';
     }
   }
 
