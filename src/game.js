@@ -67,21 +67,18 @@ export class Game {
   }
 
   #compareAnswers() {
-    // compare user answers and correct ones then update score.
-    for (let i = 0; i < this.#numberOfQuestions; i++) {
-      if (this.#correctAnswers[i].interval === this.#userAnswers[i]) {
-        this.#score += 1;
-      } else if (
-        this.#correctAnswers[i].interval !== this.#userAnswers[i] ||
-        this.#userAnswers[i] === 0
-      ) {
-        let wronglyAnsweredQuestionNumber = i + 1;
-        this.#questionsToReview.push(wronglyAnsweredQuestionNumber);
-      }
+    const lastCorrectAnswerIndex = this.#correctAnswers.length - 1;
+    const lastUserAnswerIndex = this.#userAnswers.length - 1;
+    if (
+      this.#correctAnswers[lastCorrectAnswerIndex].interval ===
+      this.#userAnswers[lastUserAnswerIndex]
+    ) {
+      this.#score++;
     }
   }
 
   saveUserAnswer(userInput) {
     this.#userAnswers.push(userInput);
+    this.#compareAnswers();
   }
 }
