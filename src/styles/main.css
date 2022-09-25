@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&family=Roboto+Mono&display=swap');
+
+/* Resets */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+body {
+  min-height: 100vh;
+  line-height: 1.5;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+p {
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+/* Variables */
+:root {
+  /* Colors */
+  --color-primary: rgba(87, 231, 213, 1);
+  --color-primary-bright: rgba(163, 248, 237, 1);
+  --color-primary-dim: rgba(87, 231, 213, 0.58);
+  --color-primary-dimmer: rgba(113, 199, 217, 0.2);
+  --color-neutral-dark: rgba(31, 31, 35, 1);
+  --color-neutral-light: rgba(234, 234, 234, 1);
+
+  /* Fonts */
+  --font-primary: 'Roboto Mono', monospace;
+  --font-secondary: 'Roboto', sans-serif;
+
+  /* Sizing */
+  /* @link https://utopia.fyi/type/calculator?c=320,14,1.2,1440,16,1.414,5,2,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l */
+  --step--2: clamp(0.5rem, calc(0.64rem + -0.15vw), 0.61rem);
+  --step--1: clamp(0.71rem, calc(0.74rem + -0.03vw), 0.73rem);
+  --step-0: clamp(0.88rem, calc(0.84rem + 0.18vw), 1rem);
+  --step-1: clamp(1.05rem, calc(0.95rem + 0.52vw), 1.41rem);
+  --step-2: clamp(1.26rem, calc(1.05rem + 1.06vw), 2rem);
+  --step-3: clamp(1.51rem, calc(1.14rem + 1.88vw), 2.83rem);
+  --step-4: clamp(1.81rem, calc(1.19rem + 3.12vw), 4rem);
+  --step-5: clamp(2.18rem, calc(1.18rem + 4.96vw), 5.65rem);
+
+  --border-radius: var(--step--2);
+}
+
+/* Base styles */
+body {
+  background-color: var(--color-neutral-dark);
+  color: var(--color-neutral-light);
+  font-size: var(--step-1);
+  font-family: var(--font-primary);
+}
+
+h1 {
+  line-height: 1;
+  font-size: var(--step-4);
+  font-family: var(--font-secondary);
+}
+
+h2 {
+  font-size: var(--step-3);
+  font-weight: normal;
+}
+
+h3 {
+  font-size: var(--step-2);
+  font-weight: normal;
+}
+
+p {
+  font-family: var(--font-secondary);
+}
+
+button {
+  border-radius: var(--border-radius);
+  border: none;
+}

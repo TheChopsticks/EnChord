@@ -3,9 +3,9 @@ import esbuildServe from 'esbuild-serve';
 esbuildServe(
   {
     logLevel: 'info',
-    entryPoints: ['src/index.js'],
+    entryPoints: ['src/index.js', 'src/styles/main.css'],
     bundle: true,
-    outfile: 'dist/index.js',
+    outdir: 'dist',
   },
   {
     port: 8080,

@@ -61,13 +61,13 @@ export class View {
     if (this.appContainer.hasChildNodes()) this.appContainer.replaceChildren();
 
     const gameTitle = this.#createElement('h1', 'Cool name for music app');
-    const gameRuleParagraph = this.#createElement(
-      'p',
+    const gameDescription = this.#createElement(
+      'h3',
       'Guess the interval between the 2 tones.'
     );
     const gameStartButton = this.#createButton('Start');
 
-    this.appContainer.append(gameTitle, gameRuleParagraph, gameStartButton);
+    this.appContainer.append(gameTitle, gameDescription, gameStartButton);
     gameStartButton.addEventListener('click', this.#publishGameStartEvent);
   }
 
