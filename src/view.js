@@ -1,7 +1,24 @@
+import { toSentenceCase } from './utils';
+
+const intervals = {
+  'minor 2nd': 1,
+  'major 2nd': 2,
+  'minor 3rd': 3,
+  'major 3rd': 4,
+  'perfect 4th': 5,
+  tritone: 6,
+  'perfect 5th': 7,
+  'minor 6th': 8,
+  'major 6th': 9,
+  'minor 7th': 10,
+  'major 7th': 11,
+};
+
 export class View {
   #publishGameStartEvent;
   #publishNewAnswerEvent;
   #publishPlayGameAgainEvent;
+  #currentSelectedIntervalSemitones;
 
   constructor(
     musicApp,
@@ -17,7 +34,7 @@ export class View {
   }
 
   #createButton(buttonText) {
-    return this.#createElement('button', buttonText);
+    return this.#createElement('button', toSentenceCase(buttonText));
   }
 
   #createElement(elementType, elementText = '') {
@@ -27,6 +44,8 @@ export class View {
   }
 
   renderStartPage() {
+    if (this.appContainer.hasChildNodes()) this.appContainer.replaceChildren();
+
     const gameTitle = this.#createElement('h1', 'Cool name for music app');
     const gameRuleParagraph = this.#createElement(
       'p',
@@ -39,6 +58,8 @@ export class View {
   }
 
   renderQuestionPage() {
+    this.appContainer.replaceChildren();
+
     const currentQuestionNumberDisplay = this.#createElement(
       'div',
       'Question: '
@@ -57,6 +78,7 @@ export class View {
 
     const submitAndMoveToNextQuestionButton =
       this.#createButton('Move to next');
+    submitAndMoveToNextQuestionButton.disabled = true;
     const skipQuestionButton = this.#createButton('Skip');
 
     const currentScoreDisplay = this.#createElement('div', 'Score: ');
@@ -74,31 +96,18 @@ export class View {
       currentScoreDisplay
     );
 
-    const minor2nd = this.#createButton('Minor 2nd');
-    const major2nd = this.#createButton('Major 2nd');
-    const minor3rd = this.#createButton('Minor 3rd');
-    const major3rd = this.#createButton('Major 3rd');
-    const perfect4th = this.#createButton('Perfect 4th');
-    const tritone = this.#createButton('Tritone');
-    const perfect5th = this.#createButton('Perfect 5th');
-    const minor6th = this.#createButton('Minor 6th');
-    const major6th = this.#createButton('Major 6th');
-    const minor7th = this.#createButton('Minor 7thd');
-    const major7th = this.#createButton('Major 7th');
-
-    buttonsGridContainer.append(
-      minor2nd,
-      major2nd,
-      minor3rd,
-      major3rd,
-      perfect4th,
-      tritone,
-      perfect5th,
-      minor6th,
-      major6th,
-      minor7th,
-      major7th
+    const intervalButtons = Object.entries(intervals).map(
+      ([intervalName, semitones]) => {
+        const button = this.#createButton(intervalName);
+        button.addEventListener('click', () => {
+          this.#currentSelectedIntervalSemitones = semitones;
+          submitAndMoveToNextQuestionButton.disabled = false;
+        });
+        return button;
+      }
     );
+
+    buttonsGridContainer.append(...intervalButtons);
 
     playTonesButton.addEventListener('click', () => {
       // playTonesButton clicked event
@@ -110,13 +119,15 @@ export class View {
       this.#publishNewAnswerEvent(undefined);
     });
 
-    submitAndMoveToNextQuestionButton.addEventListener('click', (data) => {
-      this.#publishNewAnswerEvent(data);
+    submitAndMoveToNextQuestionButton.addEventListener('click', () => {
+      this.#publishNewAnswerEvent(this.#currentSelectedIntervalSemitones);
+      submitAndMoveToNextQuestionButton.disabled = true;
     });
   }
 
   updateQuestionPage(questionData) {
     this.isPlayTonesButtonClicked = false;
+    this.#currentSelectedIntervalSemitones = undefined;
     const currentQuestionNumberSpan = document.getElementById('questionNumber');
     currentQuestionNumberSpan.textContent = questionData.questionNumber;
     const currentScoreSpan = document.getElementById('currentScore');
@@ -130,6 +141,8 @@ export class View {
   }
 
   renderResults(userScore) {
+    this.appContainer.replaceChildren();
+
     const finalUserScoreDisplay = this.#createElement('div');
     const finalUserScore = this.#createElement('span');
     finalUserScore.textContent = userScore;
