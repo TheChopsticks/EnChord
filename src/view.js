@@ -122,10 +122,7 @@ export class View {
 
     playTonesButton.addEventListener('click', () => {
       sampler.triggerAttackRelease(
-        [
-          questionData.note1 + questionData.octave,
-          questionData.note2 + questionData.octave,
-        ],
+        [questionData.note1, questionData.note2],
         now + 0.5
       );
       this.isPlayTonesButtonClicked = true;
