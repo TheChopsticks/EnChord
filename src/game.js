@@ -30,29 +30,27 @@ export class Game {
     }
 
     // Create a new quiz and add the answer to the correct answer array.
+    const octave = this.#getOctave();
     let index1 = this.#getRandomIndex(notes);
     let index2 = this.#getRandomIndex(notes);
     while (index1 == index2) {
       index2 = this.#getRandomIndex(notes);
     }
 
-    const note1 = notes[index1];
-    const note2 = notes[index2];
+    const note1 = notes[index1] + octave;
+    const note2 = notes[index2] + octave;
     const interval = this.#calculateInterval(index1, index2);
-    const octave = this.#getOctave();
 
     const quizObject = {
       note1,
       note2,
       interval,
-      octave,
     };
 
     this.#correctAnswers.push(quizObject);
     this.#publishNewQuestionEvent({
       note1: quizObject.note1,
       note2: quizObject.note2,
-      octave: quizObject.octave,
       score: this.#score,
       questionNumber: this.#userAnswers.length + 1,
     });
