@@ -48,7 +48,9 @@ export class View {
   }
 
   #createButton(buttonText) {
-    return this.#createElement('button', toSentenceCase(buttonText));
+    const button = this.#createElement('button', toSentenceCase(buttonText));
+    button.type = 'button';
+    return button;
   }
 
   #createElement(elementType, elementText = '') {
@@ -74,14 +76,24 @@ export class View {
   renderQuestionPage() {
     this.appContainer.replaceChildren();
 
+    // Header: current question number, score
     const currentQuestionNumberDisplay = this.#createElement(
-      'div',
+      'h3',
       'Question: '
     );
     const currentQuestionNumberSpan = this.#createElement('span');
     currentQuestionNumberSpan.id = 'questionNumber';
     currentQuestionNumberDisplay.append(currentQuestionNumberSpan);
 
+    const currentScoreDisplay = this.#createElement('h3', 'Score: ');
+    const currentScoreSpan = this.#createElement('span');
+    currentScoreSpan.id = 'currentScore';
+    currentScoreDisplay.append(currentScoreSpan);
+
+    const headerContainer = this.#createElement('div');
+    headerContainer.append(currentQuestionNumberDisplay, currentScoreDisplay);
+
+    // Question: button to (re)play tones, game instruction
     const playTonesButton = this.#createButton('Play tones');
     playTonesButton.id = 'playTonesBtn';
     const gameRuleParagraph = this.#createElement(
@@ -89,28 +101,7 @@ export class View {
       'Guess the interval between the 2 tones.'
     );
 
-    const buttonsGridContainer = this.#createElement('div');
-
-    const submitAndMoveToNextQuestionButton =
-      this.#createButton('Move to next');
-    submitAndMoveToNextQuestionButton.disabled = true;
-    const skipQuestionButton = this.#createButton('Skip');
-
-    const currentScoreDisplay = this.#createElement('div', 'Score: ');
-    const currentScoreSpan = this.#createElement('span');
-    currentScoreSpan.id = 'currentScore';
-    currentScoreDisplay.append(currentScoreSpan);
-
-    this.appContainer.append(
-      currentQuestionNumberDisplay,
-      playTonesButton,
-      gameRuleParagraph,
-      buttonsGridContainer,
-      skipQuestionButton,
-      submitAndMoveToNextQuestionButton,
-      currentScoreDisplay
-    );
-
+    // Answer: interval buttons, guess button, skip button
     const intervalButtons = Object.entries(intervals).map(
       ([intervalName, semitones]) => {
         const button = this.#createButton(intervalName);
@@ -122,8 +113,24 @@ export class View {
       }
     );
 
+    const submitAndMoveToNextQuestionButton = this.#createButton('Guess');
+    submitAndMoveToNextQuestionButton.disabled = true;
+    const buttonsGridContainer = this.#createElement('div');
     buttonsGridContainer.append(...intervalButtons);
+    buttonsGridContainer.append(submitAndMoveToNextQuestionButton);
 
+    const skipQuestionButton = this.#createButton('Skip');
+
+    // Update app
+    this.appContainer.append(
+      headerContainer,
+      playTonesButton,
+      gameRuleParagraph,
+      buttonsGridContainer,
+      skipQuestionButton
+    );
+
+    // Event listeners
     playTonesButton.addEventListener('click', () => {
       const now = Tone.now();
       this.#sampler.triggerAttackRelease(this.#currentNote1, '8n', now);
@@ -165,7 +172,7 @@ export class View {
   renderResults(userScore) {
     this.appContainer.replaceChildren();
 
-    const finalUserScoreDisplay = this.#createElement('div');
+    const finalUserScoreDisplay = this.#createElement('h3', 'Score: ');
     const finalUserScore = this.#createElement('span');
     finalUserScore.textContent = userScore;
     finalUserScoreDisplay.append(finalUserScore);
