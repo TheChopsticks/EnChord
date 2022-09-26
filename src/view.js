@@ -19,6 +19,7 @@ export class View {
   #publishGameStartEvent;
   #publishNewAnswerEvent;
   #currentSelectedIntervalSemitones;
+  #sampler;
 
   constructor(musicApp, publishGameStartEvent, publishNewAnswerEvent) {
     this.appContainer = musicApp;
@@ -26,7 +27,7 @@ export class View {
     this.#publishGameStartEvent = publishGameStartEvent;
     this.#publishNewAnswerEvent = publishNewAnswerEvent;
     this.now = Tone.now();
-    this.sampler = new Tone.Sampler({
+    this.#sampler = new Tone.Sampler({
       urls: {
         C4: 'C4.mp3',
         'D#4': 'Ds4.mp3',
@@ -136,7 +137,7 @@ export class View {
     const playTonesButton = document.getElementById('play-tone-btn');
 
     playTonesButton.addEventListener('click', () => {
-      this.sampler.triggerAttackRelease(
+      this.#sampler.triggerAttackRelease(
         [questionData.note1, questionData.note2],
         this.now + 0.5
       );
