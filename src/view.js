@@ -154,7 +154,7 @@ export class View {
 
     playGameAgainButton.addEventListener(
       'click',
-      this.#publishPlayGameAgainEvent()
+      this.#publishPlayGameAgainEvent
     );
   }
 }
