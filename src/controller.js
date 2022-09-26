@@ -32,13 +32,7 @@ export class Controller {
       root,
       () => this.#eventsManager.publish('gameStart'),
       (data) => this.#eventsManager.publish('newAnswer', data),
-      () => {
-        this.init();
-      }
-    );
-    this.#model = new Game(
-      (data) => this.#eventsManager.publish('newQuestion', data),
-      (data) => this.#eventsManager.publish('gameEnd', data)
+      () => this.init()
     );
   }
 
