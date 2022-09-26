@@ -152,8 +152,9 @@ export class View {
 
     this.appContainer.append(finalUserScoreDisplay, playGameAgainButton);
 
-    playGameAgainButton.addEventListener('click', () => {
-      this.#publishPlayGameAgainEvent();
-    });
+    playGameAgainButton.addEventListener(
+      'click',
+      this.#publishPlayGameAgainEvent()
+    );
   }
 }
