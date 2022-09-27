@@ -17,13 +17,20 @@ const intervals = {
 export class View {
   #publishGameStartEvent;
   #publishNewAnswerEvent;
+  #publishPlayGameAgainEvent;
   #currentSelectedIntervalSemitones;
 
-  constructor(musicApp, publishGameStartEvent, publishNewAnswerEvent) {
+  constructor(
+    musicApp,
+    publishGameStartEvent,
+    publishNewAnswerEvent,
+    publishPlayGameAgainEvent
+  ) {
     this.appContainer = musicApp;
     this.isPlayTonesButtonClicked = false;
     this.#publishGameStartEvent = publishGameStartEvent;
     this.#publishNewAnswerEvent = publishNewAnswerEvent;
+    this.#publishPlayGameAgainEvent = publishPlayGameAgainEvent;
   }
 
   #createButton(buttonText) {
@@ -146,8 +153,8 @@ export class View {
     this.appContainer.append(finalUserScoreDisplay, playGameAgainButton);
 
     playGameAgainButton.addEventListener(
-      'click'
-      // playGameAgainButton clicked event.
+      'click',
+      this.#publishPlayGameAgainEvent
     );
   }
 }
