@@ -57,13 +57,14 @@ export class Game {
   }
 
   #getOctave() {
-    // Add octave to chosen notes.
-    return Math.floor(Math.random() * 7 + 1);
+    // Add octave to chosen notes, limiting to octaves 3 - 5 for normal human hearing range.
+    const octaves = [3, 4, 5];
+    return octaves[Math.floor(Math.random() * octaves.length)];
   }
 
   #calculateInterval(index1, index2) {
     // Compare two notes' index and calculate the interval.
-    return Math.abs(index1 - index2) + 1;
+    return Math.abs(index1 - index2);
   }
 
   #compareAnswers() {
