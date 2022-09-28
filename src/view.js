@@ -1,3 +1,4 @@
+import * as Tone from 'tone';
 import { toSentenceCase } from './utils';
 
 const intervals = {
@@ -19,6 +20,9 @@ export class View {
   #publishNewAnswerEvent;
   #publishPlayGameAgainEvent;
   #currentSelectedIntervalSemitones;
+  #sampler;
+  #currentNote1;
+  #currentNote2;
 
   constructor(
     musicApp,
@@ -31,6 +35,16 @@ export class View {
     this.#publishGameStartEvent = publishGameStartEvent;
     this.#publishNewAnswerEvent = publishNewAnswerEvent;
     this.#publishPlayGameAgainEvent = publishPlayGameAgainEvent;
+    this.#sampler = new Tone.Sampler({
+      urls: {
+        C4: 'C4.mp3',
+        'D#4': 'Ds4.mp3',
+        'F#4': 'Fs4.mp3',
+        A4: 'A4.mp3',
+      },
+      release: 2,
+      baseUrl: 'https://tonejs.github.io/audio/salamander/',
+    }).toDestination();
   }
 
   #createButton(buttonText) {
@@ -69,6 +83,7 @@ export class View {
     currentQuestionNumberDisplay.append(currentQuestionNumberSpan);
 
     const playTonesButton = this.#createButton('Play tones');
+    playTonesButton.id = 'playTonesBtn';
     const gameRuleParagraph = this.#createElement(
       'p',
       'Guess the interval between the 2 tones.'
@@ -110,9 +125,11 @@ export class View {
     buttonsGridContainer.append(...intervalButtons);
 
     playTonesButton.addEventListener('click', () => {
-      // playTonesButton clicked event
+      const now = Tone.now();
+      this.#sampler.triggerAttackRelease(this.#currentNote1, '8n', now);
+      this.#sampler.triggerAttackRelease(this.#currentNote2, '8n', now + 1);
       this.isPlayTonesButtonClicked = true;
-      this.#changePlayTonesButtonText();
+      this.#changePlayTonesButtonText(playTonesButton);
     });
 
     skipQuestionButton.addEventListener('click', () => {
@@ -126,17 +143,22 @@ export class View {
   }
 
   updateQuestionPage(questionData) {
+    const playTonesButton = document.getElementById('playTonesBtn');
+    playTonesButton.textContent = 'Play tones';
     this.isPlayTonesButtonClicked = false;
+    this.#currentNote1 = questionData.note1;
+    this.#currentNote2 = questionData.note2;
     this.#currentSelectedIntervalSemitones = undefined;
+
     const currentQuestionNumberSpan = document.getElementById('questionNumber');
     currentQuestionNumberSpan.textContent = questionData.questionNumber;
     const currentScoreSpan = document.getElementById('currentScore');
     currentScoreSpan.textContent = questionData.score;
   }
 
-  #changePlayTonesButtonText() {
+  #changePlayTonesButtonText(playTonesButton) {
     if (this.isPlayTonesButtonClicked) {
-      this.playTonesButton.textContent = 'Replay tones';
+      playTonesButton.textContent = 'Replay tones';
     }
   }
 
