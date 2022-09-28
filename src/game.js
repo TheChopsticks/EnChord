@@ -27,6 +27,7 @@ export class Game {
   getNewQuiz() {
     if (this.#userAnswers.length === this.#numberOfQuestions) {
       this.#publishGameEndEvent(this.#score);
+      return;
     }
 
     // Create a new quiz and add the answer to the correct answer array.
