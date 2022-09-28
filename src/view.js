@@ -18,16 +18,23 @@ const intervals = {
 export class View {
   #publishGameStartEvent;
   #publishNewAnswerEvent;
+  #publishPlayGameAgainEvent;
   #currentSelectedIntervalSemitones;
   #sampler;
   #currentNote1;
   #currentNote2;
 
-  constructor(musicApp, publishGameStartEvent, publishNewAnswerEvent) {
+  constructor(
+    musicApp,
+    publishGameStartEvent,
+    publishNewAnswerEvent,
+    publishPlayGameAgainEvent
+  ) {
     this.appContainer = musicApp;
     this.isPlayTonesButtonClicked = false;
     this.#publishGameStartEvent = publishGameStartEvent;
     this.#publishNewAnswerEvent = publishNewAnswerEvent;
+    this.#publishPlayGameAgainEvent = publishPlayGameAgainEvent;
     this.#sampler = new Tone.Sampler({
       urls: {
         C4: 'C4.mp3',
@@ -168,8 +175,8 @@ export class View {
     this.appContainer.append(finalUserScoreDisplay, playGameAgainButton);
 
     playGameAgainButton.addEventListener(
-      'click'
-      // playGameAgainButton clicked event.
+      'click',
+      this.#publishPlayGameAgainEvent
     );
   }
 }

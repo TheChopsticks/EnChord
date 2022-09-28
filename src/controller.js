@@ -31,15 +31,16 @@ export class Controller {
     this.#view = new View(
       root,
       () => this.#eventsManager.publish('gameStart'),
-      (data) => this.#eventsManager.publish('newAnswer', data)
-    );
-    this.#model = new Game(
-      (data) => this.#eventsManager.publish('newQuestion', data),
-      (data) => this.#eventsManager.publish('gameEnd', data)
+      (data) => this.#eventsManager.publish('newAnswer', data),
+      () => this.init()
     );
   }
 
   init() {
+    this.#model = new Game(
+      (data) => this.#eventsManager.publish('newQuestion', data),
+      (data) => this.#eventsManager.publish('gameEnd', data)
+    );
     this.#view.renderStartPage();
   }
 }
