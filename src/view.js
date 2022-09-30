@@ -22,6 +22,7 @@ const classNames = {
   primaryButton: 'button--primary',
   secondaryButton: 'button--secondary',
   tertiaryButton: 'button--tertiary',
+  secondaryButtonActive: 'button--secondary-active',
   header: 'header',
   buttonsContainer: 'buttons-container',
 };
@@ -129,8 +130,11 @@ export class View {
       ([intervalName, semitones]) => {
         const button = this.#createButton(intervalName);
         button.classList.add(classNames.secondaryButton);
+        button.dataset.semitones = semitones;
         button.addEventListener('click', () => {
+          this.#resetSelectedInterval();
           this.#currentSelectedIntervalSemitones = semitones;
+          this.#toggleIntervalButtonState(semitones);
           submitAndMoveToNextQuestionButton.disabled = false;
         });
         return button;
@@ -167,10 +171,13 @@ export class View {
 
     skipQuestionButton.addEventListener('click', () => {
       this.#publishNewAnswerEvent(undefined);
+      this.#resetSelectedInterval();
+      submitAndMoveToNextQuestionButton.disabled = true;
     });
 
     submitAndMoveToNextQuestionButton.addEventListener('click', () => {
       this.#publishNewAnswerEvent(this.#currentSelectedIntervalSemitones);
+      this.#resetSelectedInterval();
       submitAndMoveToNextQuestionButton.disabled = true;
     });
   }
@@ -181,7 +188,6 @@ export class View {
     this.isPlayTonesButtonClicked = false;
     this.#currentNote1 = questionData.note1;
     this.#currentNote2 = questionData.note2;
-    this.#currentSelectedIntervalSemitones = undefined;
 
     const currentQuestionNumberSpan = document.getElementById('questionNumber');
     currentQuestionNumberSpan.textContent = questionData.questionNumber;
@@ -193,6 +199,21 @@ export class View {
     if (this.isPlayTonesButtonClicked) {
       playTonesButton.textContent = 'Replay tones';
     }
+  }
+
+  #toggleIntervalButtonState(semitonesDataValue) {
+    const button = document.querySelector(
+      `[data-semitones="${semitonesDataValue}"]`
+    );
+    if (button) {
+      button.classList.toggle(classNames.secondaryButtonActive);
+    }
+  }
+
+  #resetSelectedInterval() {
+    const previousSelectedSemitones = this.#currentSelectedIntervalSemitones;
+    this.#toggleIntervalButtonState(previousSelectedSemitones);
+    this.#currentSelectedIntervalSemitones = undefined;
   }
 
   renderResults(userScore) {

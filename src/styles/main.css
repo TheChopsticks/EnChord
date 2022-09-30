@@ -181,7 +181,8 @@ button {
   color: var(--color-primary);
 }
 
-.button--secondary:hover {
+.button--secondary:hover,
+.button--secondary-active {
   background-color: var(--color-primary-dimmer);
   border-color: var(--color-primary-bright);
   color: var(--color-primary-bright);
