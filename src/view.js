@@ -231,14 +231,14 @@ export class View {
     this.#currentSelectedIntervalSemitones = undefined;
   }
 
-  renderResults(userScore) {
+  renderResults(data) {
     this.appContainer.classList.add(classNames.centerVertically);
     this.appContainer.classList.remove(classNames.flowSpaceLarge);
     this.appContainer.replaceChildren();
 
     const finalUserScoreDisplay = this.#createElement('h3', 'Score: ');
     const finalUserScore = this.#createElement('span');
-    finalUserScore.textContent = userScore;
+    finalUserScore.textContent = `${data.userScore} / ${data.totalScore}`;
     finalUserScoreDisplay.append(finalUserScore);
 
     const playGameAgainButton = this.#createButton('Play again!');

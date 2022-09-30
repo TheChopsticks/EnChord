@@ -26,7 +26,10 @@ export class Game {
 
   getNewQuiz() {
     if (this.#userAnswers.length === this.#numberOfQuestions) {
-      this.#publishGameEndEvent(this.#score);
+      this.#publishGameEndEvent({
+        userScore: this.#score,
+        totalScore: this.#numberOfQuestions,
+      });
       return;
     }
 
