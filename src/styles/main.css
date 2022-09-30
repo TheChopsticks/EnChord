@@ -79,11 +79,24 @@ p {
   --border-radius: var(--step--2);
   --border-width: 2px;
 
-  --transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+  --timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
+  --transition: all 0.5s var(var(--timing-function));
 
   --height-device-min: 480px;
   --width-device-min: 280px;
   --width-device-max: 1440px;
+}
+
+@keyframes jump {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }
 
 /* Base styles */
@@ -164,6 +177,17 @@ button {
   --flow-space: var(--space-3xl);
 }
 
+.animate--jump {
+  animation-name: jump;
+  animation-duration: 0.5s;
+  animation-timing-function: var(--timing-function);
+  animation-fill-mode: forwards;
+}
+
+.highlight {
+  color: var(--color-primary);
+}
+
 /* Components */
 .button--primary {
   background-color: var(--color-primary);
@@ -224,4 +248,8 @@ button {
   flex-wrap: wrap;
   justify-content: center;
   gap: var(--space-xs);
+}
+
+#currentScore {
+  display: inline-block;
 }

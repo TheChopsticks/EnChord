@@ -19,6 +19,8 @@ const classNames = {
   flow: 'flow',
   flowSpaceLarge: 'flow-space--large',
   centerVertically: 'center-vertically',
+  animateJump: 'animate--jump',
+  highlight: 'highlight',
   primaryButton: 'button--primary',
   secondaryButton: 'button--secondary',
   tertiaryButton: 'button--tertiary',
@@ -207,7 +209,18 @@ export class View {
     const currentQuestionNumberSpan = document.getElementById('questionNumber');
     currentQuestionNumberSpan.textContent = questionData.questionNumber;
     const currentScoreSpan = document.getElementById('currentScore');
+    const oldScore = Number(currentScoreSpan.textContent);
     currentScoreSpan.textContent = questionData.score;
+    if (questionData.score && oldScore !== questionData.score) {
+      currentScoreSpan.classList.add(
+        classNames.animateJump,
+        classNames.highlight
+      );
+      setTimeout(
+        () => currentScoreSpan.classList.remove(classNames.animateJump),
+        100
+      );
+    }
   }
 
   #changePlayTonesButtonText(playTonesButton) {
