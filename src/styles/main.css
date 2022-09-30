@@ -148,6 +148,7 @@ button {
 
 :disabled {
   opacity: var(--opacity-dim);
+  cursor: auto;
 }
 
 /* Utilities */
@@ -170,7 +171,7 @@ button {
   color: var(--color-neutral-dark);
 }
 
-.button--primary:hover {
+.button--primary:hover:enabled {
   background-color: var(--color-primary-bright);
   border-color: var(--color-primary-bright);
 }
@@ -181,7 +182,7 @@ button {
   color: var(--color-primary);
 }
 
-.button--secondary:hover,
+.button--secondary:hover:enabled,
 .button--secondary-active {
   background-color: var(--color-primary-dimmer);
   border-color: var(--color-primary-bright);
@@ -196,7 +197,7 @@ button {
   padding: none;
 }
 
-.button--tertiary:hover {
+.button--tertiary:hover:enabled {
   background-color: none;
   border-color: none;
   color: var(--color-primary-bright);

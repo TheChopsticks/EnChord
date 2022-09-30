@@ -33,6 +33,7 @@ export class View {
   #publishPlayGameAgainEvent;
   #currentSelectedIntervalSemitones;
   #sampler;
+  #toneLength;
   #currentNote1;
   #currentNote2;
 
@@ -57,6 +58,7 @@ export class View {
       release: 2,
       baseUrl: 'https://tonejs.github.io/audio/salamander/',
     }).toDestination();
+    this.#toneLength = '8n';
   }
 
   #createButton(buttonText) {
@@ -163,9 +165,22 @@ export class View {
     // Event listeners
     playTonesButton.addEventListener('click', () => {
       const now = Tone.now();
-      this.#sampler.triggerAttackRelease(this.#currentNote1, '8n', now);
-      this.#sampler.triggerAttackRelease(this.#currentNote2, '8n', now + 1);
+      this.#sampler.triggerAttackRelease(
+        this.#currentNote1,
+        this.#toneLength,
+        now
+      );
+      this.#sampler.triggerAttackRelease(
+        this.#currentNote2,
+        this.#toneLength,
+        now + 1
+      );
       this.isPlayTonesButtonClicked = true;
+      playTonesButton.disabled = true;
+      setTimeout(
+        () => (playTonesButton.disabled = false),
+        Tone.Time(this.#toneLength).toMilliseconds() * 2 + 1000
+      );
       this.#changePlayTonesButtonText(playTonesButton);
     });
 
