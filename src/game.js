@@ -34,7 +34,8 @@ export class Game {
     const octave = this.#getOctave();
     let index1 = this.#getRandomIndex(notes);
     let index2 = this.#getRandomIndex(notes);
-    while (index1 == index2) {
+
+    while (index1 == index2 || index1 > index2) {
       index2 = this.#getRandomIndex(notes);
     }
 
