@@ -36,10 +36,13 @@ export class Game {
     let index1 = this.#getRandomIndex(notes);
     let index2 = this.#getRandomIndex(notes);
 
-    while (index1 == index2 || index1 > index2) {
+    while (index1 === index2) {
       index2 = this.#getRandomIndex(notes);
     }
 
+    if (this.#level == 'Easy' && index1 > index2) {
+      index2 = this.#getRandomIndex(notes);
+    }
     const note1 = notes[index1] + octave;
     const note2 = notes[index2] + octave;
     const interval = this.#calculateInterval(index1, index2);
