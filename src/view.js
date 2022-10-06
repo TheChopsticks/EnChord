@@ -89,7 +89,9 @@ export class View {
       ...levelButtons,
       gameStartButton
     );
-    gameStartButton.addEventListener('click', this.#publishGameStartEvent);
+    gameStartButton.addEventListener('click', () =>
+      this.#publishGameStartEvent(this.level)
+    );
   }
 
   renderQuestionPage() {

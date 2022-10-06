@@ -10,9 +10,9 @@ export class Controller {
   constructor(root) {
     this.#eventsManager = new EventsManager();
 
-    this.#eventsManager.subscribe('gameStart', () => {
+    this.#eventsManager.subscribe('gameStart', (data) => {
       this.#view.renderQuestionPage();
-      this.#model.getNewQuiz();
+      this.#model.getNewQuiz(data);
     });
 
     this.#eventsManager.subscribe('newQuestion', (data) => {
@@ -30,7 +30,7 @@ export class Controller {
 
     this.#view = new View(
       root,
-      () => this.#eventsManager.publish('gameStart'),
+      (data) => this.#eventsManager.publish('gameStart', data),
       (data) => this.#eventsManager.publish('newAnswer', data),
       () => this.init()
     );

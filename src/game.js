@@ -11,7 +11,7 @@ export class Game {
 
   constructor(publishNewQuestionEvent, publishGameEndEvent) {
     this.#score = 0;
-    this.#level = 'Easy';
+    this.#level;
     this.#numberOfQuestions = 10;
     this.#correctAnswers = [];
     this.#userAnswers = [];
@@ -24,7 +24,8 @@ export class Game {
     return Math.floor(Math.random() * notes.length);
   }
 
-  getNewQuiz() {
+  getNewQuiz(gameLevel) {
+    this.#level = gameLevel;
     if (this.#userAnswers.length === this.#numberOfQuestions) {
       this.#publishGameEndEvent(this.#score);
       return;
