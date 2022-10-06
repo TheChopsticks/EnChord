@@ -1,6 +1,8 @@
 import * as Tone from 'tone';
 import { toSentenceCase } from './utils';
 
+const levels = ['Easy', 'Intermediate', 'hard'];
+
 const intervals = {
   'minor 2nd': 1,
   'major 2nd': 2,
@@ -30,6 +32,7 @@ export class View {
     publishNewAnswerEvent,
     publishPlayGameAgainEvent
   ) {
+    this.level;
     this.appContainer = musicApp;
     this.isPlayTonesButtonClicked = false;
     this.#publishGameStartEvent = publishGameStartEvent;
@@ -65,9 +68,27 @@ export class View {
       'p',
       'Guess the interval between the 2 tones.'
     );
-    const gameStartButton = this.#createButton('Start');
 
-    this.appContainer.append(gameTitle, gameRuleParagraph, gameStartButton);
+    // Different level buttons and a game start button.
+
+    const gameStartButton = this.#createButton('Start');
+    gameStartButton.disabled = true;
+
+    const levelButtons = levels.map((level) => {
+      const button = this.#createButton(level);
+      button.addEventListener('click', () => {
+        this.level = level;
+        gameStartButton.disabled = false;
+      });
+      return button;
+    });
+
+    this.appContainer.append(
+      gameTitle,
+      gameRuleParagraph,
+      ...levelButtons,
+      gameStartButton
+    );
     gameStartButton.addEventListener('click', this.#publishGameStartEvent);
   }
 
