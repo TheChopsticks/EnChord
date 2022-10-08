@@ -25,9 +25,8 @@ export class Game {
   }
 
   getNewQuiz(gameLevel) {
-    if (gameLevel) {
-      this.#level = gameLevel;
-    }
+    if (gameLevel) this.#level = gameLevel;
+
     if (this.#userAnswers.length === this.#numberOfQuestions) {
       this.#publishGameEndEvent(this.#score);
       return;

@@ -160,9 +160,9 @@ export class View {
       this.#changePlayTonesButtonText(playTonesButton);
     });
 
-    skipQuestionButton.addEventListener('click', () => {
-      this.#publishNewAnswerEvent(undefined);
-    });
+    skipQuestionButton.addEventListener('click', () =>
+      this.#publishNewAnswerEvent(undefined)
+    );
 
     submitAndMoveToNextQuestionButton.addEventListener('click', () => {
       this.#publishNewAnswerEvent(this.#currentSelectedIntervalSemitones);
