@@ -71,18 +71,18 @@ export class Game {
   }
 
   #getAllNotesWithinScale(index1, index2) {
-    const notesInScale = [];
+    const allNotesInScale = [];
 
     if (index1 < index2) {
       for (let i = index1; i < index2 + 1; i++) {
-        notesInScale.push(notes[i]);
+        allNotesInScale.push(notes[i]);
       }
     } else {
       for (let i = index1; i > index2 - 1; i--) {
-        notesInScale.push(notes[i]);
+        allNotesInScale.push(notes[i]);
       }
     }
-    return notesInScale;
+    return allNotesInScale;
   }
 
   #getOctave() {
