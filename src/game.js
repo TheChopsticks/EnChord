@@ -41,10 +41,11 @@ export class Game {
     while (index1 === index2) {
       index2 = this.#getRandomIndex(notes);
     }
+
     if (this.#level == 'Easy' && index1 > index2) {
-      const biggerNumber = index1;
+      const higherTone = index1;
       index1 = index2;
-      index2 = biggerNumber;
+      index2 = higherTone;
     }
     const note1 = notes[index1] + octave;
     const note2 = notes[index2] + octave;
@@ -81,7 +82,6 @@ export class Game {
         notesInScale.push(notes[i]);
       }
     }
-    // console.log(notesInScale);
     return notesInScale;
   }
 
