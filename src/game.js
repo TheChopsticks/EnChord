@@ -93,4 +93,16 @@ export class Game {
       localStorage.setItem(`Score ${newScoreItemNumber}`, this.#score);
     } else localStorage.setItem('Score 1', this.#score);
   }
+
+  #getHighestScoreFromPreviousGames() {
+    const allScores = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const scoreKey = localStorage.key(i);
+      const scoreValue = localStorage.getItem(scoreKey);
+      allScores.push(scoreValue);
+    }
+    return allScores.reduce((previousScore, nextScore) =>
+      previousScore >= nextScore ? previousScore : nextScore
+    );
+  }
 }
