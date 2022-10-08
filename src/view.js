@@ -113,7 +113,7 @@ export class View {
       'Guess the interval between the 2 tones.'
     );
 
-    const getHintButton = this.#createButton('Hint');
+    const getHintButton = this.#createButton('Get a hint');
     getHintButton.id = 'getHintButton';
 
     const buttonsGridContainer = this.#createElement('div');
@@ -176,15 +176,15 @@ export class View {
 
     const getHintButton = document.getElementById('getHintButton');
     getHintButton.addEventListener('click', () => {
-      const now = Tone.now();
       // How to play notes in scale?
-      for (const note of questionData.allNotesInScale) {
-        console.log(note);
-        setTimeout(
-          () => this.#sampler.triggerAttackRelease(note, '8n', now),
-          1000
-        );
-      }
+      // const now = Tone.now();
+      // for (const note of questionData.allNotesInScale) {
+      //   console.log(note);
+      //   setTimeout(
+      //     () => this.#sampler.triggerAttackRelease(note, '8n', now),
+      //     1000
+      //   );
+      // }
     });
 
     this.isPlayTonesButtonClicked = false;
