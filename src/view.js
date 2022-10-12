@@ -1,7 +1,7 @@
 import * as Tone from 'tone';
 import { toSentenceCase } from './utils';
 
-const levels = ['Easy', 'Intermediate', 'hard'];
+const levels = ['Easy', 'Intermediate', 'Hard'];
 
 const intervals = {
   'minor 2nd': 1,
@@ -18,6 +18,7 @@ const intervals = {
 };
 
 export class View {
+  #level;
   #publishGameStartEvent;
   #publishNewAnswerEvent;
   #publishPlayGameAgainEvent;
@@ -32,7 +33,7 @@ export class View {
     publishNewAnswerEvent,
     publishPlayGameAgainEvent
   ) {
-    this.level;
+    this.#level;
     this.appContainer = musicApp;
     this.isPlayTonesButtonClicked = false;
     this.hintButtonCounter = 0;
@@ -78,7 +79,7 @@ export class View {
     const levelButtons = levels.map((level) => {
       const button = this.#createButton(level);
       button.addEventListener('click', () => {
-        this.level = level;
+        this.#level = level;
         gameStartButton.disabled = false;
       });
       return button;
@@ -91,7 +92,7 @@ export class View {
       gameStartButton
     );
     gameStartButton.addEventListener('click', () =>
-      this.#publishGameStartEvent(this.level)
+      this.#publishGameStartEvent(this.#level)
     );
   }
 
