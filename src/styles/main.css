@@ -80,7 +80,7 @@ p {
   --border-width: 2px;
 
   --timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
-  --transition: all 0.5s var(var(--timing-function));
+  --transition: all 0.1s var(--timing-function);
 
   --height-device-min: 480px;
   --width-device-min: 280px;
@@ -195,18 +195,12 @@ button {
   color: var(--color-neutral-dark);
 }
 
-.button--primary:hover:enabled {
-  background-color: var(--color-primary-bright);
-  border-color: var(--color-primary-bright);
-}
-
 .button--secondary {
   background-color: var(--color-neutral-dark);
   border-color: var(--color-primary);
   color: var(--color-primary);
 }
 
-.button--secondary:hover:enabled,
 .button--secondary-active {
   background-color: var(--color-primary-dimmer);
   border-color: var(--color-primary-bright);
@@ -219,13 +213,6 @@ button {
   color: var(--color-primary);
   text-decoration: underline;
   padding: none;
-}
-
-.button--tertiary:hover:enabled {
-  background-color: none;
-  border-color: none;
-  color: var(--color-primary-bright);
-  text-decoration: underline;
 }
 
 .header {
@@ -252,4 +239,26 @@ button {
 
 #currentScore {
   display: inline-block;
+}
+
+@media (hover: hover) {
+  .button--primary:hover:enabled {
+    background-color: var(--color-primary-bright);
+    border-color: var(--color-primary-bright);
+    transform: scale(1.03, 1.05);
+  }
+
+  .button--secondary:hover:enabled {
+    background-color: var(--color-primary-dimmer);
+    border-color: var(--color-primary-bright);
+    color: var(--color-primary-bright);
+    transform: scale(1.03, 1.05);
+  }
+
+  .button--tertiary:hover:enabled {
+    background-color: none;
+    border-color: none;
+    color: var(--color-primary-bright);
+    text-decoration: underline;
+  }
 }
