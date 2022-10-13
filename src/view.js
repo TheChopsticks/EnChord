@@ -26,6 +26,7 @@ export class View {
   #sampler;
   #currentNote1;
   #currentNote2;
+  #allNotesInCurrentScale;
 
   constructor(
     musicApp,
@@ -115,7 +116,6 @@ export class View {
     );
 
     const getHintButton = this.#createButton('Get a hint');
-    getHintButton.id = 'getHintButton';
 
     const buttonsGridContainer = this.#createElement('div');
 
@@ -165,6 +165,19 @@ export class View {
       this.#publishNewAnswerEvent(undefined)
     );
 
+    getHintButton.addEventListener('click', () => {
+      const now = Tone.now();
+
+      for (let i = 0; i < this.#allNotesInCurrentScale.length; i++) {
+        console.log(this.#allNotesInCurrentScale[i]);
+        this.#sampler.triggerAttackRelease(
+          this.#allNotesInCurrentScale[i],
+          '8n',
+          now + i
+        );
+      }
+    });
+
     submitAndMoveToNextQuestionButton.addEventListener('click', () => {
       this.#publishNewAnswerEvent(this.#currentSelectedIntervalSemitones);
       submitAndMoveToNextQuestionButton.disabled = true;
@@ -175,22 +188,10 @@ export class View {
     const playTonesButton = document.getElementById('playTonesBtn');
     playTonesButton.textContent = 'Play tones';
 
-    const getHintButton = document.getElementById('getHintButton');
-    getHintButton.addEventListener('click', () => {
-      // How to play notes in scale?
-      // const now = Tone.now();
-      // for (const note of questionData.allNotesInScale) {
-      //   console.log(note);
-      //   setTimeout(
-      //     () => this.#sampler.triggerAttackRelease(note, '8n', now),
-      //     1000
-      //   );
-      // }
-    });
-
     this.isPlayTonesButtonClicked = false;
     this.#currentNote1 = questionData.note1;
     this.#currentNote2 = questionData.note2;
+    this.#allNotesInCurrentScale = questionData.allNotesInScale;
     this.#currentSelectedIntervalSemitones = undefined;
 
     const currentQuestionNumberSpan = document.getElementById('questionNumber');
