@@ -50,7 +50,11 @@ export class Game {
     const note2 = notes[index2] + octave;
     const interval = this.#calculateInterval(index1, index2);
 
-    const allNotesInScale = this.#getAllNotesWithinScale(index1, index2);
+    const allNotesInScale = this.#getAllNotesWithinScale(
+      index1,
+      index2,
+      octave
+    );
 
     const quizObject = {
       note1,
@@ -69,16 +73,16 @@ export class Game {
     });
   }
 
-  #getAllNotesWithinScale(index1, index2) {
+  #getAllNotesWithinScale(index1, index2, octave) {
     const allNotesInScale = [];
 
     if (index1 < index2) {
       for (let i = index1; i < index2 + 1; i++) {
-        allNotesInScale.push(notes[i]);
+        allNotesInScale.push(notes[i] + octave);
       }
     } else {
       for (let i = index1; i > index2 - 1; i--) {
-        allNotesInScale.push(notes[i]);
+        allNotesInScale.push(notes[i] + octave);
       }
     }
     return allNotesInScale;
