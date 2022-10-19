@@ -17,6 +17,22 @@ const intervals = {
   'major 7th': 11,
 };
 
+const classNames = {
+  flow: 'flow',
+  flowSpaceLarge: 'flow-space--large',
+  flowSpaceMedium: 'flow-space--medium',
+  centerVertically: 'center-vertically',
+  animateJump: 'animate--jump',
+  highlight: 'highlight',
+  primaryButton: 'button--primary',
+  secondaryButton: 'button--secondary',
+  tertiaryButton: 'button--tertiary',
+  secondaryButtonActive: 'button--secondary-active',
+  header: 'header',
+  buttonsContainer: 'buttons-container',
+  buttonsContainerSingle: 'buttons-container--single',
+};
+
 export class View {
   #level;
   #publishGameStartEvent;
@@ -24,6 +40,7 @@ export class View {
   #publishPlayGameAgainEvent;
   #currentSelectedIntervalSemitones;
   #sampler;
+  #toneLength;
   #currentNote1;
   #currentNote2;
   #allNotesInCurrentScale;
@@ -51,10 +68,13 @@ export class View {
       release: 2,
       baseUrl: 'https://tonejs.github.io/audio/salamander/',
     }).toDestination();
+    this.#toneLength = '8n';
   }
 
   #createButton(buttonText) {
-    return this.#createElement('button', toSentenceCase(buttonText));
+    const button = this.#createElement('button', toSentenceCase(buttonText));
+    button.type = 'button';
+    return button;
   }
 
   #createElement(elementType, elementText = '') {
@@ -64,121 +84,210 @@ export class View {
   }
 
   renderStartPage() {
+    this.appContainer.classList.add(
+      classNames.centerVertically,
+      classNames.flow,
+      classNames.flowSpaceMedium
+    );
     if (this.appContainer.hasChildNodes()) this.appContainer.replaceChildren();
 
     const gameTitle = this.#createElement('h1', 'Cool name for music app');
-    const gameRuleParagraph = this.#createElement(
-      'p',
-      'Guess the interval between the 2 tones.'
+    const gameDescription = this.#createElement('h2');
+
+    gameDescription.append(
+      'Guess the interval ',
+      this.#createElement('br'),
+      'between the two tones.'
     );
 
     // Different level buttons and a game start button.
-
     const gameStartButton = this.#createButton('Start');
+    gameStartButton.classList.add(classNames.primaryButton);
     gameStartButton.disabled = true;
 
+    const levelSelectionText = this.#createElement('h3', 'Select level: ');
+
+    const levelButtonsContainer = this.#createElement('div');
+    levelButtonsContainer.classList.add(
+      classNames.buttonsContainer,
+      classNames.buttonsContainerSingle
+    );
     const levelButtons = levels.map((level) => {
       const button = this.#createButton(level);
+      button.dataset.level = level;
+      button.classList.add(classNames.secondaryButton);
       button.addEventListener('click', () => {
+        const prevLevel = this.#level;
+        this.#toggleSecondaryButtonState('level', prevLevel);
         this.#level = level;
+        button.classList.toggle(classNames.secondaryButtonActive);
         gameStartButton.disabled = false;
       });
       return button;
     });
+    levelButtonsContainer.append(...levelButtons);
 
     this.appContainer.append(
       gameTitle,
-      gameRuleParagraph,
-      ...levelButtons,
+      gameDescription,
+      levelSelectionText,
+      levelButtonsContainer,
       gameStartButton
     );
-    gameStartButton.addEventListener('click', () =>
-      this.#publishGameStartEvent(this.#level)
-    );
+    gameStartButton.addEventListener('click', () => {
+      this.#toggleSecondaryButtonState('level', this.#level);
+      this.#publishGameStartEvent(this.#level);
+      this.#level = undefined;
+    });
   }
 
   renderQuestionPage() {
+    this.appContainer.classList.remove(classNames.centerVertically);
+    this.appContainer.classList.add(classNames.flowSpaceLarge);
     this.appContainer.replaceChildren();
 
+    // Header: current question number, score
     const currentQuestionNumberDisplay = this.#createElement(
-      'div',
+      'h3',
       'Question: '
     );
     const currentQuestionNumberSpan = this.#createElement('span');
     currentQuestionNumberSpan.id = 'questionNumber';
     currentQuestionNumberDisplay.append(currentQuestionNumberSpan);
 
+    const currentScoreDisplay = this.#createElement('h3', 'Score: ');
+    const currentScoreSpan = this.#createElement('span');
+    currentScoreSpan.id = 'currentScore';
+    currentScoreDisplay.append(currentScoreSpan);
+
+    const headerContainer = this.#createElement('div');
+    headerContainer.classList.add(classNames.header);
+    headerContainer.append(currentQuestionNumberDisplay, currentScoreDisplay);
+
+    // Question: button to (re)play tones, hint button, game instruction
     const playTonesButton = this.#createButton('Play tones');
     playTonesButton.id = 'playTonesBtn';
+    playTonesButton.classList.add(classNames.primaryButton);
     const gameRuleParagraph = this.#createElement(
       'p',
       'Guess the interval between the 2 tones.'
     );
 
     const getHintButton = this.#createButton('Get a hint');
+    getHintButton.classList.add(classNames.primaryButton);
 
-    const buttonsGridContainer = this.#createElement('div');
+    const buttonsContainer = this.#createElement('div');
+    buttonsContainer.classList.add(classNames.buttonsContainer);
+    buttonsContainer.append(playTonesButton, getHintButton);
 
-    const submitAndMoveToNextQuestionButton =
-      this.#createButton('Move to next');
-    submitAndMoveToNextQuestionButton.disabled = true;
-    const skipQuestionButton = this.#createButton('Skip');
-
-    const currentScoreDisplay = this.#createElement('div', 'Score: ');
-    const currentScoreSpan = this.#createElement('span');
-    currentScoreSpan.id = 'currentScore';
-    currentScoreDisplay.append(currentScoreSpan);
-
-    this.appContainer.append(
-      currentQuestionNumberDisplay,
-      playTonesButton,
-      getHintButton,
-      gameRuleParagraph,
-      buttonsGridContainer,
-      skipQuestionButton,
-      submitAndMoveToNextQuestionButton,
-      currentScoreDisplay
-    );
-
+    // Answer: interval buttons, guess button, skip button
     const intervalButtons = Object.entries(intervals).map(
       ([intervalName, semitones]) => {
         const button = this.#createButton(intervalName);
+        button.classList.add(classNames.secondaryButton);
+        button.dataset.semitones = semitones;
         button.addEventListener('click', () => {
+          this.#resetSelectedInterval();
           this.#currentSelectedIntervalSemitones = semitones;
-          submitAndMoveToNextQuestionButton.disabled = false;
+          this.#toggleSecondaryButtonState('semitones', semitones);
+          const enableSubmitButtonTimer = setInterval(() => {
+            if (!playTonesButton.disabled && !getHintButton.disabled) {
+              clearInterval(enableSubmitButtonTimer);
+              submitAndMoveToNextQuestionButton.disabled = false;
+            }
+          }, 250);
         });
         return button;
       }
     );
 
-    buttonsGridContainer.append(...intervalButtons);
+    const submitAndMoveToNextQuestionButton = this.#createButton('Guess');
+    submitAndMoveToNextQuestionButton.classList.add(classNames.primaryButton);
+    submitAndMoveToNextQuestionButton.disabled = true;
 
+    const skipQuestionButton = this.#createButton('Skip');
+    skipQuestionButton.classList.add(classNames.tertiaryButton);
+
+    const buttonsGridContainer = this.#createElement('div');
+    buttonsGridContainer.classList.add(classNames.buttonsContainer);
+    buttonsGridContainer.append(
+      ...intervalButtons,
+      submitAndMoveToNextQuestionButton,
+      skipQuestionButton
+    );
+
+    // Update app
+    this.appContainer.append(
+      headerContainer,
+      buttonsContainer,
+      gameRuleParagraph,
+      buttonsGridContainer
+    );
+
+    // Event listeners
     playTonesButton.addEventListener('click', () => {
       const now = Tone.now();
-      this.#sampler.triggerAttackRelease(this.#currentNote1, '8n', now);
-      this.#sampler.triggerAttackRelease(this.#currentNote2, '8n', now + 1);
+      this.#sampler.triggerAttackRelease(
+        this.#currentNote1,
+        this.#toneLength,
+        now
+      );
+      this.#sampler.triggerAttackRelease(
+        this.#currentNote2,
+        this.#toneLength,
+        now + 1
+      );
       this.isPlayTonesButtonClicked = true;
+
+      // Disable buttons while tones are playing
+      const buttonsToDisable = [
+        playTonesButton,
+        getHintButton,
+        submitAndMoveToNextQuestionButton,
+        skipQuestionButton,
+      ];
+      const timeToDisableButtons =
+        1000 + Tone.Time(this.#toneLength).toMilliseconds() + 500;
+      this.#disableButtonsForTime(buttonsToDisable, timeToDisableButtons);
+
       this.#changePlayTonesButtonText(playTonesButton);
     });
 
-    skipQuestionButton.addEventListener('click', () =>
-      this.#publishNewAnswerEvent(undefined)
-    );
+    skipQuestionButton.addEventListener('click', () => {
+      this.#publishNewAnswerEvent(undefined);
+      this.#resetSelectedInterval();
+      submitAndMoveToNextQuestionButton.disabled = true;
+    });
 
     getHintButton.addEventListener('click', () => {
       const now = Tone.now();
 
-      for (let i = 0; i < this.#allNotesInCurrentScale.length; i++) {
+      const numberOfTonesInScale = this.#allNotesInCurrentScale.length;
+      for (let i = 0; i < numberOfTonesInScale; i++) {
         this.#sampler.triggerAttackRelease(
           this.#allNotesInCurrentScale[i],
-          '8n',
+          this.#toneLength,
           now + i
         );
       }
+
+      // Disable buttons while tones are playing
+      const buttonsToDisable = [
+        playTonesButton,
+        getHintButton,
+        submitAndMoveToNextQuestionButton,
+        skipQuestionButton,
+      ];
+      const timeToDisableButtons =
+        (numberOfTonesInScale - 1) * 1000 +
+        Tone.Time(this.#toneLength).toMilliseconds() +
+        500;
+      this.#disableButtonsForTime(buttonsToDisable, timeToDisableButtons);
     });
 
     submitAndMoveToNextQuestionButton.addEventListener('click', () => {
       this.#publishNewAnswerEvent(this.#currentSelectedIntervalSemitones);
+      this.#resetSelectedInterval();
       submitAndMoveToNextQuestionButton.disabled = true;
     });
   }
@@ -191,12 +300,22 @@ export class View {
     this.#currentNote1 = questionData.note1;
     this.#currentNote2 = questionData.note2;
     this.#allNotesInCurrentScale = questionData.allNotesInScale;
-    this.#currentSelectedIntervalSemitones = undefined;
 
     const currentQuestionNumberSpan = document.getElementById('questionNumber');
     currentQuestionNumberSpan.textContent = questionData.questionNumber;
     const currentScoreSpan = document.getElementById('currentScore');
+    const oldScore = Number(currentScoreSpan.textContent);
     currentScoreSpan.textContent = questionData.score;
+    if (questionData.score && oldScore !== questionData.score) {
+      currentScoreSpan.classList.add(
+        classNames.animateJump,
+        classNames.highlight
+      );
+      setTimeout(
+        () => currentScoreSpan.classList.remove(classNames.animateJump),
+        100
+      );
+    }
   }
 
   #changePlayTonesButtonText(playTonesButton) {
@@ -205,15 +324,46 @@ export class View {
     }
   }
 
-  renderResults(userScore) {
+  #toggleSecondaryButtonState(dataKey, dataValue) {
+    const button = document.querySelector(`[data-${dataKey}="${dataValue}"]`);
+    if (button) {
+      button.classList.toggle(classNames.secondaryButtonActive);
+    }
+  }
+
+  #resetSelectedInterval() {
+    const previousSelectedSemitones = this.#currentSelectedIntervalSemitones;
+    this.#toggleSecondaryButtonState('semitones', previousSelectedSemitones);
+    this.#currentSelectedIntervalSemitones = undefined;
+  }
+
+  #disableButtonsForTime(buttons, time) {
+    const disabledButtons = [];
+
+    for (const button of buttons) {
+      if (button.disabled) continue;
+      button.disabled = true;
+      disabledButtons.push(button);
+    }
+    setTimeout(() => {
+      for (const button of disabledButtons) {
+        button.disabled = false;
+      }
+    }, time);
+  }
+
+  renderResults(data) {
+    this.appContainer.classList.add(classNames.centerVertically);
+    this.appContainer.classList.remove(classNames.flowSpaceLarge);
     this.appContainer.replaceChildren();
 
-    const finalUserScoreDisplay = this.#createElement('div');
+    const finalUserScoreDisplay = this.#createElement('h3', 'Score: ');
     const finalUserScore = this.#createElement('span');
-    finalUserScore.textContent = userScore;
+    finalUserScore.textContent = `${data.userScore} / ${data.totalScore}`;
     finalUserScoreDisplay.append(finalUserScore);
 
     const playGameAgainButton = this.#createButton('Play again!');
+    playGameAgainButton.classList.add(classNames.primaryButton);
 
     this.appContainer.append(finalUserScoreDisplay, playGameAgainButton);
 
