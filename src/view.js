@@ -160,17 +160,7 @@ export class View {
     buttonsGridContainer.append(...intervalButtons);
 
     playTonesButton.addEventListener('click', () => {
-      const now = Tone.now();
-      if (this.#level === 'Hard') {
-        this.#sampler.triggerAttackRelease(
-          [this.#currentNote1, this.#currentNote2],
-          '8n',
-          now
-        );
-      } else {
-        this.#sampler.triggerAttackRelease(this.#currentNote1, '8n', now);
-        this.#sampler.triggerAttackRelease(this.#currentNote2, '8n', now + 1);
-      }
+      this.#playNotesDifferentlyDependingOnGameLeve(this.#level);
       this.#isPlayTonesButtonClicked = true;
       this.#changePlayTonesButtonText(playTonesButton);
     });
@@ -217,6 +207,20 @@ export class View {
   #changePlayTonesButtonText(playTonesButton) {
     if (this.#isPlayTonesButtonClicked) {
       playTonesButton.textContent = 'Replay tones';
+    }
+  }
+
+  #playNotesDifferentlyDependingOnGameLeve(level) {
+    const now = Tone.now();
+    if (level === 'Hard') {
+      this.#sampler.triggerAttackRelease(
+        [this.#currentNote1, this.#currentNote2],
+        '8n',
+        now
+      );
+    } else {
+      this.#sampler.triggerAttackRelease(this.#currentNote1, '8n', now);
+      this.#sampler.triggerAttackRelease(this.#currentNote2, '8n', now + 1);
     }
   }
 
