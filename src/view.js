@@ -169,7 +169,6 @@ export class View {
       const now = Tone.now();
 
       for (let i = 0; i < this.#allNotesInCurrentScale.length; i++) {
-        console.log(this.#allNotesInCurrentScale[i]);
         this.#sampler.triggerAttackRelease(
           this.#allNotesInCurrentScale[i],
           '8n',
