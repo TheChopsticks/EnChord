@@ -160,10 +160,14 @@ export class View {
     buttonsGridContainer.append(...intervalButtons);
 
     playTonesButton.addEventListener('click', () => {
+      const now = Tone.now();
       if (this.#level === 'Hard') {
-        this.#playTonesTogether();
+        this.#sampler.triggerAttackRelease(
+          [this.#currentNote1, this.#currentNote2],
+          '8n',
+          now
+        );
       } else {
-        const now = Tone.now();
         this.#sampler.triggerAttackRelease(this.#currentNote1, '8n', now);
         this.#sampler.triggerAttackRelease(this.#currentNote2, '8n', now + 1);
       }
@@ -192,15 +196,6 @@ export class View {
       this.#publishNewAnswerEvent(this.#currentSelectedIntervalSemitones);
       submitAndMoveToNextQuestionButton.disabled = true;
     });
-  }
-
-  #playTonesTogether() {
-    const now = Tone.now();
-    this.#sampler.triggerAttackRelease(
-      [this.#currentNote1, this.#currentNote2],
-      '8n',
-      now
-    );
   }
 
   updateQuestionPage(questionData) {
