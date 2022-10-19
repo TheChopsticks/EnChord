@@ -1,6 +1,8 @@
 import * as Tone from 'tone';
 import { toSentenceCase } from './utils';
 
+const levels = ['Easy', 'Intermediate', 'Hard'];
+
 const intervals = {
   'minor 2nd': 1,
   'major 2nd': 2,
@@ -16,6 +18,7 @@ const intervals = {
 };
 
 export class View {
+  #level;
   #publishGameStartEvent;
   #publishNewAnswerEvent;
   #publishPlayGameAgainEvent;
@@ -23,6 +26,7 @@ export class View {
   #sampler;
   #currentNote1;
   #currentNote2;
+  #allNotesInCurrentScale;
 
   constructor(
     musicApp,
@@ -30,8 +34,10 @@ export class View {
     publishNewAnswerEvent,
     publishPlayGameAgainEvent
   ) {
+    this.#level;
     this.appContainer = musicApp;
     this.isPlayTonesButtonClicked = false;
+    this.hintButtonCounter = 0;
     this.#publishGameStartEvent = publishGameStartEvent;
     this.#publishNewAnswerEvent = publishNewAnswerEvent;
     this.#publishPlayGameAgainEvent = publishPlayGameAgainEvent;
@@ -65,10 +71,30 @@ export class View {
       'p',
       'Guess the interval between the 2 tones.'
     );
-    const gameStartButton = this.#createButton('Start');
 
-    this.appContainer.append(gameTitle, gameRuleParagraph, gameStartButton);
-    gameStartButton.addEventListener('click', this.#publishGameStartEvent);
+    // Different level buttons and a game start button.
+
+    const gameStartButton = this.#createButton('Start');
+    gameStartButton.disabled = true;
+
+    const levelButtons = levels.map((level) => {
+      const button = this.#createButton(level);
+      button.addEventListener('click', () => {
+        this.#level = level;
+        gameStartButton.disabled = false;
+      });
+      return button;
+    });
+
+    this.appContainer.append(
+      gameTitle,
+      gameRuleParagraph,
+      ...levelButtons,
+      gameStartButton
+    );
+    gameStartButton.addEventListener('click', () =>
+      this.#publishGameStartEvent(this.#level)
+    );
   }
 
   renderQuestionPage() {
@@ -89,6 +115,8 @@ export class View {
       'Guess the interval between the 2 tones.'
     );
 
+    const getHintButton = this.#createButton('Get a hint');
+
     const buttonsGridContainer = this.#createElement('div');
 
     const submitAndMoveToNextQuestionButton =
@@ -104,6 +132,7 @@ export class View {
     this.appContainer.append(
       currentQuestionNumberDisplay,
       playTonesButton,
+      getHintButton,
       gameRuleParagraph,
       buttonsGridContainer,
       skipQuestionButton,
@@ -132,8 +161,20 @@ export class View {
       this.#changePlayTonesButtonText(playTonesButton);
     });
 
-    skipQuestionButton.addEventListener('click', () => {
-      this.#publishNewAnswerEvent(undefined);
+    skipQuestionButton.addEventListener('click', () =>
+      this.#publishNewAnswerEvent(undefined)
+    );
+
+    getHintButton.addEventListener('click', () => {
+      const now = Tone.now();
+
+      for (let i = 0; i < this.#allNotesInCurrentScale.length; i++) {
+        this.#sampler.triggerAttackRelease(
+          this.#allNotesInCurrentScale[i],
+          '8n',
+          now + i
+        );
+      }
     });
 
     submitAndMoveToNextQuestionButton.addEventListener('click', () => {
@@ -145,9 +186,11 @@ export class View {
   updateQuestionPage(questionData) {
     const playTonesButton = document.getElementById('playTonesBtn');
     playTonesButton.textContent = 'Play tones';
+
     this.isPlayTonesButtonClicked = false;
     this.#currentNote1 = questionData.note1;
     this.#currentNote2 = questionData.note2;
+    this.#allNotesInCurrentScale = questionData.allNotesInScale;
     this.#currentSelectedIntervalSemitones = undefined;
 
     const currentQuestionNumberSpan = document.getElementById('questionNumber');
