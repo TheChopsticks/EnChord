@@ -134,9 +134,11 @@ export class View {
       levelButtonsContainer,
       gameStartButton
     );
-    gameStartButton.addEventListener('click', () =>
-      this.#publishGameStartEvent(this.#level)
-    );
+    gameStartButton.addEventListener('click', () => {
+      this.#toggleSecondaryButtonState('level', this.#level);
+      this.#publishGameStartEvent(this.#level);
+      this.#level = undefined;
+    });
   }
 
   renderQuestionPage() {
