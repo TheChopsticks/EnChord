@@ -167,7 +167,7 @@ export class View {
         this.#sampler.triggerAttackRelease(this.#currentNote1, '8n', now);
         this.#sampler.triggerAttackRelease(this.#currentNote2, '8n', now + 1);
       }
-      this.isPlayTonesButtonClicked = true;
+      this.#isPlayTonesButtonClicked = true;
       this.#changePlayTonesButtonText(playTonesButton);
     });
 
@@ -201,7 +201,6 @@ export class View {
       '8n',
       now
     );
-    return;
   }
 
   updateQuestionPage(questionData) {
