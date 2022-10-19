@@ -20,6 +20,7 @@ const intervals = {
 const classNames = {
   flow: 'flow',
   flowSpaceLarge: 'flow-space--large',
+  flowSpaceMedium: 'flow-space--medium',
   centerVertically: 'center-vertically',
   animateJump: 'animate--jump',
   highlight: 'highlight',
@@ -29,6 +30,7 @@ const classNames = {
   secondaryButtonActive: 'button--secondary-active',
   header: 'header',
   buttonsContainer: 'buttons-container',
+  buttonsContainerSingle: 'buttons-container--single',
 };
 
 export class View {
@@ -84,16 +86,17 @@ export class View {
   renderStartPage() {
     this.appContainer.classList.add(
       classNames.centerVertically,
-      classNames.flow
+      classNames.flow,
+      classNames.flowSpaceMedium
     );
     if (this.appContainer.hasChildNodes()) this.appContainer.replaceChildren();
 
     const gameTitle = this.#createElement('h1', 'Cool name for music app');
-    const gameDescription = this.#createElement('h3');
+    const gameDescription = this.#createElement('h2');
 
     gameDescription.append(
       'Guess the interval ',
-      this.#createElement('wbr'),
+      this.#createElement('br'),
       'between the two tones.'
     );
 
@@ -102,19 +105,33 @@ export class View {
     gameStartButton.classList.add(classNames.primaryButton);
     gameStartButton.disabled = true;
 
+    const levelSelectionText = this.#createElement('h3', 'Select level: ');
+
+    const levelButtonsContainer = this.#createElement('div');
+    levelButtonsContainer.classList.add(
+      classNames.buttonsContainer,
+      classNames.buttonsContainerSingle
+    );
     const levelButtons = levels.map((level) => {
       const button = this.#createButton(level);
+      button.dataset.level = level;
+      button.classList.add(classNames.secondaryButton);
       button.addEventListener('click', () => {
+        const prevLevel = this.#level;
+        this.#toggleSecondaryButtonState('level', prevLevel);
         this.#level = level;
+        button.classList.toggle(classNames.secondaryButtonActive);
         gameStartButton.disabled = false;
       });
       return button;
     });
+    levelButtonsContainer.append(...levelButtons);
 
     this.appContainer.append(
       gameTitle,
       gameDescription,
-      ...levelButtons,
+      levelSelectionText,
+      levelButtonsContainer,
       gameStartButton
     );
     gameStartButton.addEventListener('click', () =>
@@ -145,7 +162,7 @@ export class View {
     headerContainer.classList.add(classNames.header);
     headerContainer.append(currentQuestionNumberDisplay, currentScoreDisplay);
 
-    // Question: button to (re)play tones, game instruction
+    // Question: button to (re)play tones, hint button, game instruction
     const playTonesButton = this.#createButton('Play tones');
     playTonesButton.id = 'playTonesBtn';
     playTonesButton.classList.add(classNames.primaryButton);
@@ -157,6 +174,10 @@ export class View {
     const getHintButton = this.#createButton('Get a hint');
     getHintButton.classList.add(classNames.primaryButton);
 
+    const buttonsContainer = this.#createElement('div');
+    buttonsContainer.classList.add(classNames.buttonsContainer);
+    buttonsContainer.append(playTonesButton, getHintButton);
+
     // Answer: interval buttons, guess button, skip button
     const intervalButtons = Object.entries(intervals).map(
       ([intervalName, semitones]) => {
@@ -166,7 +187,7 @@ export class View {
         button.addEventListener('click', () => {
           this.#resetSelectedInterval();
           this.#currentSelectedIntervalSemitones = semitones;
-          this.#toggleIntervalButtonState(semitones);
+          this.#toggleSecondaryButtonState('semitones', semitones);
           submitAndMoveToNextQuestionButton.disabled = false;
         });
         return button;
@@ -191,7 +212,7 @@ export class View {
     // Update app
     this.appContainer.append(
       headerContainer,
-      playTonesButton,
+      buttonsContainer,
       gameRuleParagraph,
       buttonsGridContainer
     );
@@ -210,11 +231,18 @@ export class View {
         now + 1
       );
       this.isPlayTonesButtonClicked = true;
-      playTonesButton.disabled = true;
-      setTimeout(
-        () => (playTonesButton.disabled = false),
-        Tone.Time(this.#toneLength).toMilliseconds() * 2 + 1000
-      );
+
+      // Disable buttons while tones are playing
+      const buttonsToDisable = [
+        playTonesButton,
+        getHintButton,
+        submitAndMoveToNextQuestionButton,
+        skipQuestionButton,
+      ];
+      const timeToDisableButtons =
+        1000 + Tone.Time(this.#toneLength).toMilliseconds() + 500;
+      this.#disableButtonsForTime(buttonsToDisable, timeToDisableButtons);
+
       this.#changePlayTonesButtonText(playTonesButton);
     });
 
@@ -222,24 +250,38 @@ export class View {
       this.#publishNewAnswerEvent(undefined);
       this.#resetSelectedInterval();
       submitAndMoveToNextQuestionButton.disabled = true;
+    });
 
-      getHintButton.addEventListener('click', () => {
-        const now = Tone.now();
+    getHintButton.addEventListener('click', () => {
+      const now = Tone.now();
 
-        for (let i = 0; i < this.#allNotesInCurrentScale.length; i++) {
-          this.#sampler.triggerAttackRelease(
-            this.#allNotesInCurrentScale[i],
-            '8n',
-            now + i
-          );
-        }
-      });
+      const numberOfTonesInScale = this.#allNotesInCurrentScale.length;
+      for (let i = 0; i < numberOfTonesInScale; i++) {
+        this.#sampler.triggerAttackRelease(
+          this.#allNotesInCurrentScale[i],
+          this.#toneLength,
+          now + i
+        );
+      }
 
-      submitAndMoveToNextQuestionButton.addEventListener('click', () => {
-        this.#publishNewAnswerEvent(this.#currentSelectedIntervalSemitones);
-        this.#resetSelectedInterval();
-        submitAndMoveToNextQuestionButton.disabled = true;
-      });
+      // Disable buttons while tones are playing
+      const buttonsToDisable = [
+        playTonesButton,
+        getHintButton,
+        submitAndMoveToNextQuestionButton,
+        skipQuestionButton,
+      ];
+      const timeToDisableButtons =
+        (numberOfTonesInScale - 1) * 1000 +
+        Tone.Time(this.#toneLength).toMilliseconds() +
+        500;
+      this.#disableButtonsForTime(buttonsToDisable, timeToDisableButtons);
+    });
+
+    submitAndMoveToNextQuestionButton.addEventListener('click', () => {
+      this.#publishNewAnswerEvent(this.#currentSelectedIntervalSemitones);
+      this.#resetSelectedInterval();
+      submitAndMoveToNextQuestionButton.disabled = true;
     });
   }
 
@@ -251,7 +293,6 @@ export class View {
     this.#currentNote1 = questionData.note1;
     this.#currentNote2 = questionData.note2;
     this.#allNotesInCurrentScale = questionData.allNotesInScale;
-    this.#currentSelectedIntervalSemitones = undefined;
 
     const currentQuestionNumberSpan = document.getElementById('questionNumber');
     currentQuestionNumberSpan.textContent = questionData.questionNumber;
@@ -276,10 +317,8 @@ export class View {
     }
   }
 
-  #toggleIntervalButtonState(semitonesDataValue) {
-    const button = document.querySelector(
-      `[data-semitones="${semitonesDataValue}"]`
-    );
+  #toggleSecondaryButtonState(dataKey, dataValue) {
+    const button = document.querySelector(`[data-${dataKey}="${dataValue}"]`);
     if (button) {
       button.classList.toggle(classNames.secondaryButtonActive);
     }
@@ -287,8 +326,23 @@ export class View {
 
   #resetSelectedInterval() {
     const previousSelectedSemitones = this.#currentSelectedIntervalSemitones;
-    this.#toggleIntervalButtonState(previousSelectedSemitones);
+    this.#toggleSecondaryButtonState('semitones', previousSelectedSemitones);
     this.#currentSelectedIntervalSemitones = undefined;
+  }
+
+  #disableButtonsForTime(buttons, time) {
+    const disabledButtons = [];
+
+    for (const button of buttons) {
+      if (button.disabled) continue;
+      button.disabled = true;
+      disabledButtons.push(button);
+    }
+    setTimeout(() => {
+      for (const button of disabledButtons) {
+        button.disabled = false;
+      }
+    }, time);
   }
 
   renderResults(data) {
