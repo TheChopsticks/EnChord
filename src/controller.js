@@ -15,13 +15,13 @@ export class Controller {
       this.#model.getNewQuiz(data);
     });
 
-    this.#eventsManager.subscribe('getHint', () =>
-      this.#model.updateNumberOfHintsAvailable()
-    );
-
     this.#eventsManager.subscribe('newQuestion', (data) => {
       this.#view.updateQuestionPage(data);
     });
+
+    this.#eventsManager.subscribe('getHint', () =>
+      this.#model.updateNumberOfHintsAvailable()
+    );
 
     this.#eventsManager.subscribe('noHintAvailable', () =>
       this.#view.disableGetHintButton()
