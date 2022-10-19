@@ -1,6 +1,8 @@
 import * as Tone from 'tone';
 import { toSentenceCase } from './utils';
 
+const levels = ['Easy', 'Intermediate', 'Hard'];
+
 const intervals = {
   'minor 2nd': 1,
   'major 2nd': 2,
@@ -30,6 +32,7 @@ const classNames = {
 };
 
 export class View {
+  #level;
   #publishGameStartEvent;
   #publishNewAnswerEvent;
   #publishPlayGameAgainEvent;
@@ -38,6 +41,7 @@ export class View {
   #toneLength;
   #currentNote1;
   #currentNote2;
+  #allNotesInCurrentScale;
 
   constructor(
     musicApp,
@@ -45,8 +49,10 @@ export class View {
     publishNewAnswerEvent,
     publishPlayGameAgainEvent
   ) {
+    this.#level;
     this.appContainer = musicApp;
     this.isPlayTonesButtonClicked = false;
+    this.hintButtonCounter = 0;
     this.#publishGameStartEvent = publishGameStartEvent;
     this.#publishNewAnswerEvent = publishNewAnswerEvent;
     this.#publishPlayGameAgainEvent = publishPlayGameAgainEvent;
@@ -90,11 +96,30 @@ export class View {
       this.#createElement('wbr'),
       'between the two tones.'
     );
+
+    // Different level buttons and a game start button.
     const gameStartButton = this.#createButton('Start');
     gameStartButton.classList.add(classNames.primaryButton);
+    gameStartButton.disabled = true;
 
-    this.appContainer.append(gameTitle, gameDescription, gameStartButton);
-    gameStartButton.addEventListener('click', this.#publishGameStartEvent);
+    const levelButtons = levels.map((level) => {
+      const button = this.#createButton(level);
+      button.addEventListener('click', () => {
+        this.#level = level;
+        gameStartButton.disabled = false;
+      });
+      return button;
+    });
+
+    this.appContainer.append(
+      gameTitle,
+      gameDescription,
+      ...levelButtons,
+      gameStartButton
+    );
+    gameStartButton.addEventListener('click', () =>
+      this.#publishGameStartEvent(this.#level)
+    );
   }
 
   renderQuestionPage() {
@@ -129,6 +154,9 @@ export class View {
       'Guess the interval between the 2 tones.'
     );
 
+    const getHintButton = this.#createButton('Get a hint');
+    getHintButton.classList.add(classNames.primaryButton);
+
     // Answer: interval buttons, guess button, skip button
     const intervalButtons = Object.entries(intervals).map(
       ([intervalName, semitones]) => {
@@ -148,13 +176,17 @@ export class View {
     const submitAndMoveToNextQuestionButton = this.#createButton('Guess');
     submitAndMoveToNextQuestionButton.classList.add(classNames.primaryButton);
     submitAndMoveToNextQuestionButton.disabled = true;
+
     const skipQuestionButton = this.#createButton('Skip');
     skipQuestionButton.classList.add(classNames.tertiaryButton);
+
     const buttonsGridContainer = this.#createElement('div');
     buttonsGridContainer.classList.add(classNames.buttonsContainer);
-    buttonsGridContainer.append(...intervalButtons);
-    buttonsGridContainer.append(submitAndMoveToNextQuestionButton);
-    buttonsGridContainer.append(skipQuestionButton);
+    buttonsGridContainer.append(
+      ...intervalButtons,
+      submitAndMoveToNextQuestionButton,
+      skipQuestionButton
+    );
 
     // Update app
     this.appContainer.append(
@@ -190,21 +222,36 @@ export class View {
       this.#publishNewAnswerEvent(undefined);
       this.#resetSelectedInterval();
       submitAndMoveToNextQuestionButton.disabled = true;
-    });
 
-    submitAndMoveToNextQuestionButton.addEventListener('click', () => {
-      this.#publishNewAnswerEvent(this.#currentSelectedIntervalSemitones);
-      this.#resetSelectedInterval();
-      submitAndMoveToNextQuestionButton.disabled = true;
+      getHintButton.addEventListener('click', () => {
+        const now = Tone.now();
+
+        for (let i = 0; i < this.#allNotesInCurrentScale.length; i++) {
+          this.#sampler.triggerAttackRelease(
+            this.#allNotesInCurrentScale[i],
+            '8n',
+            now + i
+          );
+        }
+      });
+
+      submitAndMoveToNextQuestionButton.addEventListener('click', () => {
+        this.#publishNewAnswerEvent(this.#currentSelectedIntervalSemitones);
+        this.#resetSelectedInterval();
+        submitAndMoveToNextQuestionButton.disabled = true;
+      });
     });
   }
 
   updateQuestionPage(questionData) {
     const playTonesButton = document.getElementById('playTonesBtn');
     playTonesButton.textContent = 'Play tones';
+
     this.isPlayTonesButtonClicked = false;
     this.#currentNote1 = questionData.note1;
     this.#currentNote2 = questionData.note2;
+    this.#allNotesInCurrentScale = questionData.allNotesInScale;
+    this.#currentSelectedIntervalSemitones = undefined;
 
     const currentQuestionNumberSpan = document.getElementById('questionNumber');
     currentQuestionNumberSpan.textContent = questionData.questionNumber;

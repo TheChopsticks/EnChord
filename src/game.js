@@ -11,7 +11,7 @@ export class Game {
 
   constructor(publishNewQuestionEvent, publishGameEndEvent) {
     this.#score = 0;
-    this.#level = 'Easy';
+    this.#level;
     this.#numberOfQuestions = 10;
     this.#correctAnswers = [];
     this.#userAnswers = [];
@@ -24,7 +24,9 @@ export class Game {
     return Math.floor(Math.random() * notes.length);
   }
 
-  getNewQuiz() {
+  getNewQuiz(gameLevel) {
+    if (gameLevel) this.#level = gameLevel;
+
     if (this.#userAnswers.length === this.#numberOfQuestions) {
       this.#publishGameEndEvent({
         userScore: this.#score,
@@ -37,18 +39,31 @@ export class Game {
     const octave = this.#getOctave();
     let index1 = this.#getRandomIndex(notes);
     let index2 = this.#getRandomIndex(notes);
-    while (index1 == index2) {
+
+    while (index1 === index2) {
       index2 = this.#getRandomIndex(notes);
     }
 
+    if (this.#level == 'Easy' && index1 > index2) {
+      const higherTone = index1;
+      index1 = index2;
+      index2 = higherTone;
+    }
     const note1 = notes[index1] + octave;
     const note2 = notes[index2] + octave;
     const interval = this.#calculateInterval(index1, index2);
+
+    const allNotesInScale = this.#getAllNotesWithinScale(
+      index1,
+      index2,
+      octave
+    );
 
     const quizObject = {
       note1,
       note2,
       interval,
+      allNotesInScale,
     };
 
     this.#correctAnswers.push(quizObject);
@@ -57,7 +72,23 @@ export class Game {
       note2: quizObject.note2,
       score: this.#score,
       questionNumber: this.#userAnswers.length + 1,
+      allNotesInScale,
     });
+  }
+
+  #getAllNotesWithinScale(index1, index2, octave) {
+    const allNotesInScale = [];
+
+    if (index1 < index2) {
+      for (let i = index1; i < index2 + 1; i++) {
+        allNotesInScale.push(notes[i] + octave);
+      }
+    } else {
+      for (let i = index1; i > index2 - 1; i--) {
+        allNotesInScale.push(notes[i] + octave);
+      }
+    }
+    return allNotesInScale;
   }
 
   #getOctave() {
