@@ -27,7 +27,7 @@ export class Game {
   getNewQuiz() {
     if (this.#userAnswers.length === this.#numberOfQuestions) {
       this.#publishGameEndEvent(this.#score);
-      this.#saveGameResultsInLocalStorage();
+      return;
     }
 
     // Create a new quiz and add the answer to the correct answer array.
@@ -82,27 +82,5 @@ export class Game {
   saveUserAnswer(userInput) {
     this.#userAnswers.push(userInput);
     this.#compareAnswers();
-  }
-
-  #saveGameResultsInLocalStorage() {
-    // save the score of the game to the localStorage
-    // and possibly which questions to review in the future.
-    if (localStorage.length) {
-      const lengthOfItemsInLocalStorage = localStorage.length;
-      const newScoreItemNumber = lengthOfItemsInLocalStorage + 1;
-      localStorage.setItem(`Score ${newScoreItemNumber}`, this.#score);
-    } else localStorage.setItem('Score 1', this.#score);
-  }
-
-  #getHighestScoreFromPreviousGames() {
-    const allScores = [];
-    for (let i = 0; i < localStorage.length; i++) {
-      const scoreKey = localStorage.key(i);
-      const scoreValue = localStorage.getItem(scoreKey);
-      allScores.push(scoreValue);
-    }
-    return allScores.reduce((previousScore, nextScore) =>
-      previousScore >= nextScore ? previousScore : nextScore
-    );
   }
 }
