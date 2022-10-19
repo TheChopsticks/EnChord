@@ -188,7 +188,12 @@ export class View {
           this.#resetSelectedInterval();
           this.#currentSelectedIntervalSemitones = semitones;
           this.#toggleSecondaryButtonState('semitones', semitones);
-          submitAndMoveToNextQuestionButton.disabled = false;
+          const enableSubmitButtonTimer = setInterval(() => {
+            if (!playTonesButton.disabled && !getHintButton.disabled) {
+              clearInterval(enableSubmitButtonTimer);
+              submitAndMoveToNextQuestionButton.disabled = false;
+            }
+          }, 250);
         });
         return button;
       }
