@@ -19,6 +19,9 @@ const intervals = {
 
 export class View {
   #level;
+  #appContainer;
+  #isPlayTonesButtonClicked;
+  // #hintButtonCounter;
   #publishGameStartEvent;
   #publishNewAnswerEvent;
   #publishPlayGameAgainEvent;
@@ -35,9 +38,9 @@ export class View {
     publishPlayGameAgainEvent
   ) {
     this.#level;
-    this.appContainer = musicApp;
-    this.isPlayTonesButtonClicked = false;
-    this.hintButtonCounter = 0;
+    this.#appContainer = musicApp;
+    this.#isPlayTonesButtonClicked = false;
+    // this.#hintButtonCounter = 0;
     this.#publishGameStartEvent = publishGameStartEvent;
     this.#publishNewAnswerEvent = publishNewAnswerEvent;
     this.#publishPlayGameAgainEvent = publishPlayGameAgainEvent;
@@ -64,7 +67,8 @@ export class View {
   }
 
   renderStartPage() {
-    if (this.appContainer.hasChildNodes()) this.appContainer.replaceChildren();
+    if (this.#appContainer.hasChildNodes())
+      this.#appContainer.replaceChildren();
 
     const gameTitle = this.#createElement('h1', 'Cool name for music app');
     const gameRuleParagraph = this.#createElement(
@@ -86,7 +90,7 @@ export class View {
       return button;
     });
 
-    this.appContainer.append(
+    this.#appContainer.append(
       gameTitle,
       gameRuleParagraph,
       ...levelButtons,
@@ -98,7 +102,7 @@ export class View {
   }
 
   renderQuestionPage() {
-    this.appContainer.replaceChildren();
+    this.#appContainer.replaceChildren();
 
     const currentQuestionNumberDisplay = this.#createElement(
       'div',
@@ -129,7 +133,7 @@ export class View {
     currentScoreSpan.id = 'currentScore';
     currentScoreDisplay.append(currentScoreSpan);
 
-    this.appContainer.append(
+    this.#appContainer.append(
       currentQuestionNumberDisplay,
       playTonesButton,
       getHintButton,
@@ -157,7 +161,7 @@ export class View {
       const now = Tone.now();
       this.#sampler.triggerAttackRelease(this.#currentNote1, '8n', now);
       this.#sampler.triggerAttackRelease(this.#currentNote2, '8n', now + 1);
-      this.isPlayTonesButtonClicked = true;
+      this.#isPlayTonesButtonClicked = true;
       this.#changePlayTonesButtonText(playTonesButton);
     });
 
@@ -187,7 +191,7 @@ export class View {
     const playTonesButton = document.getElementById('playTonesBtn');
     playTonesButton.textContent = 'Play tones';
 
-    this.isPlayTonesButtonClicked = false;
+    this.#isPlayTonesButtonClicked = false;
     this.#currentNote1 = questionData.note1;
     this.#currentNote2 = questionData.note2;
     this.#allNotesInCurrentScale = questionData.allNotesInScale;
@@ -200,13 +204,13 @@ export class View {
   }
 
   #changePlayTonesButtonText(playTonesButton) {
-    if (this.isPlayTonesButtonClicked) {
+    if (this.#isPlayTonesButtonClicked) {
       playTonesButton.textContent = 'Replay tones';
     }
   }
 
   renderResults(userScore) {
-    this.appContainer.replaceChildren();
+    this.#appContainer.replaceChildren();
 
     const finalUserScoreDisplay = this.#createElement('div');
     const finalUserScore = this.#createElement('span');
@@ -215,7 +219,7 @@ export class View {
 
     const playGameAgainButton = this.#createButton('Play again!');
 
-    this.appContainer.append(finalUserScoreDisplay, playGameAgainButton);
+    this.#appContainer.append(finalUserScoreDisplay, playGameAgainButton);
 
     playGameAgainButton.addEventListener(
       'click',
