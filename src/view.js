@@ -21,8 +21,8 @@ export class View {
   #level;
   #appContainer;
   #isPlayTonesButtonClicked;
-  // #hintButtonCounter;
   #publishGameStartEvent;
+  #publishGetHintButtonClickedEvent;
   #publishNewAnswerEvent;
   #publishPlayGameAgainEvent;
   #currentSelectedIntervalSemitones;
@@ -34,14 +34,15 @@ export class View {
   constructor(
     musicApp,
     publishGameStartEvent,
+    publishGetHintButtonClickedEvent,
     publishNewAnswerEvent,
     publishPlayGameAgainEvent
   ) {
     this.#level;
     this.#appContainer = musicApp;
     this.#isPlayTonesButtonClicked = false;
-    // this.#hintButtonCounter = 0;
     this.#publishGameStartEvent = publishGameStartEvent;
+    this.#publishGetHintButtonClickedEvent = publishGetHintButtonClickedEvent;
     this.#publishNewAnswerEvent = publishNewAnswerEvent;
     this.#publishPlayGameAgainEvent = publishPlayGameAgainEvent;
     this.#sampler = new Tone.Sampler({
@@ -120,6 +121,7 @@ export class View {
     );
 
     const getHintButton = this.#createButton('Get a hint');
+    getHintButton.id = 'getHintBtn';
 
     const buttonsGridContainer = this.#createElement('div');
 
@@ -170,6 +172,7 @@ export class View {
     );
 
     getHintButton.addEventListener('click', () => {
+      this.#publishGetHintButtonClickedEvent();
       const now = Tone.now();
 
       for (let i = 0; i < this.#allNotesInCurrentScale.length; i++) {
@@ -207,6 +210,11 @@ export class View {
     if (this.#isPlayTonesButtonClicked) {
       playTonesButton.textContent = 'Replay tones';
     }
+  }
+
+  disableGetHintButton() {
+    const getHintButton = document.getElementById('getHintBtn');
+    getHintButton.disabled = true;
   }
 
   renderResults(userScore) {

@@ -15,9 +15,17 @@ export class Controller {
       this.#model.getNewQuiz(data);
     });
 
+    this.#eventsManager.subscribe('getHint', () =>
+      this.#model.updateNumberOfHintsAvailable()
+    );
+
     this.#eventsManager.subscribe('newQuestion', (data) => {
       this.#view.updateQuestionPage(data);
     });
+
+    this.#eventsManager.subscribe('noHintAvailable', () =>
+      this.#view.disableGetHintButton()
+    );
 
     this.#eventsManager.subscribe('newAnswer', (data) => {
       this.#model.saveUserAnswer(data);
@@ -31,6 +39,7 @@ export class Controller {
     this.#view = new View(
       root,
       (data) => this.#eventsManager.publish('gameStart', data),
+      () => this.#eventsManager.publish('getHint'),
       (data) => this.#eventsManager.publish('newAnswer', data),
       () => this.init()
     );
@@ -39,6 +48,7 @@ export class Controller {
   init() {
     this.#model = new Game(
       (data) => this.#eventsManager.publish('newQuestion', data),
+      () => this.#eventsManager.publish('noHintAvailable'),
       (data) => this.#eventsManager.publish('gameEnd', data)
     );
     this.#view.renderStartPage();

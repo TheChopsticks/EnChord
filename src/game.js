@@ -2,21 +2,29 @@ const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 export class Game {
   #score;
   #level;
+  #numberOfHintsAvailable;
   #numberOfQuestions;
   #correctAnswers;
   #userAnswers;
   #questionsToReview;
   #publishNewQuestionEvent;
+  #publishNoHintAvailableEvent;
   #publishGameEndEvent;
 
-  constructor(publishNewQuestionEvent, publishGameEndEvent) {
+  constructor(
+    publishNewQuestionEvent,
+    publishNoHintAvailableEvent,
+    publishGameEndEvent
+  ) {
     this.#score = 0;
     this.#level;
+    this.#numberOfHintsAvailable;
     this.#numberOfQuestions = 10;
     this.#correctAnswers = [];
     this.#userAnswers = [];
     this.#questionsToReview = [];
     this.#publishNewQuestionEvent = publishNewQuestionEvent;
+    this.#publishNoHintAvailableEvent = publishNoHintAvailableEvent;
     this.#publishGameEndEvent = publishGameEndEvent;
   }
 
@@ -25,7 +33,14 @@ export class Game {
   }
 
   getNewQuiz(gameLevel) {
-    if (gameLevel) this.#level = gameLevel;
+    if (gameLevel) {
+      this.#level = gameLevel;
+      if (gameLevel === 'Intermediate') {
+        this.#numberOfHintsAvailable = 3;
+      } else if (gameLevel === 'Hard') {
+        this.#publishNoHintAvailableEvent();
+      }
+    }
 
     if (this.#userAnswers.length === this.#numberOfQuestions) {
       this.#publishGameEndEvent(this.#score);
@@ -107,6 +122,13 @@ export class Game {
       this.#userAnswers[lastUserAnswerIndex]
     ) {
       this.#score++;
+    }
+  }
+
+  updateNumberOfHintsAvailable() {
+    this.#numberOfHintsAvailable = this.#numberOfHintsAvailable - 1;
+    if (this.#numberOfHintsAvailable === 0) {
+      this.#publishNoHintAvailableEvent();
     }
   }
 
