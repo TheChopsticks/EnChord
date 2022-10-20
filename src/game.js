@@ -1,6 +1,7 @@
 const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 export class Game {
   #score;
+  #scores;
   #level;
   #numberOfQuestions;
   #correctAnswers;
@@ -8,8 +9,15 @@ export class Game {
   #questionsToReview;
   #publishNewQuestionEvent;
   #publishGameEndEvent;
+  #publishStoreGameDataEvent;
+  #publishGetGameDataEvent;
 
-  constructor(publishNewQuestionEvent, publishGameEndEvent) {
+  constructor(
+    publishNewQuestionEvent,
+    publishGameEndEvent,
+    publishStoreGameDataEvent,
+    publishGetGameDataEvent
+  ) {
     this.#score = 0;
     this.#level = 'Easy';
     this.#numberOfQuestions = 10;
@@ -18,6 +26,8 @@ export class Game {
     this.#questionsToReview = [];
     this.#publishNewQuestionEvent = publishNewQuestionEvent;
     this.#publishGameEndEvent = publishGameEndEvent;
+    this.#publishStoreGameDataEvent = publishStoreGameDataEvent;
+    this.#publishGetGameDataEvent = publishGetGameDataEvent;
   }
 
   #getRandomIndex(notes) {
@@ -27,6 +37,7 @@ export class Game {
   getNewQuiz() {
     if (this.#userAnswers.length === this.#numberOfQuestions) {
       this.#publishGameEndEvent(this.#score);
+      this.#storeScores();
       return;
     }
 
@@ -77,6 +88,26 @@ export class Game {
     ) {
       this.#score++;
     }
+  }
+
+  #storeScores() {
+    this.#publishGetGameDataEvent();
+    let scores = this.#scores ?? [];
+    scores.push(this.#score);
+    this.#publishStoreGameDataEvent(scores);
+
+    // let scores = JSON.parse(window.localStorage.getItem('testKey')) ?? [];
+    // console.log(`----`);
+    // console.log(`Scores in local storage: ${scores}`);
+    // scores.push(this.#score);
+    // console.log(`Adding new score: ${this.#score}`);
+    // console.log(`New scores looks like: ${scores}`);
+    // window.localStorage.setItem('testKey', JSON.stringify(scores));
+    // console.log(`----`);
+  }
+
+  loadScores(data) {
+    this.#scores = data;
   }
 
   saveUserAnswer(userInput) {
