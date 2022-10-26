@@ -37,6 +37,7 @@ export class Game {
   getNewQuiz() {
     if (this.#userAnswers.length === this.#numberOfQuestions) {
       this.#storeScores();
+      // TODO: get highest score from this.#scores and pass it along with the publishGameEndEvent to View
       this.#publishGameEndEvent(this.#score);
       return;
     }
