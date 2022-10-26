@@ -36,8 +36,8 @@ export class Game {
 
   getNewQuiz() {
     if (this.#userAnswers.length === this.#numberOfQuestions) {
-      this.#publishGameEndEvent(this.#score);
       this.#storeScores();
+      this.#publishGameEndEvent(this.#score);
       return;
     }
 
@@ -92,13 +92,12 @@ export class Game {
 
   #storeScores() {
     this.#publishGetGameDataEvent();
-    let scores = this.#scores ?? [];
-    scores.push(this.#score);
-    this.#publishStoreGameDataEvent(scores);
+    this.#scores.push(this.#score);
+    this.#publishStoreGameDataEvent(this.#scores);
   }
 
   loadScores(data) {
-    this.#scores = data;
+    this.#scores = data ?? [];
   }
 
   saveUserAnswer(userInput) {
