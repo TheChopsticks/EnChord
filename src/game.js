@@ -95,15 +95,6 @@ export class Game {
     let scores = this.#scores ?? [];
     scores.push(this.#score);
     this.#publishStoreGameDataEvent(scores);
-
-    // let scores = JSON.parse(window.localStorage.getItem('testKey')) ?? [];
-    // console.log(`----`);
-    // console.log(`Scores in local storage: ${scores}`);
-    // scores.push(this.#score);
-    // console.log(`Adding new score: ${this.#score}`);
-    // console.log(`New scores looks like: ${scores}`);
-    // window.localStorage.setItem('testKey', JSON.stringify(scores));
-    // console.log(`----`);
   }
 
   loadScores(data) {

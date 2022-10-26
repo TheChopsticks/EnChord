@@ -43,8 +43,8 @@ export class Controller {
       this.#model.loadScores(data)
     );
 
-    this.#storage = new Storage(() =>
-      this.#eventsManager.publish('gameDataLoaded')
+    this.#storage = new Storage((data) =>
+      this.#eventsManager.publish('gameDataLoaded', data)
     );
 
     this.#view = new View(
