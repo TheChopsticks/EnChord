@@ -17,8 +17,6 @@ export class Game {
     publishGameEndEvent
   ) {
     this.#score = 0;
-    this.#level;
-    this.#numberOfHintsAvailable;
     this.#numberOfQuestions = 10;
     this.#correctAnswers = [];
     this.#userAnswers = [];

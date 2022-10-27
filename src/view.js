@@ -68,8 +68,9 @@ export class View {
   }
 
   renderStartPage() {
-    if (this.#appContainer.hasChildNodes())
+    if (this.#appContainer.hasChildNodes()) {
       this.#appContainer.replaceChildren();
+    }
 
     const gameTitle = this.#createElement('h1', 'Cool name for music app');
     const gameRuleParagraph = this.#createElement(
@@ -160,7 +161,7 @@ export class View {
     buttonsGridContainer.append(...intervalButtons);
 
     playTonesButton.addEventListener('click', () => {
-      this.#playNotesDifferentlyDependingOnGameLeve(this.#level);
+      this.#playNotesForGameLevel(this.#level);
       this.#isPlayTonesButtonClicked = true;
       this.#changePlayTonesButtonText(playTonesButton);
     });
@@ -210,7 +211,7 @@ export class View {
     }
   }
 
-  #playNotesDifferentlyDependingOnGameLeve(level) {
+  #playNotesForGameLevel(level) {
     const now = Tone.now();
     if (level === 'Hard') {
       this.#sampler.triggerAttackRelease(
