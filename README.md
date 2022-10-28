@@ -2,6 +2,30 @@
 
 **EnChord** is a perfect tool to develop your music dictation skills. Challenge yourself with different levels of quizzes and follow your progress by checking your highest score and average test results. You can also review what are the frequently mistaken interval types.
 
+## Table of contents
+
+1. [Description](https://github.com/TheChopsticks/EnChord/edit/main/README.md#description)
+2. [Future feature](https://github.com/TheChopsticks/EnChord/edit/main/README.md#future-features)
+3. [Installation](https://github.com/TheChopsticks/EnChord/edit/main/README.md#installation)
+4. [How EnChord was built](https://github.com/TheChopsticks/EnChord/edit/main/README.md#how-enchord-was-built)
+5. [Credits](https://github.com/TheChopsticks/EnChord/edit/main/README.md#credits)
+6. [License](https://github.com/TheChopsticks/EnChord/edit/main/README.md#license)
+7. [Badges](https://github.com/TheChopsticks/EnChord/edit/main/README.md#badges)
+
+## Description
+
+## Future features
+
+## Installation
+
+## How EnChord was built
+
+## Credits
+
+## License
+
+## Badges
+
 ## How it works
 
 (screenshots to be attached)
