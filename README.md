@@ -6,8 +6,8 @@
 
 1. [How it works](https://github.com/TheChopsticks/EnChord/edit/main/README.md#how-it-works)
 2. [Future feature](https://github.com/TheChopsticks/EnChord/edit/main/README.md#future-features)
-3. [Installation](https://github.com/TheChopsticks/EnChord/edit/main/README.md#installation)
-4. [How EnChord was built](https://github.com/TheChopsticks/EnChord/edit/main/README.md#how-enchord-was-built)
+3. [How EnChord was built](https://github.com/TheChopsticks/EnChord/edit/main/README.md#how-enchord-was-built)
+4. [Installation](https://github.com/TheChopsticks/EnChord/edit/main/README.md#installation)
 5. [Credits](https://github.com/TheChopsticks/EnChord/edit/main/README.md#credits)
 6. [License](https://github.com/TheChopsticks/EnChord/edit/main/README.md#license)
 7. [Badges](https://github.com/TheChopsticks/EnChord/edit/main/README.md#badges)
@@ -16,7 +16,7 @@
 
 #### Try 3 different levels
 
-- A cool music app has 3 different levels, Easy, Intermediate, and Hard.
+- **EnChord** has 3 different levels, Easy, Intermediate, and Hard.
 
 #### What are the differences
 
@@ -42,17 +42,9 @@
 - Check your highest score and the average score of previously played games.
 - Check your weakness by reviewing the most wrong interval types.
 
-## Installation
-
 ## How EnChord was built
 
-## Credits
-
-## License
-
-## Badges
-
-## Scripts
+## Installation
 
 ### Development
 
@@ -65,3 +57,11 @@ A pre-commit hook will automatically lint and format staged `.js` files in the `
 
 To build the project, run:
 `npm run build`
+
+## Credits
+
+## License
+
+## Badges
+
+## Scripts
