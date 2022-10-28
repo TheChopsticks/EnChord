@@ -180,6 +180,7 @@ export class View {
     );
 
     const getHintButton = this.#createButton('Get a hint');
+    getHintButton.id = 'getHintBtn';
     getHintButton.classList.add(classNames.primaryButton);
 
     const buttonsContainer = this.#createElement('div');
@@ -233,7 +234,7 @@ export class View {
     // Event listeners
     playTonesButton.addEventListener('click', () => {
       this.#playNotesForGameLevel(this.#level);
-      this.isPlayTonesButtonClicked = true;
+      this.#isPlayTonesButtonClicked = true;
 
       // Disable buttons while tones are playing
       const buttonsToDisable = [
