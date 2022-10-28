@@ -42,6 +42,10 @@
 - Check your highest score and the average score of previously played games.
 - Check your weakness by reviewing the most wrong interval types.
 
+#### Language support:
+
+- Mandarin(普通话), Korean(한국어), Hungarian(Magyar)
+
 ## How EnChord was built
 
 ## Installation
