@@ -1,0 +1,282 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&family=Roboto+Mono&display=swap');
+
+/* Resets */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  line-height: 1.5;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+p {
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+/* Variables */
+:root {
+  /* Colors */
+  --opacity-dim: 0.58;
+  --color-primary: rgba(87, 231, 213, 1);
+  --color-primary-bright: rgba(163, 248, 237, 1);
+  --color-primary-dim: rgba(87, 231, 213, var(--opacity-dim));
+  --color-primary-dimmer: rgba(113, 199, 217, 0.15);
+  --color-neutral-dark: rgba(30, 30, 30, 1);
+  --color-neutral-light: rgba(234, 234, 234, 1);
+
+  /* Fonts */
+  --font-primary: 'Roboto Mono', monospace;
+  --font-secondary: 'Roboto', sans-serif;
+
+  /* Sizing */
+  --step--2: clamp(0.43rem, calc(0.42rem + 0.08vw), 0.49rem);
+  --step--1: clamp(0.52rem, calc(0.48rem + 0.19vw), 0.66rem);
+  --step-0: clamp(0.63rem, calc(0.55rem + 0.36vw), 0.88rem);
+  --step-1: clamp(0.9rem, calc(0.71rem + 0.94vw), 1.17rem);
+  --step-2: clamp(1.08rem, calc(0.8rem + 1.42vw), 2.07rem);
+  --step-3: clamp(1.3rem, calc(0.88rem + 2.09vw), 2.76rem);
+
+  /* @link https://utopia.fyi/space/calculator?c=320,10,1.2,1440,14,1.333,5,2,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l */
+  --space-3xs: clamp(0.19rem, calc(0.17rem + 0.09vw), 0.25rem);
+  --space-2xs: clamp(0.31rem, calc(0.28rem + 0.18vw), 0.44rem);
+  --space-xs: clamp(0.5rem, calc(0.45rem + 0.27vw), 0.69rem);
+  --space-s: clamp(0.63rem, calc(0.55rem + 0.36vw), 0.88rem);
+  --space-m: clamp(0.94rem, calc(0.83rem + 0.54vw), 1.31rem);
+  --space-l: clamp(1.25rem, calc(1.11rem + 0.71vw), 1.75rem);
+  --space-xl: clamp(1.88rem, calc(1.66rem + 1.07vw), 2.63rem);
+  --space-2xl: clamp(2.5rem, calc(2.21rem + 1.43vw), 3.5rem);
+  --space-3xl: clamp(3.75rem, calc(3.32rem + 2.14vw), 5.25rem);
+
+  --border-radius: var(--step--2);
+  --border-width: 2px;
+
+  --timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
+  --transition: all 0.1s var(--timing-function);
+
+  --height-device-min: 480px;
+  --width-device-min: 280px;
+  --width-device-max: 1440px;
+}
+
+@keyframes jump {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+/* Base styles */
+body {
+  background-color: var(--color-neutral-dark);
+  color: var(--color-neutral-light);
+  font-size: var(--step-1);
+  font-family: var(--font-primary);
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+main {
+  min-height: var(--height-device-min);
+  height: 100%;
+  padding: var(--space-xs) var(--space-s);
+  max-width: var(--width-device-max);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+main > h3 {
+  margin-right: var(--space-s);
+  margin-left: var(--space-s);
+}
+
+h1 {
+  line-height: 1;
+  font-size: var(--step-3);
+  font-family: var(--font-secondary);
+}
+
+h2 {
+  line-height: 1.2;
+  font-size: var(--step-2);
+  font-weight: normal;
+}
+
+h3 {
+  line-height: 1.2;
+  font-size: var(--step-1);
+  font-weight: normal;
+}
+
+p {
+  font-family: var(--font-secondary);
+}
+
+button {
+  cursor: pointer;
+  border-radius: var(--border-radius);
+  border-width: var(--border-width);
+  border-style: solid;
+  padding: calc(var(--step-1) / 2) calc(var(--step-1) * 1.33);
+  min-width: calc(var(--step-1) * 10);
+  max-width: var(--button-width-max);
+  transition: var(--transition);
+}
+
+:disabled {
+  opacity: var(--opacity-dim);
+  cursor: auto;
+}
+
+/* Utilities */
+.center-vertically {
+  justify-content: center;
+}
+
+.flow > * + * {
+  margin-top: var(--flow-space, 1rem);
+}
+
+.flow-space--medium {
+  --flow-space: var(--space-l);
+}
+
+.flow-space--large {
+  --flow-space: var(--space-3xl);
+}
+
+.animate--jump {
+  animation-name: jump;
+  animation-duration: 0.5s;
+  animation-timing-function: var(--timing-function);
+  animation-fill-mode: forwards;
+}
+
+.highlight {
+  color: var(--color-primary);
+}
+
+/* Components */
+.button--primary {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-neutral-dark);
+}
+
+.button--secondary {
+  background-color: var(--color-neutral-dark);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.button--secondary-active {
+  background-color: var(--color-primary-dimmer);
+  border-color: var(--color-primary-bright);
+  color: var(--color-primary-bright);
+}
+
+.button--tertiary {
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  text-decoration: underline;
+  padding: none;
+}
+
+.header {
+  position: absolute;
+  top: var(--space-xs);
+  right: var(--space-s);
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-l);
+}
+
+.buttons-container {
+  --flow-space: var(--space-s);
+  --button-width-max: calc(var(--step-1) * 11);
+  min-width: calc(var(--width-device-min) - (2 * var(--space-s)));
+  max-width: calc((var(--step-1) * 44) + (var(--space-xs) * 4));
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-xs);
+}
+
+.buttons-container--single {
+  flex-direction: column;
+  align-items: center;
+  min-width: unset;
+  max-width: unset;
+}
+
+#currentScore {
+  display: inline-block;
+}
+
+@media (hover: hover) {
+  .button--primary:hover:enabled {
+    background-color: var(--color-primary-bright);
+    border-color: var(--color-primary-bright);
+    transform: scale(1.03, 1.05);
+  }
+
+  .button--secondary:hover:enabled {
+    background-color: var(--color-primary-dimmer);
+    border-color: var(--color-primary-bright);
+    color: var(--color-primary-bright);
+    transform: scale(1.03, 1.05);
+  }
+
+  .button--tertiary:hover:enabled {
+    background-color: none;
+    border-color: none;
+    color: var(--color-primary-bright);
+    text-decoration: underline;
+  }
+}
+
+@media screen and (min-width: 480px) {
+  h2 > br {
+    display: none;
+  }
+
+  .buttons-container--single {
+    flex-direction: row;
+    align-items: center;
+  }
+}
