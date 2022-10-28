@@ -1,7 +1,6 @@
-# A cool music app
+# EnChord
 
-(name of the app to be updated)
-A cool music app is a perfect tool to develop your music dictation skills. Challenge yourself with different levels of quizzes and follow your progress by checking your highest score and average test results. You can also review what are the frequently mistaken interval types.
+**EnChord** is a perfect tool to develop your music dictation skills. Challenge yourself with different levels of quizzes and follow your progress by checking your highest score and average test results. You can also review what are the frequently mistaken interval types.
 
 ## How it works
 
