@@ -17,8 +17,6 @@ export class Game {
     publishGameEndEvent
   ) {
     this.#score = 0;
-    this.#level;
-    this.#numberOfHintsAvailable;
     this.#numberOfQuestions = 10;
     this.#correctAnswers = [];
     this.#userAnswers = [];
@@ -43,7 +41,10 @@ export class Game {
     }
 
     if (this.#userAnswers.length === this.#numberOfQuestions) {
-      this.#publishGameEndEvent(this.#score);
+      this.#publishGameEndEvent({
+        userScore: this.#score,
+        totalScore: this.#numberOfQuestions,
+      });
       return;
     }
 
