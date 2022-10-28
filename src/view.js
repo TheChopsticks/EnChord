@@ -143,7 +143,7 @@ export class View {
     gameStartButton.addEventListener('click', () => {
       this.#toggleSecondaryButtonState('level', this.#level);
       this.#publishGameStartEvent(this.#level);
-      this.#level = undefined;
+      // this.#level = undefined;
     });
   }
 
@@ -198,7 +198,10 @@ export class View {
           this.#currentSelectedIntervalSemitones = semitones;
           this.#toggleSecondaryButtonState('semitones', semitones);
           const enableSubmitButtonTimer = setInterval(() => {
-            if (!playTonesButton.disabled && !getHintButton.disabled) {
+            if (
+              !playTonesButton.disabled &&
+              (this.#level === 'Hard' || !getHintButton.disabled)
+            ) {
               clearInterval(enableSubmitButtonTimer);
               submitAndMoveToNextQuestionButton.disabled = false;
             }
@@ -243,8 +246,11 @@ export class View {
         submitAndMoveToNextQuestionButton,
         skipQuestionButton,
       ];
+
       const timeToDisableButtons =
-        1000 + Tone.Time(this.#toneLength).toMilliseconds() + 500;
+        (this.#level === 'Hard' ? 0 : 1000) +
+        Tone.Time(this.#toneLength).toMilliseconds() +
+        500;
       this.#disableButtonsForTime(buttonsToDisable, timeToDisableButtons);
 
       this.#changePlayTonesButtonText(playTonesButton);
