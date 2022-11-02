@@ -48,13 +48,15 @@
 
 ## How EnChord was built
 
-The `EnChord` is the very first project of `The Forks`. This app is written in plain JS and CSS to improve our `VanilaJS` and `VanilaCSS` skills and take a deep dive into code organization. However, since no frameworks were used, extra effort was needed to write clean code.
+The `EnChord` is the very first project of `The Forks`. This app is written in plain JS and CSS to improve our `VanilaJS` and `VanilaCSS` skills and to take a deep dive into code organization. To write clean and organized code without any help of frameworks, we introduced some design patterns.
 
-To keep the program organized, we implemented the [MVC](https://developer.mozilla.org/en-US/docs/Glossary/MVC#:~:text=MVC%20(Model%2DView%2DController,of%20labor%20and%20improved%20maintenance.) architecture pattern.
-We separated the pure game logic(Models) and the UI(Views), and created the `controller` class to manage the communication between other modules.  
-To achieve this "separation of concerns", we applied another design pattern, [Publish/Subscribe](https://ably.com/topic/pub-sub). Using the `controller` class as a common forum, other modules can sorely focus on performing their tasks and do not need to worry about whereabouts of inputs and outputs. All information are shared through the data pipe.
+- First was the [MVC](https://developer.mozilla.org/en-US/docs/Glossary/MVC#:~:text=MVC%20(Model%2DView%2DController,of%20labor%20and%20improved%20maintenance.) architecture. We separated the pure game logic(Models) and the UI(Views), and created the `controller` class to manage the communication between other modules.
 
-The benefits of such patterns helped us to avoid writing spaghetti code and made it easy to maintain the app and expand application's features. (Having such architectures applied, it became easy not only to maintain the app and debug errors, but also to expand the game features.)
+- To achieve this "separation of concerns", we implemented another design pattern, [Publish/Subscribe](https://ably.com/topic/pub-sub). Sharing common knowledge through a data pipe, the `controller` class, other modules can sorely focus on performing their tasks and do not need to worry about whereabouts of inputs and outputs.
+
+The benefits of such patterns helped us to avoid spaghetti code and made it easy to maintain the app and expand game features.
+
+As our aim was to develop an app that is more than just a one-time use, we also felt the need of having a database system. Therefore, we utilized the [localStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) to store scores of users and have stored data available for [future features](https://github.com/TheChopsticks/EnChord/edit/main/README.md#future-features) . Considering future scalability of the application, `storage` module is written in a way that the change of storage method is possible.
 
 ## Installation
 
