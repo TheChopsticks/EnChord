@@ -198,10 +198,7 @@ export class View {
           this.#currentSelectedIntervalSemitones = semitones;
           this.#toggleSecondaryButtonState('semitones', semitones);
           const enableSubmitButtonTimer = setInterval(() => {
-            if (
-              !playTonesButton.disabled &&
-              (this.#level === 'Hard' || !getHintButton.disabled)
-            ) {
+            if (!playTonesButton.disabled) {
               clearInterval(enableSubmitButtonTimer);
               submitAndMoveToNextQuestionButton.disabled = false;
             }
