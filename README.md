@@ -48,11 +48,13 @@
 
 ## How EnChord was built
 
-The `EnChord` is the very first project of `The Forks`. There are important points we particularly focused on while developing `EnChord`.
+The `EnChord` is the very first project of `The Forks`. This app is written in plain JS and CSS to improve our `VanilaJS` and `VanilaCSS` skills and take a deep dive into code organization. However, since no frameworks were used, extra effort was needed to write clean code.
 
-First is that `EnChord` is written in plain JS and CSS. This allowed us to improve our `VanilaJS` and `VanilaCSS` skills and take a deep dive into code organization.
+To keep the program organized, we implemented the [MVC](https://developer.mozilla.org/en-US/docs/Glossary/MVC#:~:text=MVC%20(Model%2DView%2DController,of%20labor%20and%20improved%20maintenance.) architecture pattern.
+We separated the pure game logic(Models) and the UI(Views), and created the `controller` class to manage the communication between other modules.  
+To achieve this "separation of concerns", we applied another design pattern, [Publish/Subscribe](https://ably.com/topic/pub-sub). Using the `controller` class as a common forum, other modules can sorely focus on performing their tasks and do not need to worry about whereabouts of inputs and outputs. All information are shared through the data pipe.
 
-To keep the program neat without using any frameworks, we implemented the [MVC](https://developer.mozilla.org/en-US/docs/Glossary/MVC#:~:text=MVC%20(Model%2DView%2DController,of%20labor%20and%20improved%20maintenance.) architecture pattern. We separated the pure game logic(Models) and the UI(Views) and created the controller class to manage communication between the logic and display. This "separation of concerns" made the maintenance of the application and introduction of new futures easy.
+The benefits of such patterns helped us to avoid writing spaghetti code and made it easy to maintain the app and expand application's features. (Having such architectures applied, it became easy not only to maintain the app and debug errors, but also to expand the game features.)
 
 ## Installation
 
