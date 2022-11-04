@@ -1,6 +1,7 @@
 const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 export class Game {
   #score;
+  #scores;
   #level;
   #numberOfQuestions;
   #correctAnswers;
@@ -8,8 +9,15 @@ export class Game {
   #questionsToReview;
   #publishNewQuestionEvent;
   #publishGameEndEvent;
+  #publishStoreGameDataEvent;
+  #publishGetGameDataEvent;
 
-  constructor(publishNewQuestionEvent, publishGameEndEvent) {
+  constructor(
+    publishNewQuestionEvent,
+    publishGameEndEvent,
+    publishStoreGameDataEvent,
+    publishGetGameDataEvent
+  ) {
     this.#score = 0;
     this.#level;
     this.#numberOfQuestions = 10;
@@ -18,6 +26,8 @@ export class Game {
     this.#questionsToReview = [];
     this.#publishNewQuestionEvent = publishNewQuestionEvent;
     this.#publishGameEndEvent = publishGameEndEvent;
+    this.#publishStoreGameDataEvent = publishStoreGameDataEvent;
+    this.#publishGetGameDataEvent = publishGetGameDataEvent;
   }
 
   #getRandomIndex(notes) {
@@ -28,6 +38,8 @@ export class Game {
     if (gameLevel) this.#level = gameLevel;
 
     if (this.#userAnswers.length === this.#numberOfQuestions) {
+      this.#storeScores();
+      // TODO: get highest score from this.#scores and pass it along with the publishGameEndEvent to View
       this.#publishGameEndEvent({
         userScore: this.#score,
         totalScore: this.#numberOfQuestions,
@@ -111,6 +123,16 @@ export class Game {
     ) {
       this.#score++;
     }
+  }
+
+  #storeScores() {
+    this.#publishGetGameDataEvent();
+    this.#scores.push(this.#score);
+    this.#publishStoreGameDataEvent(this.#scores);
+  }
+
+  loadScores(data) {
+    this.#scores = data ?? [];
   }
 
   saveUserAnswer(userInput) {
