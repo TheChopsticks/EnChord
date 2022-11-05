@@ -35,10 +35,7 @@ const classNames = {
 
 export class View {
   #level;
-  #appContainer;
-  #isPlayTonesButtonClicked;
   #publishGameStartEvent;
-  #publishGetHintButtonClickedEvent;
   #publishNewAnswerEvent;
   #publishPlayGameAgainEvent;
   #currentSelectedIntervalSemitones;
@@ -51,15 +48,14 @@ export class View {
   constructor(
     musicApp,
     publishGameStartEvent,
-    publishGetHintButtonClickedEvent,
     publishNewAnswerEvent,
     publishPlayGameAgainEvent
   ) {
     this.#level;
-    this.#appContainer = musicApp;
-    this.#isPlayTonesButtonClicked = false;
+    this.appContainer = musicApp;
+    this.isPlayTonesButtonClicked = false;
+    this.hintButtonCounter = 0;
     this.#publishGameStartEvent = publishGameStartEvent;
-    this.#publishGetHintButtonClickedEvent = publishGetHintButtonClickedEvent;
     this.#publishNewAnswerEvent = publishNewAnswerEvent;
     this.#publishPlayGameAgainEvent = publishPlayGameAgainEvent;
     this.#sampler = new Tone.Sampler({
@@ -88,14 +84,12 @@ export class View {
   }
 
   renderStartPage() {
-    this.#appContainer.classList.add(
+    this.appContainer.classList.add(
       classNames.centerVertically,
       classNames.flow,
       classNames.flowSpaceMedium
     );
-    if (this.#appContainer.hasChildNodes()) {
-      this.#appContainer.replaceChildren();
-    }
+    if (this.appContainer.hasChildNodes()) this.appContainer.replaceChildren();
 
     const gameTitle = this.#createElement('h1', 'Cool name for music app');
     const gameDescription = this.#createElement('h2');
@@ -133,7 +127,7 @@ export class View {
     });
     levelButtonsContainer.append(...levelButtons);
 
-    this.#appContainer.append(
+    this.appContainer.append(
       gameTitle,
       gameDescription,
       levelSelectionText,
@@ -143,14 +137,14 @@ export class View {
     gameStartButton.addEventListener('click', () => {
       this.#toggleSecondaryButtonState('level', this.#level);
       this.#publishGameStartEvent(this.#level);
-      // this.#level = undefined;
+      this.#level = undefined;
     });
   }
 
   renderQuestionPage() {
-    this.#appContainer.classList.remove(classNames.centerVertically);
-    this.#appContainer.classList.add(classNames.flowSpaceLarge);
-    this.#appContainer.replaceChildren();
+    this.appContainer.classList.remove(classNames.centerVertically);
+    this.appContainer.classList.add(classNames.flowSpaceLarge);
+    this.appContainer.replaceChildren();
 
     // Header: current question number, score
     const currentQuestionNumberDisplay = this.#createElement(
@@ -180,7 +174,6 @@ export class View {
     );
 
     const getHintButton = this.#createButton('Get a hint');
-    getHintButton.id = 'getHintBtn';
     getHintButton.classList.add(classNames.primaryButton);
 
     const buttonsContainer = this.#createElement('div');
@@ -198,7 +191,7 @@ export class View {
           this.#currentSelectedIntervalSemitones = semitones;
           this.#toggleSecondaryButtonState('semitones', semitones);
           const enableSubmitButtonTimer = setInterval(() => {
-            if (!playTonesButton.disabled) {
+            if (!playTonesButton.disabled && !getHintButton.disabled) {
               clearInterval(enableSubmitButtonTimer);
               submitAndMoveToNextQuestionButton.disabled = false;
             }
@@ -224,7 +217,7 @@ export class View {
     );
 
     // Update app
-    this.#appContainer.append(
+    this.appContainer.append(
       headerContainer,
       buttonsContainer,
       gameRuleParagraph,
@@ -233,8 +226,18 @@ export class View {
 
     // Event listeners
     playTonesButton.addEventListener('click', () => {
-      this.#playNotesForGameLevel(this.#level);
-      this.#isPlayTonesButtonClicked = true;
+      const now = Tone.now();
+      this.#sampler.triggerAttackRelease(
+        this.#currentNote1,
+        this.#toneLength,
+        now
+      );
+      this.#sampler.triggerAttackRelease(
+        this.#currentNote2,
+        this.#toneLength,
+        now + 1
+      );
+      this.isPlayTonesButtonClicked = true;
 
       // Disable buttons while tones are playing
       const buttonsToDisable = [
@@ -243,11 +246,8 @@ export class View {
         submitAndMoveToNextQuestionButton,
         skipQuestionButton,
       ];
-
       const timeToDisableButtons =
-        (this.#level === 'Hard' ? 0 : 1000) +
-        Tone.Time(this.#toneLength).toMilliseconds() +
-        500;
+        1000 + Tone.Time(this.#toneLength).toMilliseconds() + 500;
       this.#disableButtonsForTime(buttonsToDisable, timeToDisableButtons);
 
       this.#changePlayTonesButtonText(playTonesButton);
@@ -260,7 +260,6 @@ export class View {
     });
 
     getHintButton.addEventListener('click', () => {
-      this.#publishGetHintButtonClickedEvent();
       const now = Tone.now();
 
       const numberOfTonesInScale = this.#allNotesInCurrentScale.length;
@@ -297,7 +296,7 @@ export class View {
     const playTonesButton = document.getElementById('playTonesBtn');
     playTonesButton.textContent = 'Play tones';
 
-    this.#isPlayTonesButtonClicked = false;
+    this.isPlayTonesButtonClicked = false;
     this.#currentNote1 = questionData.note1;
     this.#currentNote2 = questionData.note2;
     this.#allNotesInCurrentScale = questionData.allNotesInScale;
@@ -320,36 +319,9 @@ export class View {
   }
 
   #changePlayTonesButtonText(playTonesButton) {
-    if (this.#isPlayTonesButtonClicked) {
+    if (this.isPlayTonesButtonClicked) {
       playTonesButton.textContent = 'Replay tones';
     }
-  }
-
-  #playNotesForGameLevel(level) {
-    const now = Tone.now();
-    if (level === 'Hard') {
-      this.#sampler.triggerAttackRelease(
-        [this.#currentNote1, this.#currentNote2],
-        this.#toneLength,
-        now
-      );
-    } else {
-      this.#sampler.triggerAttackRelease(
-        this.#currentNote1,
-        this.#toneLength,
-        now
-      );
-      this.#sampler.triggerAttackRelease(
-        this.#currentNote2,
-        this.#toneLength,
-        now + 1
-      );
-    }
-  }
-
-  disableGetHintButton() {
-    const getHintButton = document.getElementById('getHintBtn');
-    getHintButton.disabled = true;
   }
 
   #toggleSecondaryButtonState(dataKey, dataValue) {
@@ -381,9 +353,9 @@ export class View {
   }
 
   renderResults(data) {
-    this.#appContainer.classList.add(classNames.centerVertically);
-    this.#appContainer.classList.remove(classNames.flowSpaceLarge);
-    this.#appContainer.replaceChildren();
+    this.appContainer.classList.add(classNames.centerVertically);
+    this.appContainer.classList.remove(classNames.flowSpaceLarge);
+    this.appContainer.replaceChildren();
 
     const finalUserScoreDisplay = this.#createElement('h3', 'Score: ');
     const finalUserScore = this.#createElement('span');
@@ -393,7 +365,7 @@ export class View {
     const playGameAgainButton = this.#createButton('Play again!');
     playGameAgainButton.classList.add(classNames.primaryButton);
 
-    this.#appContainer.append(finalUserScoreDisplay, playGameAgainButton);
+    this.appContainer.append(finalUserScoreDisplay, playGameAgainButton);
 
     playGameAgainButton.addEventListener(
       'click',
