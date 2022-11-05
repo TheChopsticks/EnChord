@@ -3,28 +3,32 @@ export class Game {
   #score;
   #scores;
   #level;
+  #numberOfHintsAvailable;
   #numberOfQuestions;
   #correctAnswers;
   #userAnswers;
   #questionsToReview;
   #publishNewQuestionEvent;
+  #publishNoHintAvailableEvent;
   #publishGameEndEvent;
   #publishStoreGameDataEvent;
   #publishGetGameDataEvent;
 
   constructor(
     publishNewQuestionEvent,
+    publishNoHintAvailableEvent,
     publishGameEndEvent,
     publishStoreGameDataEvent,
     publishGetGameDataEvent
+
   ) {
     this.#score = 0;
-    this.#level;
     this.#numberOfQuestions = 10;
     this.#correctAnswers = [];
     this.#userAnswers = [];
     this.#questionsToReview = [];
     this.#publishNewQuestionEvent = publishNewQuestionEvent;
+    this.#publishNoHintAvailableEvent = publishNoHintAvailableEvent;
     this.#publishGameEndEvent = publishGameEndEvent;
     this.#publishStoreGameDataEvent = publishStoreGameDataEvent;
     this.#publishGetGameDataEvent = publishGetGameDataEvent;
@@ -35,7 +39,14 @@ export class Game {
   }
 
   getNewQuiz(gameLevel) {
-    if (gameLevel) this.#level = gameLevel;
+    if (gameLevel) {
+      this.#level = gameLevel;
+      if (gameLevel === 'Intermediate') {
+        this.#numberOfHintsAvailable = 3;
+      } else if (gameLevel === 'Hard') {
+        this.#publishNoHintAvailableEvent();
+      }
+    }
 
     if (this.#userAnswers.length === this.#numberOfQuestions) {
       this.#storeScores();
@@ -125,6 +136,13 @@ export class Game {
     }
   }
 
+
+  updateNumberOfHintsAvailable() {
+    this.#numberOfHintsAvailable = this.#numberOfHintsAvailable - 1;
+    if (this.#numberOfHintsAvailable === 0) {
+      this.#publishNoHintAvailableEvent();
+    }
+
   #storeScores() {
     this.#publishGetGameDataEvent();
     this.#scores.push(this.#score);
@@ -133,6 +151,7 @@ export class Game {
 
   loadScores(data) {
     this.#scores = data ?? [];
+
   }
 
   saveUserAnswer(userInput) {
