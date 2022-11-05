@@ -1,24 +1,24 @@
 # EnChord
 
-**EnChord** is a perfect tool to develop your music dictation skills. Challenge yourself with different levels of quizzes and follow your progress by checking your highest score and average test results. You can also review what are the frequently mistaken interval types.
+**EnChord** is a perfect tool to develop your aural skills. Challenge yourself with different levels of quizzes and follow your progress by checking your highest score and average test results. You can also review what are the frequently mistaken interval types.
 
 ## Table of contents
 
-1. [How it works](https://github.com/TheChopsticks/EnChord/edit/main/README.md#how-it-works)
-2. [Future feature](https://github.com/TheChopsticks/EnChord/edit/main/README.md#future-features)
-3. [How EnChord was built](https://github.com/TheChopsticks/EnChord/edit/main/README.md#how-enchord-was-built)
-4. [Installation](https://github.com/TheChopsticks/EnChord/edit/main/README.md#installation)
-5. [Credits](https://github.com/TheChopsticks/EnChord/edit/main/README.md#credits)
-6. [License](https://github.com/TheChopsticks/EnChord/edit/main/README.md#license)
-7. [Badges](https://github.com/TheChopsticks/EnChord/edit/main/README.md#badges)
+1. [How it works](#how-it-works)
+2. [Future features](#future-features)
+3. [How EnChord was built](#how-enchord-was-built)
+4. [Installation](#installation)
+5. [Credits](#credits)
+6. [License](#license)
+7. [Badges](#badges)
 
 ## How it works
 
-#### Try 3 different levels
+### Try 3 different levels
 
 - **EnChord** has 3 different levels, Easy, Intermediate, and Hard.
 
-#### What are the differences
+### What are the differences
 
 - **For enthusiastic beginners:**
 
@@ -36,7 +36,7 @@
 
 ## Future features
 
-#### Review and follow your progress:
+### Review and follow your progress:
 
 - After each quiz set, you can review which questions you got wrong and listen to them again!
 - Check your highest score and the average score of previously played games.
@@ -44,13 +44,13 @@
 
 #### Language support:
 
-- Mandarin(普通话), Korean(한국어), Hungarian(Magyar)
+- Hungarian (Magyar), Korean (한국어), Traditional Chinese (繁體中文)
 
 ## How EnChord was built
 
-The `EnChord` is the very first project of `The Forks`. This app is written in plain JS and CSS to improve our `VanilaJS` and `VanilaCSS` skills and to take a deep dive into code organization. To write clean and organized code without any help of frameworks, we introduced some design patterns.
+`EnChord` is the very first project of `The Pokeu`. This app is written in plain JS and CSS to improve our `Vanilla JS` and `Vanilla CSS` skills and to take a deep dive into code organization. To write clean and organized code without any help of frameworks, we introduced some design patterns.
 
-- First was the [MVC](https://developer.mozilla.org/en-US/docs/Glossary/MVC#:~:text=MVC%20(Model%2DView%2DController,of%20labor%20and%20improved%20maintenance.) architecture. We separated the pure game logic(Models) and the UI(Views), and created the `controller` class to manage the communication between other modules.
+- First was the [MVC](https://developer.mozilla.org/en-US/docs/Glossary/MVC) architecture. We separated the pure game logic(Models) and the UI(Views), and created the `controller` class to manage the communication between other modules.
 
 - To achieve this "separation of concerns", we implemented another design pattern, [Publish/Subscribe](https://ably.com/topic/pub-sub). Sharing common knowledge through a data pipe, the `controller` class, other modules can sorely focus on performing their tasks and do not need to worry about whereabouts of inputs and outputs.
 
