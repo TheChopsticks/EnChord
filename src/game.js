@@ -20,7 +20,6 @@ export class Game {
     publishGameEndEvent,
     publishStoreGameDataEvent,
     publishGetGameDataEvent
-
   ) {
     this.#score = 0;
     this.#numberOfQuestions = 10;
@@ -136,13 +135,12 @@ export class Game {
     }
   }
 
-
   updateNumberOfHintsAvailable() {
     this.#numberOfHintsAvailable = this.#numberOfHintsAvailable - 1;
     if (this.#numberOfHintsAvailable === 0) {
       this.#publishNoHintAvailableEvent();
     }
-
+  }
   #storeScores() {
     this.#publishGetGameDataEvent();
     this.#scores.push(this.#score);
@@ -151,7 +149,6 @@ export class Game {
 
   loadScores(data) {
     this.#scores = data ?? [];
-
   }
 
   saveUserAnswer(userInput) {
