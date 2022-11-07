@@ -78,4 +78,6 @@ To build the project, run:
 
 ## Badges
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/61aa5294-7ef4-4d3d-978c-b61c9ac5fe4e/deploy-status)](https://app.netlify.com/sites/enchord/deploys)
+
 ## Scripts
