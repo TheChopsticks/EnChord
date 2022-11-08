@@ -10,6 +10,7 @@
 4. [Credits](#credits)
 5. [License](#license)
 6. [Badges](#badges)
+7. [Scripts](#scripts)
 
 ## How it works
 
@@ -57,18 +58,6 @@ The benefits of such patterns helped us to avoid spaghetti code and made it easy
 
 As our aim was to develop an app that is more than just a one-time use, we also felt the need of having a database system. Therefore, we utilized the [localStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) to store scores of users and have stored data available for [future features](https://github.com/TheChopsticks/EnChord/edit/main/README.md#future-features) . Considering future scalability of the application, `storage` module is written in a way that the change of storage method is possible.
 
-### Development
-
-1. Run `npm install` to install project dependencies.
-2. Run `npm start` to start the development server. The project files will be served at port `8080`, and can be viewed by navigating to `localhost:8080` in your web browser.
-
-A pre-commit hook will automatically lint and format staged `.js` files in the `/src` directory.
-
-### Production
-
-To build the project, run:
-`npm run build`
-
 ## Credits
 
 - [Sandy Kuo](https://github.com/kuosandys)
@@ -83,3 +72,15 @@ _EnChord_ is available under the MIT license. See the LICENSE file for more info
 [![Netlify Status](https://api.netlify.com/api/v1/badges/61aa5294-7ef4-4d3d-978c-b61c9ac5fe4e/deploy-status)](https://app.netlify.com/sites/enchord/deploys)
 
 ## Scripts
+
+### Development
+
+1. Run `npm install` to install project dependencies.
+2. Run `npm start` to start the development server. The project files will be served at port `8080`, and can be viewed by navigating to `localhost:8080` in your web browser.
+
+A pre-commit hook will automatically lint and format staged `.js` files in the `/src` directory.
+
+### Production
+
+To build the project, run:
+`npm run build`
