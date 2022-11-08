@@ -7,10 +7,9 @@
 1. [How it works](#how-it-works)
 2. [Future features](#future-features)
 3. [How EnChord was built](#how-enchord-was-built)
-4. [Installation](#installation)
-5. [Credits](#credits)
-6. [License](#license)
-7. [Badges](#badges)
+4. [Credits](#credits)
+5. [License](#license)
+6. [Badges](#badges)
 
 ## How it works
 
@@ -58,8 +57,6 @@ The benefits of such patterns helped us to avoid spaghetti code and made it easy
 
 As our aim was to develop an app that is more than just a one-time use, we also felt the need of having a database system. Therefore, we utilized the [localStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) to store scores of users and have stored data available for [future features](https://github.com/TheChopsticks/EnChord/edit/main/README.md#future-features) . Considering future scalability of the application, `storage` module is written in a way that the change of storage method is possible.
 
-## Installation
-
 ### Development
 
 1. Run `npm install` to install project dependencies.
@@ -74,7 +71,12 @@ To build the project, run:
 
 ## Credits
 
+- [Sandy Kuo](https://github.com/kuosandys)
+- [Utopia](https://utopia.fyi/)
+
 ## License
+
+_EnChord_ is available under the MIT license. See the LICENSE file for more information.
 
 ## Badges
 
