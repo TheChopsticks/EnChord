@@ -7,10 +7,10 @@
 1. [How it works](#how-it-works)
 2. [Future features](#future-features)
 3. [How EnChord was built](#how-enchord-was-built)
-4. [Credits](#credits)
-5. [License](#license)
-6. [Badges](#badges)
-7. [Scripts](#scripts)
+4. [Development](#development)
+5. [Credits](#credits)
+6. [License](#license)
+7. [Badges](#badges)
 
 ## How it works
 
@@ -58,20 +58,7 @@ The benefits of such patterns helped us to avoid spaghetti code and made it easy
 
 As our aim was to develop an app that is more than just a one-time use, we also felt the need of having a database system. Therefore, we utilized the [localStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) to store scores of users and have stored data available for [future features](https://github.com/TheChopsticks/EnChord/edit/main/README.md#future-features) . Considering future scalability of the application, `storage` module is written in a way that the change of storage method is possible.
 
-## Credits
-
-- [Sandy Kuo](https://github.com/kuosandys)
-- [Utopia](https://utopia.fyi/)
-
-## License
-
-_EnChord_ is available under the MIT license. See the LICENSE file for more information.
-
-## Badges
-
-[![Netlify Status](https://api.netlify.com/api/v1/badges/61aa5294-7ef4-4d3d-978c-b61c9ac5fe4e/deploy-status)](https://app.netlify.com/sites/enchord/deploys)
-
-## Scripts
+## Development
 
 ### Development
 
@@ -84,3 +71,15 @@ A pre-commit hook will automatically lint and format staged `.js` files in the `
 
 To build the project, run:
 `npm run build`
+
+## Credits
+
+- [Utopia](https://utopia.fyi/)
+
+## License
+
+_EnChord_ is available under the MIT license. See the LICENSE file for more information.
+
+## Badges
+
+[![Netlify Status](https://api.netlify.com/api/v1/badges/61aa5294-7ef4-4d3d-978c-b61c9ac5fe4e/deploy-status)](https://app.netlify.com/sites/enchord/deploys)
