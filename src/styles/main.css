@@ -110,6 +110,7 @@ main {
   height: 100%;
   padding: var(--space-xs) var(--space-s);
   max-width: var(--width-device-max);
+  margin: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
