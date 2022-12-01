@@ -87,7 +87,6 @@ export class Game {
       interval,
       allNotesInScale,
       questionNumber,
-      // questionNumber = this.#userAnswers.length+1
     };
 
     this.#correctAnswers.push(questionObject);
@@ -135,12 +134,11 @@ export class Game {
     ) {
       this.#score++;
     } else {
-      // Let's save add questionNumber, correctAnswer, userAnswer,
-      // note1 and note 2 in questionsToReviewArray.
       const currentQuestionObject =
         this.#correctAnswers[lastCorrectAnswerIndex];
       const userAnswerForCurrentQuestion =
         this.#userAnswers[lastUserAnswerIndex];
+
       this.#questionsToReview.push({
         questionNumber: currentQuestionObject.questionNumber,
         correctAnswer: currentQuestionObject.interval,
@@ -159,8 +157,21 @@ export class Game {
   }
   #storeScores() {
     this.#publishGetGameDataEvent();
-    this.#scores.push(this.#score);
-    this.#publishStoreGameDataEvent(this.#scores);
+
+    const quizResultsObject = {
+      score: this.#score,
+      questionsToReview: this.#questionsToReview,
+    };
+
+    setTimeout(() => {
+      this.#scores.push(quizResultsObject);
+      this.#publishStoreGameDataEvent(quizResultsObject), 0;
+    });
+
+    console.log(this.#scores);
+    // const lastResult = this.#scores.length - 1;
+    // console.log(this.#scores[lastResult].score);
+    // console.log(this.#scores[lastResult].questionsToReview[0]);
     // Here let's save scores and questionsToReview array too!
   }
 
@@ -171,6 +182,5 @@ export class Game {
   saveUserAnswer(userInput) {
     this.#userAnswers.push(userInput);
     this.#compareAnswers();
-    console.log(this.#questionsToReview);
   }
 }
