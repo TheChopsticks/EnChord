@@ -37,7 +37,7 @@ export class Game {
     return Math.floor(Math.random() * notes.length);
   }
 
-  getNewQuiz(gameLevel) {
+  getNewQuestion(gameLevel) {
     if (gameLevel) {
       this.#level = gameLevel;
       if (gameLevel === 'Intermediate') {
@@ -74,26 +74,28 @@ export class Game {
     const note1 = notes[index1] + octave;
     const note2 = notes[index2] + octave;
     const interval = this.#calculateInterval(index1, index2);
-
+    const questionNumber = this.#userAnswers.length + 1;
     const allNotesInScale = this.#getAllNotesWithinScale(
       index1,
       index2,
       octave
     );
 
-    const quizObject = {
+    const questionObject = {
       note1,
       note2,
       interval,
       allNotesInScale,
+      questionNumber,
+      // questionNumber = this.#userAnswers.length+1
     };
 
-    this.#correctAnswers.push(quizObject);
+    this.#correctAnswers.push(questionObject);
     this.#publishNewQuestionEvent({
-      note1: quizObject.note1,
-      note2: quizObject.note2,
+      note1: questionObject.note1,
+      note2: questionObject.note2,
       score: this.#score,
-      questionNumber: this.#userAnswers.length + 1,
+      questionNumber,
       allNotesInScale,
     });
   }
@@ -132,6 +134,20 @@ export class Game {
       this.#userAnswers[lastUserAnswerIndex]
     ) {
       this.#score++;
+    } else {
+      // Let's save add questionNumber, correctAnswer, userAnswer,
+      // note1 and note 2 in questionsToReviewArray.
+      const currentQuestionObject =
+        this.#correctAnswers[lastCorrectAnswerIndex];
+      const userAnswerForCurrentQuestion =
+        this.#userAnswers[lastUserAnswerIndex];
+      this.#questionsToReview.push({
+        questionNumber: currentQuestionObject.questionNumber,
+        correctAnswer: currentQuestionObject.interval,
+        userAnswer: userAnswerForCurrentQuestion,
+        note1: currentQuestionObject.note1,
+        note2: currentQuestionObject.note2,
+      });
     }
   }
 
@@ -145,6 +161,7 @@ export class Game {
     this.#publishGetGameDataEvent();
     this.#scores.push(this.#score);
     this.#publishStoreGameDataEvent(this.#scores);
+    // Here let's save scores and questionsToReview array too!
   }
 
   loadScores(data) {
@@ -154,5 +171,6 @@ export class Game {
   saveUserAnswer(userInput) {
     this.#userAnswers.push(userInput);
     this.#compareAnswers();
+    console.log(this.#questionsToReview);
   }
 }
