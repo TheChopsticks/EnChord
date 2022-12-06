@@ -49,7 +49,6 @@ export class Game {
 
     if (this.#userAnswers.length === this.#numberOfQuestions) {
       this.#storeScores();
-      // TODO: get highest score from this.#scores and pass it along with the publishGameEndEvent to View
       this.#publishGameEndEvent({
         userScore: this.#score,
         totalScore: this.#numberOfQuestions,
@@ -155,6 +154,7 @@ export class Game {
       this.#publishNoHintAvailableEvent();
     }
   }
+
   #storeScores() {
     this.#publishGetGameDataEvent();
 
@@ -163,16 +163,8 @@ export class Game {
       questionsToReview: this.#questionsToReview,
     };
 
-    setTimeout(() => {
-      this.#scores.push(quizResultsObject);
-      this.#publishStoreGameDataEvent(quizResultsObject), 0;
-    });
-
-    console.log(this.#scores);
-    // const lastResult = this.#scores.length - 1;
-    // console.log(this.#scores[lastResult].score);
-    // console.log(this.#scores[lastResult].questionsToReview[0]);
-    // Here let's save scores and questionsToReview array too!
+    this.#scores.push(quizResultsObject);
+    this.#publishStoreGameDataEvent(this.#scores);
   }
 
   loadScores(data) {
