@@ -60,7 +60,7 @@ export class View {
   renderStartPage() {
     if (this.appContainer.hasChildNodes()) this.appContainer.replaceChildren();
 
-    const gameTitle = this.#createElement('h1', 'Cool name for music app');
+    const gameTitle = this.#createElement('h1', 'EnChord');
     const gameRuleParagraph = this.#createElement(
       'p',
       'Guess the interval between the 2 tones.'
