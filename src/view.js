@@ -385,15 +385,40 @@ export class View {
     this.#appContainer.classList.remove(classNames.flowSpaceLarge);
     this.#appContainer.replaceChildren();
 
+    const scoreDisplay = this.#createElement('div');
+    scoreDisplay.classList.add(classNames.buttonsContainerSingle);
+
     const finalUserScoreDisplay = this.#createElement('h3', 'Score: ');
     const finalUserScore = this.#createElement('span');
     finalUserScore.textContent = `${data.userScore} / ${data.totalScore}`;
     finalUserScoreDisplay.append(finalUserScore);
 
+    const highestUserScoreDisplay = this.#createElement(
+      'h3',
+      'Highest score: '
+    );
+    const highestUserScore = this.#createElement('span');
+    highestUserScore.textContent = `${data.highestScore} / ${data.totalScore}`;
+    highestUserScoreDisplay.append(highestUserScore);
+
+    const averageUserScoreDisplay = this.#createElement(
+      'h3',
+      'Average score: '
+    );
+    const averageUserScore = this.#createElement('span');
+    averageUserScore.textContent = `${data.averageScore} / ${data.totalScore}`;
+    averageUserScoreDisplay.append(averageUserScore);
+
     const playGameAgainButton = this.#createButton('Play again!');
     playGameAgainButton.classList.add(classNames.primaryButton);
 
-    this.#appContainer.append(finalUserScoreDisplay, playGameAgainButton);
+    scoreDisplay.append(
+      finalUserScoreDisplay,
+      highestUserScoreDisplay,
+      averageUserScoreDisplay
+    );
+
+    this.#appContainer.append(scoreDisplay, playGameAgainButton);
 
     playGameAgainButton.addEventListener(
       'click',
