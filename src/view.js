@@ -388,7 +388,8 @@ export class View {
     const scoreDisplay = this.#createElement('div');
     scoreDisplay.classList.add(classNames.buttonsContainerSingle);
 
-    const finalUserScoreDisplay = this.#createElement('h3', 'Score: ');
+    const finalUserScoreDisplay = this.#createElement('h3', 'Current score: ');
+    finalUserScoreDisplay.classList.add(classNames.highlight);
     const finalUserScore = this.#createElement('span');
     finalUserScore.textContent = `${data.userScore} / ${data.totalScore}`;
     finalUserScoreDisplay.append(finalUserScore);
