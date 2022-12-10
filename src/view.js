@@ -31,6 +31,7 @@ const classNames = {
   header: 'header',
   buttonsContainer: 'buttons-container',
   buttonsContainerSingle: 'buttons-container--single',
+  spaceBetween: 'space-between',
 };
 
 export class View {
@@ -386,29 +387,35 @@ export class View {
     this.#appContainer.replaceChildren();
 
     const scoreDisplay = this.#createElement('div');
-    scoreDisplay.classList.add(classNames.buttonsContainerSingle);
+    scoreDisplay.classList.add(
+      classNames.scoresContainer,
+      classNames.spaceBetween
+    );
 
-    const finalUserScoreDisplay = this.#createElement('h3', 'Current score: ');
+    const finalUserScoreDisplay = this.#createElement('div');
     finalUserScoreDisplay.classList.add(classNames.highlight);
-    const finalUserScore = this.#createElement('span');
-    finalUserScore.textContent = `${data.userScore} / ${data.totalScore}`;
-    finalUserScoreDisplay.append(finalUserScore);
-
-    const highestUserScoreDisplay = this.#createElement(
+    const finalUserScoreLabel = this.#createElement('h3', 'Score: ');
+    const finalUserScore = this.#createElement(
       'h3',
-      'Highest score: '
+      `${data.userScore} / ${data.totalScore}`
     );
-    const highestUserScore = this.#createElement('span');
-    highestUserScore.textContent = `${data.highestScore} / ${data.totalScore}`;
-    highestUserScoreDisplay.append(highestUserScore);
+    finalUserScoreDisplay.append(finalUserScoreLabel, finalUserScore);
 
-    const averageUserScoreDisplay = this.#createElement(
+    const highestUserScoreDisplay = this.#createElement('div');
+    const highestUserScoreLabel = this.#createElement('h3', 'Highest score: ');
+    const highestUserScore = this.#createElement(
       'h3',
-      'Average score: '
+      `${data.highestScore} / ${data.totalScore}`
     );
-    const averageUserScore = this.#createElement('span');
-    averageUserScore.textContent = `${data.averageScore} / ${data.totalScore}`;
-    averageUserScoreDisplay.append(averageUserScore);
+    highestUserScoreDisplay.append(highestUserScoreLabel, highestUserScore);
+
+    const averageUserScoreDisplay = this.#createElement('div');
+    const averageUserScoreLabel = this.#createElement('h3', 'Average score: ');
+    const averageUserScore = this.#createElement(
+      'h3',
+      `${data.averageScore} / ${data.totalScore}`
+    );
+    averageUserScoreDisplay.append(averageUserScoreLabel, averageUserScore);
 
     const playGameAgainButton = this.#createButton('Play again!');
     playGameAgainButton.classList.add(classNames.primaryButton);
