@@ -1,5 +1,7 @@
 # EnChord
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/61aa5294-7ef4-4d3d-978c-b61c9ac5fe4e/deploy-status)](https://app.netlify.com/sites/enchord/deploys)
+
 **EnChord** is a perfect tool to develop your aural skills. Challenge yourself with different levels of quizzes and follow your progress by checking your highest score and average test results. You can also review what are the frequently mistaken interval types.
 
 ## Table of contents
@@ -42,7 +44,7 @@
 - Check your highest score and the average score of previously played games.
 - Check your weakness by reviewing the most wrong interval types.
 
-#### Language support:
+### Language support:
 
 - Hungarian (Magyar), Korean (한국어), Traditional Chinese (繁體中文)
 
@@ -52,11 +54,11 @@
 
 - First was the [MVC](https://developer.mozilla.org/en-US/docs/Glossary/MVC) architecture. We separated the pure game logic(Models) and the UI(Views), and created the `controller` class to manage the communication between other modules.
 
-- To achieve this "separation of concerns", we implemented another design pattern, [Publish/Subscribe](https://ably.com/topic/pub-sub). Sharing common knowledge through a data pipe, the `controller` class, other modules can sorely focus on performing their tasks and do not need to worry about whereabouts of inputs and outputs.
+- To achieve this "separation of concerns", we implemented another design pattern, [Publish/Subscribe](https://ably.com/topic/pub-sub). Sharing common knowledge through a data pipe, the `controller` class, other modules can solely focus on performing their tasks and do not need to worry about whereabouts of inputs and outputs.
 
 The benefits of such patterns helped us to avoid spaghetti code and made it easy to maintain the app and expand game features.
 
-As our aim was to develop an app that is more than just a one-time use, we also felt the need of having a database system. Therefore, we utilized the [localStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) to store scores of users and have stored data available for [future features](https://github.com/TheChopsticks/EnChord/edit/main/README.md#future-features) . Considering future scalability of the application, `storage` module is written in a way that the change of storage method is possible.
+As our aim was to develop an app that is more than just a one-time use, we also felt the need of having a database system. Therefore, we utilized the [localStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) to store scores of users and have stored data available for [future features](#future-features) . Considering future scalability of the application, `storage` module is written in a way that the change of storage method is possible.
 
 ## Development
 
@@ -79,7 +81,3 @@ To build the project, run:
 ## License
 
 _EnChord_ is available under the MIT license. See the LICENSE file for more information.
-
-## Badges
-
-[![Netlify Status](https://api.netlify.com/api/v1/badges/61aa5294-7ef4-4d3d-978c-b61c9ac5fe4e/deploy-status)](https://app.netlify.com/sites/enchord/deploys)
