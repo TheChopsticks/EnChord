@@ -1,7 +1,7 @@
 const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 export class Game {
   #score;
-  #scores;
+  #quizResults;
   #level;
   #numberOfHintsAvailable;
   #numberOfQuestions;
@@ -48,7 +48,7 @@ export class Game {
     }
 
     if (this.#userAnswers.length === this.#numberOfQuestions) {
-      this.#storeScores();
+      this.#storeQuizResults();
       this.#publishGameEndEvent({
         userScore: this.#score,
         totalScore: this.#numberOfQuestions,
@@ -155,7 +155,7 @@ export class Game {
     }
   }
 
-  #storeScores() {
+  #storeQuizResults() {
     this.#publishGetGameDataEvent();
 
     const quizResultsObject = {
@@ -163,12 +163,12 @@ export class Game {
       questionsToReview: this.#questionsToReview,
     };
 
-    this.#scores.push(quizResultsObject);
-    this.#publishStoreGameDataEvent(this.#scores);
+    this.#quizResults.push(quizResultsObject);
+    this.#publishStoreGameDataEvent(this.#quizResults);
   }
 
-  loadScores(data) {
-    this.#scores = data ?? [];
+  loadQuizResults(data) {
+    this.#quizResults = data ?? [];
   }
 
   saveUserAnswer(userInput) {

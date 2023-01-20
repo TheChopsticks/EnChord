@@ -48,7 +48,7 @@ export class Controller {
     );
 
     this.#eventsManager.subscribe('gameDataLoaded', (data) =>
-      this.#model.loadScores(data)
+      this.#model.loadQuizResults(data)
     );
 
     this.#storage = new Storage((data) =>
