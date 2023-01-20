@@ -97,7 +97,7 @@ export class View {
       this.#appContainer.replaceChildren();
     }
 
-    const gameTitle = this.#createElement('h1', 'Cool name for music app');
+    const gameTitle = this.#createElement('h1', 'EnChord');
     const gameDescription = this.#createElement('h2');
 
     gameDescription.append(
