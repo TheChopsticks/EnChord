@@ -387,10 +387,7 @@ export class View {
     this.#appContainer.replaceChildren();
 
     const scoreDisplay = this.#createElement('div');
-    scoreDisplay.classList.add(
-      classNames.scoresContainer,
-      classNames.spaceBetween
-    );
+    scoreDisplay.classList.add(classNames.spaceBetween);
 
     const finalUserScoreDisplay = this.#createElement('div');
     finalUserScoreDisplay.classList.add(classNames.highlight);
