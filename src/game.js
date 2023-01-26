@@ -1,7 +1,7 @@
 const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 export class Game {
   #score;
-  #scores;
+  #quizResults;
   #level;
   #numberOfHintsAvailable;
   #numberOfQuestions;
@@ -37,7 +37,7 @@ export class Game {
     return Math.floor(Math.random() * notes.length);
   }
 
-  getNewQuiz(gameLevel) {
+  getNewQuestion(gameLevel) {
     if (gameLevel) {
       this.#level = gameLevel;
       if (gameLevel === 'Intermediate') {
@@ -48,8 +48,7 @@ export class Game {
     }
 
     if (this.#userAnswers.length === this.#numberOfQuestions) {
-      this.#storeScores();
-      // TODO: get highest score from this.#scores and pass it along with the publishGameEndEvent to View
+      this.#storeQuizResults();
       this.#publishGameEndEvent({
         userScore: this.#score,
         totalScore: this.#numberOfQuestions,
@@ -74,26 +73,27 @@ export class Game {
     const note1 = notes[index1] + octave;
     const note2 = notes[index2] + octave;
     const interval = this.#calculateInterval(index1, index2);
-
+    const questionNumber = this.#userAnswers.length + 1;
     const allNotesInScale = this.#getAllNotesWithinScale(
       index1,
       index2,
       octave
     );
 
-    const quizObject = {
+    const questionObject = {
       note1,
       note2,
       interval,
       allNotesInScale,
+      questionNumber,
     };
 
-    this.#correctAnswers.push(quizObject);
+    this.#correctAnswers.push(questionObject);
     this.#publishNewQuestionEvent({
-      note1: quizObject.note1,
-      note2: quizObject.note2,
+      note1: questionObject.note1,
+      note2: questionObject.note2,
       score: this.#score,
-      questionNumber: this.#userAnswers.length + 1,
+      questionNumber,
       allNotesInScale,
     });
   }
@@ -132,6 +132,19 @@ export class Game {
       this.#userAnswers[lastUserAnswerIndex]
     ) {
       this.#score++;
+    } else {
+      const currentQuestionObject =
+        this.#correctAnswers[lastCorrectAnswerIndex];
+      const userAnswerForCurrentQuestion =
+        this.#userAnswers[lastUserAnswerIndex];
+
+      this.#questionsToReview.push({
+        questionNumber: currentQuestionObject.questionNumber,
+        correctAnswer: currentQuestionObject.interval,
+        userAnswer: userAnswerForCurrentQuestion,
+        note1: currentQuestionObject.note1,
+        note2: currentQuestionObject.note2,
+      });
     }
   }
 
@@ -141,14 +154,21 @@ export class Game {
       this.#publishNoHintAvailableEvent();
     }
   }
-  #storeScores() {
+
+  #storeQuizResults() {
     this.#publishGetGameDataEvent();
-    this.#scores.push(this.#score);
-    this.#publishStoreGameDataEvent(this.#scores);
+
+    const quizResultsObject = {
+      score: this.#score,
+      questionsToReview: this.#questionsToReview,
+    };
+
+    this.#quizResults.push(quizResultsObject);
+    this.#publishStoreGameDataEvent(this.#quizResults);
   }
 
-  loadScores(data) {
-    this.#scores = data ?? [];
+  loadQuizResults(data) {
+    this.#quizResults = data ?? [];
   }
 
   saveUserAnswer(userInput) {
