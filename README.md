@@ -1,4 +1,6 @@
-# EnChord
+# EnChord!
+<img width="964" alt="Screenshot 2023-01-30 at 8 53 51 PM" src="https://user-images.githubusercontent.com/70323981/215543718-56185e4d-078b-4f40-bb42-51a8938f0f2c.png">
+
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/61aa5294-7ef4-4d3d-978c-b61c9ac5fe4e/deploy-status)](https://app.netlify.com/sites/enchord/deploys)
 
