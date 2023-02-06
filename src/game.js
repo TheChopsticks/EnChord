@@ -49,9 +49,12 @@ export class Game {
 
     if (this.#userAnswers.length === this.#numberOfQuestions) {
       this.#storeQuizResults();
+      const scores = this.#quizResults.map((result) => result.score);
       this.#publishGameEndEvent({
         userScore: this.#score,
         totalScore: this.#numberOfQuestions,
+        highestScore: Math.max(...scores),
+        averageScore: this.#getAverageScore(scores),
       });
       return;
     }
@@ -174,5 +177,14 @@ export class Game {
   saveUserAnswer(userInput) {
     this.#userAnswers.push(userInput);
     this.#compareAnswers();
+  }
+
+  #getAverageScore(scores) {
+    // Only calculate average from the last 10 scores
+    const lastScores = scores.slice(Math.max(0, scores.length - 10));
+    const averageScore =
+      lastScores.reduce((prev, curr) => prev + curr, 0) / lastScores.length;
+    // Round to 1 decimal point
+    return Math.round(averageScore * 10) / 10;
   }
 }

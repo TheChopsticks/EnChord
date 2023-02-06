@@ -189,6 +189,12 @@ button {
   color: var(--color-primary);
 }
 
+.space-between > * {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-s);
+}
+
 /* Components */
 .button--primary {
   background-color: var(--color-primary);
